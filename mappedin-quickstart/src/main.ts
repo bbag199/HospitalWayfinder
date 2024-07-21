@@ -85,4 +85,14 @@ async function init() {
   console.log(mapData.getByType("floor"));
 }
 
+// Navigation bar
+import navHtml from './nav';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const navContainer = document.getElementById('nav-container');
+  if (navContainer) {
+    navContainer.innerHTML = navHtml;
+  }
+});
+
 init();
