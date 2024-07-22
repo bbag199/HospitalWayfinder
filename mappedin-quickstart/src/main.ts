@@ -103,12 +103,14 @@ async function init() {
   setCameraPosition();
 
   // Iterate through each point of interest and label it.
-for (const poi of mapData.getByType('point-of-interest')) {
-	// Label the point of interest if it's on the map floor currently shown.
-	if (poi.floor.id === mapView.currentFloor.id) {
-		mapView.Labels.add(poi.coordinate, poi.name);
-	}
-}
+// for (const poi of mapData.getByType('point-of-interest')) {
+// 	// Label the point of interest if it's on the map floor currently shown.
+// 	if (poi.floor.id === mapView.currentFloor.id) {
+// 		mapView.Labels.add(poi.coordinate, poi.name);
+// 	}
+// }
+
+
 
   console.log(mapData.getByType("floor"));
 }
