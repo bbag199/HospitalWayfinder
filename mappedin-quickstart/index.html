@@ -21,7 +21,7 @@
       margin: 0;
     }
     nav {
-      background-color: #ffffff; /* Dark blue color */
+      background-color: #ffffff;
       color: rgb(15, 34, 64);
       display: flex;
       justify-content: space-between;
@@ -49,43 +49,146 @@
       color: #ffcc00;
       transform: scale(1.05);
     }
-    .menu-bar {
-      display: flex;
-      align-items: center;
-    }
-    .menu-bar select {
-      margin: 0 1rem;
-      padding: 0.5rem;
-      border: none;
-      border-radius: 4px;
-      background-color: #555;
-      color: rgb(255, 255, 255);
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .menu-bar select:hover {
-      background-color: #666;
-    }
     #mappedin-map {
       flex: 1;
       width: 100%;
       height: calc(100% - 60px); /* Adjust height to accommodate navbar */
       position: relative;
     }
+    .search-bar {
+      margin-left: 1rem;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .settings-btn {
+      margin-left: 1.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: rgb(15, 34, 64);
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+    }
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <nav>
     <img src="logo.png" alt="Logo" class="logo" />
+    <input type="text" class="search-bar" placeholder="Search..." />
     <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">About</a>
       <a href="#">Contact</a>
+      <button class="settings-btn">Settings</button>
     </div>
-   
   </nav>
   <div id="mappedin-map"></div>
+
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Settings</h2>
+      <div>
+        <label for="mode">Mode:</label>
+        <select id="mode">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div>
+        <label for="language">Language:</label>
+        <select id="language">
+          <option value="en">English</option>
+          <option value="es">Chinese</option>
+          <option value="fr">Maori <option>
+          <!-- Add more languages as needed -->
+        </select>
+      </div>
+      <button id="applySettings">Apply</button>
+    </div>
+  </div>
+
   <script type="module" src="src/main.ts"></script>
+  <script>
+    // Get the modal
+    var modal = document.getElementById("settingsModal");
+
+    // Get the button that opens the modal
+    var btn = document.querySelector(".settings-btn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    // Apply settings
+    document.getElementById('applySettings').onclick = function() {
+      var mode = document.getElementById('mode').value;
+      var language = document.getElementById('language').value;
+
+      // Apply mode (light/dark)
+      if (mode === 'dark') {
+        document.body.style.backgroundColor = '#333';
+        document.body.style.color = '#fff';
+      } else {
+        document.body.style.backgroundColor = '#fff';
+        document.body.style.color = '#000';
+      }
+
+      // Apply language setting (This part would need to be expanded based on actual language implementation)
+      console.log('Language selected:', language);
+
+      // Close modal after applying settings
+      modal.style.display = "none";
+    }
+  </script>
 </body>
 </html>
