@@ -113,6 +113,18 @@ async function init() {
 
 
   console.log(mapData.getByType("floor"));
+
+  //add labels for each map
+
+  mapData.getByType("space").forEach((space) =>{
+    if(space.name){
+      mapView.Labels.add(space, space.name,{
+        appearance: {
+          text: {foregroundColor: "orange"}
+        }
+      })
+    }
+  })
 }
 
 init();
