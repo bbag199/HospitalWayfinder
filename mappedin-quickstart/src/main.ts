@@ -4,7 +4,6 @@ import "@mappedin/mappedin-js/lib/index.css";
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
 const options = {
-
   key: '6666f9ba8de671000ba55c63',
   secret: 'd15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80',
   mapId: '6637fd20269972f02bf839da',
@@ -47,6 +46,7 @@ async function init() {
     const id = event?.floor.id;
     if (!id) return;
     floorSelector.value = id;
+    setCameraPosition(id); // Update the camera position when the floor changes
   });
 
   // Add interactive space and pathfinding functionality
@@ -83,46 +83,67 @@ async function init() {
     }
   });
 
-  // Set the camera position with final bearing and zoom level
-  const setCameraPosition = () => {
-    const entranceCoordinate = new Coordinate(-37.007839, 174.888214); // Replace with actual coordinates
+  // Mapping of floor IDs to their corresponding bearings and coordinates
+  const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+    'm_da4e469267051fe3': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104
 
-    // Set the camera position with final bearing and zoom level
+
+
+    ) }, 
+    'm_69cd3f0a0aca0001': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104
+
+
+
+    ) }, 
+    'm_79ab96f2683f7824': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104
+
+
+
+    ) }, 
+    'm_984215ecc8edf2ba': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221
+
+
+
+    ) },
+    'm_94568a67928ac615': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221
+
+
+
+    ) },
+  };
+
+  // Set the camera position with final bearing, zoom level, and center coordinate
+  const setCameraPosition = (floorId: string) => {
+    const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
+
+    // Set the camera position with final bearing, zoom level, and center coordinate
     mapView.Camera.animateTo(
       {
-        bearing: 167.5 + 10, // Total rotation of 177.5 degrees (167.5 + 10)
-        pitch: 80,
-        zoomLevel: 300, // Increase zoom level to zoom out further
-        center: entranceCoordinate,
+        bearing: settings.bearing,
+        pitch: 0,
+        zoomLevel: 18, // Increase zoom level to zoom out further
+        center: settings.coordinate,
       },
-      { duration: 2000 } // Set duration to 0 for an instant move
+      { duration: 2000 }
     );
   };
 
-  // Call the function to set the camera position
-  setCameraPosition();
+ 
+  setCameraPosition(mapView.currentFloor.id);
 
-  // Iterate through each point of interest and label it.
-for (const poi of mapData.getByType('point-of-interest')) {
-	// Label the point of interest if it's on the map floor currently shown.
-	if (poi.floor.id === mapView.currentFloor.id) {
-		mapView.Labels.add(poi.coordinate, poi.name);
-	}
-}
+  // Iterate through each Connection and label it.
+  mapData.getByType("connection").forEach((connection) => {
+    // Find the coordinates for the current floor.
+    const coords = connection.coordinates.find(
+      (coord) => coord.floorId === mapView.currentFloor.id
+    );
+   
+    if (coords) {
+      mapView.Labels.add(coords, connection.name);
+    }
+  });
 
   console.log(mapData.getByType("floor"));
-
-  //add labels for each map
-
-  mapData.getByType("space").forEach((space) =>{
-    if(space.name){
-      mapView.Labels.add(space, space.name,{
-        appearance: {
-          text: {foregroundColor: "orange"}
-        }
-      })
-    }
-  })
 }
 
 init();
