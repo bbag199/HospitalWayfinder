@@ -58,7 +58,7 @@ async function init() {
   mapData.getByType("space").forEach((space) => {
     mapView.updateState(space, {
       interactive: true,
-      hoverColor: "#f26336",
+      hoverColor: "#BAE0F3",
     });
   });
 
@@ -77,7 +77,7 @@ async function init() {
       path = mapView.Paths.add(directions.coordinates, {
         nearRadius: 0.5,
         farRadius: 0.5,
-        color: "#0000FF" // Set path color to blue
+        color: "#3178C6" // Set path color to blue
       });
 
       // Check if we need to add the connection path
@@ -93,7 +93,7 @@ async function init() {
         connectionPath = mapView.Paths.add([startCoordinate, endCoordinate], {
           nearRadius: 0.5,
           farRadius: 0.5,
-          color: "#FF0000", // Set connection path color to red
+          color: "#3178C6", // Set connection path color to red
         });
       }
 
@@ -154,7 +154,7 @@ async function init() {
     if (space.name) {
       mapView.Labels.add(space, space.name, {
         appearance: {
-          text: { foregroundColor: "orange" }
+          text: { foregroundColor: "black" }
         }
       });
     }
