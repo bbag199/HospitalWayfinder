@@ -1,6 +1,7 @@
 import { getMapData, show3dMap, MapView, Space, Path, Coordinate } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 
+
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
 const options = {
@@ -111,6 +112,36 @@ for (const poi of mapData.getByType('point-of-interest')) {
 }
 
   console.log(mapData.getByType("floor"));
+
+
+  //get the current position at the map (use the simulate location)
+  //map should have the emergency door coordinate (three in the map) (x,y,floor)
+  //1) click to get the current start location.
+  //2) press the "Emergency door button in the screen"
+  //3) show the path(Yello Line) start location to the near exit door.
+  const exitDoor1 = new Coordinate(exitDoorLatitude, exitDoorLongitude, exitDoorId, exitDoorFloorId);
+  const exitDoor2 = new Coordinate(exitDoorLatitude, exitDoorLongitude, exitDoorId, exitDoorFloorId);
+  const exitDoor3 = new Coordinate(exitDoorLatitude, exitDoorLongitude, exitDoorId, exitDoorFloorId);
+  console.log('Exit door coordinate predefined:', exitDoorCoordinate);
+  
+
+  mapView.on("click", async (event) => {
+    
+    if (!event) return;
+
+    if (!startSpace) {
+      startSpace = event.spaces[0];
+    } else {
+      const startCoordinate = mapView.createCoordinateFromScreenCoordinate(x, y);
+      
+    }
+  });
+
+
+  // Add an interactive {@link Marker} to the map with custom HTML content.
+  //map.Markers.add(coordinate, '<div>Marker Content</div>', { interactive: true });
+
+
 }
 
 init();
