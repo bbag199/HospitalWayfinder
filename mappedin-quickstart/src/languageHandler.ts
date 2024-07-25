@@ -19,6 +19,11 @@ export function applySettings() {
     if (contactLink) {
       contactLink.innerText = i18n.t('Contact');
     }
+
+    const settingsBtn = document.getElementById('setting-btn');
+    if (settingsBtn) {
+      settingsBtn.innerText = i18n.t('Settings');
+    }
   });
 
   // Close modal after applying settings

@@ -6,21 +6,25 @@ const resources = {
   en: {
     translation: {
       Contact: "Contact",
+      Setting: "Setting",
     },
   },
   cn: {
     translation: {
       Contact: "联系方式",
+      Settings: "设置",
     },
   },
   mi: {
     translation: {
       Contact: "Whakapā",
+      Settings: "Tautuhinga",
     },
   },
   vi: {
     translation: {
       Contact: "Liên hệ",
+      Settings: "Cài đặt",
     }
   }
 };
