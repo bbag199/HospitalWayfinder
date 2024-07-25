@@ -348,6 +348,7 @@ async function init() {
   // Search bar functionality
   const searchBar = document.querySelector('.search-bar') as HTMLInputElement;
   const resultsContainer = document.querySelector('.search-results') as HTMLDivElement;
+  const searchIcon = document.querySelector('.search-icon') as HTMLElement;
 
   searchBar.addEventListener('input', function() {
     const query = searchBar.value.toLowerCase();
