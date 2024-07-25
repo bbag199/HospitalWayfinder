@@ -1,5 +1,6 @@
 import { getMapData, show3dMap, MapView, Space, Path, Coordinate } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
+import i18n from "./i18n";
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -10,6 +11,13 @@ const options = {
 };
 
 async function init() {
+  const language = i18n.language || 'en';
+  i18n.changeLanguage(language);
+  const contactLink = document.getElementById('contact-link');
+  if(contactLink){
+    contactLink.innerText = i18n.t('Contact');
+  }
+ 
   const mapData = await getMapData(options);
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
