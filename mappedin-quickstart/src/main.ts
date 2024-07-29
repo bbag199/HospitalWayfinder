@@ -93,7 +93,7 @@ async function init() {
       {
         bearing: 167.5 + 10, // Total rotation of 177.5 degrees (167.5 + 10)
         pitch: 80,
-        zoomLevel: 300, // Increase zoom level to zoom out further
+        zoomLevel: 1500, // Increase zoom level to zoom out further
         center: entranceCoordinate,
       },
       { duration: 2000 } // Set duration to 0 for an instant move
@@ -119,29 +119,83 @@ for (const poi of mapData.getByType('point-of-interest')) {
   //1) click to get the current start location.
   //2) press the "Emergency door button in the screen"
   //3) show the path(Yello Line) start location to the near exit door.
-  const exitDoor1 = new Coordinate(exitDoorLatitude, exitDoorLongitude, exitDoorId, exitDoorFloorId);
-  const exitDoor2 = new Coordinate(exitDoorLatitude, exitDoorLongitude, exitDoorId, exitDoorFloorId);
-  const exitDoor3 = new Coordinate(exitDoorLatitude, exitDoorLongitude, exitDoorId, exitDoorFloorId);
-  console.log('Exit door coordinate predefined:', exitDoorCoordinate);
-  
+  //const exitDoor1 = new Coordinate(exitDoorLatitude, exitDoorLongitude, exitDoorId, exitDoorFloorId);
+  //const exitDoor2 = new Coordinate(exitDoorLatitude, exitDoorLongitude, exitDoorId, exitDoorFloorId);
+  //const exitDoor3 = new Coordinate(exitDoorLatitude, exitDoorLongitude, exitDoorId, exitDoorFloorId);
+  //console.log('Exit door coordinate predefined:', exitDoorCoordinate);
+  // Add interactive space and pathfinding functionality
+  let startPosition: Coordinate | null = null;
+  //startPosition = mapView.createCoordinateFromScreenCoordinate;
 
   mapView.on("click", async (event) => {
-    
-    if (!event) return;
-
-    if (!startSpace) {
-      startSpace = event.spaces[0];
-    } else {
-      const startCoordinate = mapView.createCoordinateFromScreenCoordinate(x, y);
-      
-    }
+    const startPosition = mapView.createCoordinateFromScreenCoordinate;
+    console.log('start position coordinate defined:', startPosition);
+    console.log('start position coordinate defined:', startPosition.toString);
   });
+  console.log('start position:', startPosition);
+
+  //add an emergency square button here: 
+  const emergencyButton = document.createElement("button");
+  emergencyButton.textContent = "Emergency Exit";
+  emergencyButton.style.position = "absolute";
+  emergencyButton.style.bottom = "15px";
+  emergencyButton.style.right = "10px";
+  emergencyButton.style.zIndex = "1000";
+  emergencyButton.style.padding = "10px";
+  emergencyButton.style.backgroundColor = "#FF0000";
+  emergencyButton.style.color = "#FFFFFF";
+  emergencyButton.style.border = "none";
+  emergencyButton.style.borderRadius = "5px";
+  emergencyButton.style.cursor = "pointer";
+
+  // Append the button to the map container
+  mappedinDiv.appendChild(emergencyButton);
+
+  //emergency exit build here:
+  const emergencyExits = [
+    new Coordinate(-37.008839, 174.888214),
+    new Coordinate(-37.007839, 178.889214)   
+  ];
+
+  // Set the start position on map click
+  mapView.on("click", (event) => {
+    if (!event || !event.spaces.length) return;
+      startSpace = event.spaces[0];
+      console.log('Start position set:', startSpace.description);
+  });
+
+  //after press the button, will show the yellow route to exit door.
+  // Assuming `emergencyButton`, `startSpace`, and `emergencyExits` are already defined
+emergencyButton.addEventListener("click", (event) => {
+  if (!event) return;
+
+  console.log("click already");
+  console.log("check startSpace:", startSpace);
+  
+  if (!startSpace) return;
+
+  let closestExit = emergencyExits[0];
+  console.log("check endCoordinate:", closestExit);
+
+  // Assuming `mapView.getDirections` is a function that returns directions
+  const directions2 = mapView.getDirections(startSpace, closestExit);
+  console.log("check directions:", directions2);
+
+  if (!directions2) return;
+
+  const path = mapView.Paths.add(directions2.coordinates, {
+    nearRadius: 0.5,
+    farRadius: 0.5,
+    color: "#FFFF00" // Set path color to yellow
+  });
+});
+};
 
 
   // Add an interactive {@link Marker} to the map with custom HTML content.
   //map.Markers.add(coordinate, '<div>Marker Content</div>', { interactive: true });
 
 
-}
+
 
 init();
