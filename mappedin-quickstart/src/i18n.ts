@@ -10,6 +10,10 @@ const resources = {
       Mode: "Mode",
       Language: "Language",
       Apply: "Apply",
+      Light: "Light",
+      Dark: "Dark",
+      SettingsTitle: "Settings",
+      MapName1: "Level 1",
     },
   },
   cn: {
@@ -19,6 +23,10 @@ const resources = {
       Mode: "模式",
       Language: "语言",
       Apply: "应用",
+      Light: "浅色",
+      Dark: "深色",
+      SettingsTitle: "设置",
+      MapName1: "1楼",
     },
   },
   mi: {
@@ -28,6 +36,10 @@ const resources = {
       Mode: "Aratau",
       Language: "Reo",
       Apply: "Whakamahia",
+      Light: "Māama",
+      Dark: "Pōuri",
+      SettingsTitle: "Tautuhinga",
+      MapName1: "Papa 1",
     },
   },
   vi: {
@@ -37,6 +49,10 @@ const resources = {
       Mode: "Chế độ",
       Language: "Ngôn ngữ",
       Apply: "Áp dụng",
+      Light: "Sáng",
+      Dark: "Tối",
+      SettingsTitle: "Cài đặt",
+      MapName1: "Tầng 1",
     },
   },
 };

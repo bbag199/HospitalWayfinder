@@ -26,9 +26,38 @@ export function applySettings() {
       settingsBtn.innerText = i18n.t("Settings");
     }
 
-    const mode = document.getElementById("mode");
-    if (mode) {
-      mode.innerText = i18n.t("Mode");
+    const modeLabel = document.querySelector('label[for="mode"]') as HTMLElement;
+    if (modeLabel) {
+      modeLabel.innerText = i18n.t("Mode");
+    }
+
+    const languageLabel = document.querySelector('label[for="language"]') as HTMLSelectElement;
+    if (languageLabel) {
+      languageLabel.innerText = i18n.t("Language");
+    }
+
+    const applyButton = document.getElementById("applySettings") as HTMLElement;
+    if (applyButton) {
+      applyButton.innerText = i18n.t("Apply");
+    }
+
+    const modeSelect = document.getElementById("mode") as HTMLSelectElement;
+
+    if (modeSelect) {
+      const lightOption = modeSelect.querySelector('option[value="light"]') as HTMLSelectElement;
+      if (lightOption) {
+        lightOption.innerText = i18n.t("Light");
+      }
+
+      const darkOption = modeSelect.querySelector('option[value="dark"]') as HTMLSelectElement;
+      if (darkOption) {
+        darkOption.innerText = i18n.t("Dark");
+      }
+
+      const settingsTitle = document.getElementById("settings-title") as HTMLElement;
+      if(settingsTitle){
+        settingsTitle.innerText = i18n.t("SettingsTitle");
+      }
     }
   });
 
