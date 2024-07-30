@@ -1,26 +1,33 @@
-import { getMapData, show3dMap, MapView, Space, Path, Coordinate } from "@mappedin/mappedin-js";
+import {
+  getMapData,
+  show3dMap,
+  MapView,
+  Space,
+  Path,
+  Coordinate,
+} from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
 const options = {
-  key: '6666f9ba8de671000ba55c63',
-  secret: 'd15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80',
-  mapId: '6637fd20269972f02bf839da',
+  key: "6666f9ba8de671000ba55c63",
+  secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
+  mapId: "6637fd20269972f02bf839da",
 };
 
 async function init() {
   //set the language to English on initialization
-  i18n.changeLanguage('en');
-  
-  const language = i18n.language || 'en';
+  i18n.changeLanguage("en");
+
+  const language = i18n.language || "en";
   i18n.changeLanguage(language);
-  const contactLink = document.getElementById('contact-link');
-  if(contactLink){
-    contactLink.innerText = i18n.t('Contact');
+  const contactLink = document.getElementById("contact-link");
+  if (contactLink) {
+    contactLink.innerText = i18n.t("Contact");
   }
- 
+
   const mapData = await getMapData(options);
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
@@ -88,18 +95,21 @@ async function init() {
       path = mapView.Paths.add(directions.coordinates, {
         nearRadius: 0.5,
         farRadius: 0.5,
-        color: "#3178C6" // Set path color to blue
+        color: "#3178C6", // Set path color to blue
       });
 
       // Check if we need to add the connection path
       const startFloorId = startSpace?.floor.id;
       const endFloorId = event.spaces[0]?.floor.id;
 
-      if ((startFloorId === 'm_984215ecc8edf2ba' && endFloorId === 'm_79ab96f2683f7824') ||
-          (startFloorId === 'm_79ab96f2683f7824' && endFloorId === 'm_984215ecc8edf2ba')) {
-
+      if (
+        (startFloorId === "m_984215ecc8edf2ba" &&
+          endFloorId === "m_79ab96f2683f7824") ||
+        (startFloorId === "m_79ab96f2683f7824" &&
+          endFloorId === "m_984215ecc8edf2ba")
+      ) {
         const startCoordinate = new Coordinate(-37.008212, 174.887679);
-        const endCoordinate = new Coordinate(-37.008202, 174.887190);
+        const endCoordinate = new Coordinate(-37.008202, 174.88719);
 
         connectionPath = mapView.Paths.add([startCoordinate, endCoordinate], {
           nearRadius: 0.5,
@@ -107,7 +117,6 @@ async function init() {
           color: "#3178C6", // Set connection path color to red
         });
       }
-
     } else if (path) {
       mapView.Paths.remove(path);
       if (connectionPath) {
@@ -120,17 +129,37 @@ async function init() {
   });
 
   // Mapping of floor IDs to their corresponding bearings and coordinates
-  const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
-    'm_da4e469267051fe3': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-    'm_69cd3f0a0aca0001': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-    'm_79ab96f2683f7824': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-    'm_984215ecc8edf2ba': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
-    'm_94568a67928ac615': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+  const floorSettings: {
+    [key: string]: { bearing: number; coordinate: Coordinate };
+  } = {
+    m_da4e469267051fe3: {
+      bearing: 200,
+      coordinate: new Coordinate(-37.0082, 174.887104),
+    },
+    m_69cd3f0a0aca0001: {
+      bearing: 200,
+      coordinate: new Coordinate(-37.0082, 174.887104),
+    },
+    m_79ab96f2683f7824: {
+      bearing: 200,
+      coordinate: new Coordinate(-37.0082, 174.887104),
+    },
+    m_984215ecc8edf2ba: {
+      bearing: 178.5,
+      coordinate: new Coordinate(-37.008164, 174.888221),
+    },
+    m_94568a67928ac615: {
+      bearing: 178.5,
+      coordinate: new Coordinate(-37.008164, 174.888221),
+    },
   };
 
   // Set the camera position with final bearing, zoom level, and center coordinate
   const setCameraPosition = (floorId: string) => {
-    const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
+    const settings = floorSettings[floorId] || {
+      bearing: 178.5,
+      coordinate: new Coordinate(0, 0),
+    };
 
     // Set the camera position with final bearing, zoom level, and center coordinate
     mapView.Camera.animateTo(
@@ -165,14 +194,14 @@ async function init() {
     if (space.name) {
       mapView.Labels.add(space, space.name, {
         appearance: {
-          text: { foregroundColor: "black" }
-        }
+          text: { foregroundColor: "black" },
+        },
       });
     }
   });
 
   // Iterate through each point of interest and label it.
-  mapData.getByType('point-of-interest').forEach((poi) => {
+  mapData.getByType("point-of-interest").forEach((poi) => {
     if (poi.floor.id === mapView.currentFloor.id) {
       mapView.Labels.add(poi.coordinate, poi.name);
     }
