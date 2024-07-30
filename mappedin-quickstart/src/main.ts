@@ -264,8 +264,13 @@ async function init() {
   });
 
   // Add interactive space and pathfinding functionality
-  let startSpace: Space | null = null;
+  // let startSpace: Space | null = null;
+  // let path: Path | null = null;
+
+  let startSpace: Space;
+  let endSpace: Space | null = null;
   let path: Path | null = null;
+  let selectingStart = true; // 
 
   // Set each space to be interactive and its hover color to orange.
   mapData.getByType("space").forEach((space) => {
@@ -292,7 +297,6 @@ async function init() {
       });
     } else if (path) {
       mapView.Paths.remove(path);
-      startSpace = null;
       path = null;
     }
   });
@@ -345,92 +349,97 @@ async function init() {
     }
   }
 
-  // Search bar functionality
-  const searchBar = document.querySelector('.search-bar') as HTMLInputElement;
-  const resultsContainer = document.querySelector('.search-results') as HTMLDivElement;
-  const searchIcon = document.querySelector('.search-icon') as HTMLElement;
-
-  searchBar.addEventListener('input', function() {
-    const query = searchBar.value.toLowerCase();
-    if (query) {
-      performSearch(query);
-      resultsContainer.style.display = 'block';
-    } else {
-      resultsContainer.style.display = 'none';
-    }
-  });
-
-  document.addEventListener('click', function(event) {
-    if (!(event.target as HTMLElement).closest('.search-container')) {
-      resultsContainer.style.display = 'none';
-    }
-  });
-
-  searchBar.addEventListener('input', function() {
-    const query = searchBar.value.toLowerCase();
-    if (query) {
-      performSearch(query);
-      resultsContainer.style.display = 'block';
-    } else {
-      resultsContainer.style.display = 'none';
-    }
-  });
-  
-  searchIcon.addEventListener('click', function() {
-    const query = searchBar.value.toLowerCase();
-    if (query) {
-      performSearch(query);
-      resultsContainer.style.display = 'block';
-    }
-  });
-  
-  document.addEventListener('click', function(event) {
-    if (!(event.target as HTMLElement).closest('.search-container')) {
-      resultsContainer.style.display = 'none';
-    }
-  });
-  
-  function performSearch(query: string) {
-    const spaces: Space[] = mapData.getByType("space");
-    const results: Space[] = spaces.filter(space => space.name.toLowerCase().includes(query));
-    displayResults(results);
-  }
-
-  function displayResults(results: Space[]) {
-    resultsContainer.innerHTML = '';
-    results.forEach((result: Space) => {
-      const resultItem = document.createElement('div');
-      resultItem.textContent = result.name;
-      resultItem.style.padding = '5px';
-      resultItem.style.cursor = 'pointer';
-      resultItem.addEventListener('mouseover', function() {
-        mapView.updateState(result, {
-          hoverColor: "hover", // Simulate hover by setting the state
-        });
-      });
-      resultItem.addEventListener('mouseleave', function() {
-        mapView.updateState(result, {
-          hoverColor: "default", // Revert to default state
-        });
-      });
-      resultItem.addEventListener('click', function() {
-        navigateToSpace(result);
-      });
-      resultsContainer.appendChild(resultItem);
-    });
-  }
-
-  function navigateToSpace(space: Space) {
-    const directions: Directions | undefined = mapView.getDirections(startSpace!, space);
-    if (directions) {
-      mapView.Navigation.draw(directions);
-      mapView.updateState(space, {
-        hoverColor: "selected", // Indicate the space is selected
-      });
-    } else {
-      console.error("Directions not found for the selected space.");
-    }
-  }
+   // Search bar functionality
+   const endSearchBar = document.getElementById('end-search') as HTMLInputElement;
+   const startSearchBar = document.getElementById('start-search') as HTMLInputElement;
+   const endResultsContainer = document.getElementById('end-results') as HTMLDivElement;
+   const startResultsContainer = document.getElementById('start-results') as HTMLDivElement;
+ 
+   endSearchBar.addEventListener('input', function() {
+     const query = endSearchBar.value.toLowerCase();
+     if (query) {
+       performSearch(query, 'end');
+       endResultsContainer.style.display = 'block';
+     } else {
+       endResultsContainer.style.display = 'none';
+     }
+   });
+ 
+   startSearchBar.addEventListener('input', function() {
+     const query = startSearchBar.value.toLowerCase();
+     if (query) {
+       performSearch(query, 'start');
+       startResultsContainer.style.display = 'block';
+     } else {
+       startResultsContainer.style.display = 'none';
+     }
+   });
+ 
+   document.addEventListener('click', function(event) {
+     if (!(event.target as HTMLElement).closest('.search-container')) {
+       endResultsContainer.style.display = 'none';
+       startResultsContainer.style.display = 'none';
+     }
+   });
+ 
+   function performSearch(query: string, type: 'start' | 'end') {
+     const spaces: Space[] = mapData.getByType("space");
+     const results: Space[] = spaces.filter(space => space.name.toLowerCase().includes(query));
+     displayResults(results, type);
+   }
+ 
+   function displayResults(results: Space[], type: 'start' | 'end') {
+     const resultsContainer = type === 'end' ? endResultsContainer : startResultsContainer;
+     resultsContainer.innerHTML = '';
+     results.forEach((result: Space) => {
+       const resultItem = document.createElement('div');
+       resultItem.className = 'search-result-item';
+       resultItem.textContent = result.name;
+       resultItem.style.padding = '5px';
+       resultItem.style.cursor = 'pointer';
+       resultItem.addEventListener('mouseover', function() {
+         mapView.updateState(result, {
+           hoverColor: "hover", // Simulate hover by setting the state
+         });
+       });
+       resultItem.addEventListener('mouseleave', function() {
+         mapView.updateState(result, {
+           hoverColor: "default", // Revert to default state
+         });
+       });
+       resultItem.addEventListener('click', function() {
+         if (type === 'end') {
+           endSpace = result;
+           endSearchBar.value = result.name;
+         } else {
+           startSpace = result;
+           startSearchBar.value = result.name;
+         }
+         resultsContainer.style.display = 'none'; // Hide results when a space is selected
+       });
+       resultsContainer.appendChild(resultItem);
+     });
+   }
+ 
+   // Get Directions Button
+   const getDirectionsButton = document.getElementById('get-directions') as HTMLButtonElement;
+   getDirectionsButton.addEventListener('click', function() {
+     if (startSpace && endSpace) {
+       if (path) {
+         mapView.Paths.remove(path);
+       }
+       const directions = mapView.getDirections(startSpace, endSpace);
+       if (directions) {
+         path = mapView.Paths.add(directions.coordinates, {
+           nearRadius: 0.5,
+           farRadius: 0.5,
+           color: "orange"
+         });
+       }
+     } else {
+       console.error("Please select both start and end locations.");
+     }
+   });
 }
 
 init();

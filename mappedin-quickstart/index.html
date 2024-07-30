@@ -24,7 +24,7 @@
       background-color: #ffffff;
       color: rgb(15, 34, 64);
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       height: 60px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -52,52 +52,41 @@
     #mappedin-map {
       flex: 1;
       width: 100%;
-      height: calc(100% - 60px); /* Adjust height to accommodate navbar */
+      height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
       position: relative;
     }
     .search-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #ffffff;
-      border-radius: 25px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      padding: 5px 10px;
       position: absolute;
-      top: 10px;
+      top: 70px; /* Adjusted to be below the navbar */
       left: 10px;
       z-index: 1000;
-      width: 100%;
-      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .search-bar {
-      flex: 1;
-      border: none;
-      outline: none;
       padding: 0.5rem;
       font-size: 1rem;
-      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 300px;
     }
     .search-results {
-      display: none;
-      background-color: #ffffff;
+      background-color: white;
       border: 1px solid #ccc;
-      width: 100%;
       max-height: 200px;
       overflow-y: auto;
-      border-radius: 0 0 25px 25px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      margin-top: 5px;
+      width: 300px;
+      display: none;
     }
     .search-result-item {
-      padding: 5px 10px;
+      padding: 5px;
       cursor: pointer;
     }
     .search-result-item:hover {
       background-color: #f0f0f0;
     }
-    .settings-btn {
-      margin-left: 1.5rem;
+    .directions-btn {
       padding: 0.5rem 1rem;
       font-size: 1rem;
       cursor: pointer;
@@ -106,127 +95,21 @@
       border: none;
       border-radius: 4px;
     }
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0, 0, 0);
-      background-color: rgba(0, 0, 0, 0.4);
-      padding-top: 60px;
-    }
-    .modal-content {
-      background-color: #fefefe;
-      margin: 5% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-    }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
   <nav>
     <img src="logo.png" alt="Logo" class="logo" />
-    <div class="nav-links">
-      <a href="#">Contact</a>
-      <button class="settings-btn">Settings</button>
-    </div>
   </nav>
-  <div id="mappedin-map">
-    <div class="search-container">
-      <input type="text" class="search-bar" placeholder="Search locations & navigate..." />
-      <div class="search-results"></div>
-    </div>
+  <div class="search-container">
+    <input type="text" id="end-search" class="search-bar" placeholder="To: Search destination..." />
+    <input type="text" id="start-search" class="search-bar" placeholder="From: Search starting point..." />
+    <div class="search-results" id="end-results"></div>
+    <div class="search-results" id="start-results"></div>
+    <button class="directions-btn" id="get-directions">Get Directions</button>
   </div>
-
-  <div id="settingsModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Settings</h2>
-      <div>
-        <label for="mode">Mode:</label>
-        <select id="mode">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-      </div>
-      <div>
-        <label for="language">Language:</label>
-        <select id="language">
-          <option value="en">English</option>
-          <option value="es">Chinese</option>
-          <option value="fr">Maori</option>
-          <!-- Add more languages as needed -->
-        </select>
-      </div>
-      <button id="applySettings">Apply</button>
-    </div>
-  </div>
+  <div id="mappedin-map"></div>
 
   <script type="module" src="src/main.ts"></script>
-  <script>
-    // Get the modal
-    var modal = document.getElementById("settingsModal");
-
-    // Get the button that opens the modal
-    var btn = document.querySelector(".settings-btn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-      modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-
-    // Apply settings
-    document.getElementById('applySettings').onclick = function() {
-      var mode = document.getElementById('mode').value;
-      var language = document.getElementById('language').value;
-
-      // Apply mode (light/dark)
-      if (mode === 'dark') {
-        document.body.style.backgroundColor = '#333';
-        document.body.style.color = '#fff';
-      } else {
-        document.body.style.backgroundColor = '#fff';
-        document.body.style.color = '#000';
-      }
-
-      // Apply language setting (This part would need to be expanded based on actual language implementation)
-      console.log('Language selected:', language);
-
-      // Close modal after applying settings
-      modal.style.display = "none";
-    }
-  </script>
 </body>
 </html>
