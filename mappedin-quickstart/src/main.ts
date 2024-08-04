@@ -339,6 +339,69 @@ async function init() {
     }
   });
 
+  //Emergency exit function:
+  //get the exit object (already build a exit01 and exit02 object in the dashboard map):
+  const exitSpace = mapData.getByType('object').find(object => object.name.includes("exit01"));
+  const exitSpace2 = mapData.getByType('object').find(object => object.name.includes("exit02"));
+   
+
+  //add an emergency square button here: 
+  const emergencyButton = document.createElement("button");
+  emergencyButton.textContent = "Emergency Exit";
+  emergencyButton.style.position = "absolute";
+  emergencyButton.style.bottom = "15px";
+  emergencyButton.style.right = "10px";
+  emergencyButton.style.zIndex = "1000";
+  emergencyButton.style.padding = "10px";
+  emergencyButton.style.backgroundColor = "#FF0000";
+  emergencyButton.style.color = "#FFFFFF";
+  emergencyButton.style.border = "none";
+  emergencyButton.style.borderRadius = "5px";
+  emergencyButton.style.cursor = "pointer";
+
+  // Append the button to the map container
+  mappedinDiv.appendChild(emergencyButton);
+  emergencyButton.addEventListener('click', function() {
+    console.log("chekcing startSpace input:", startSpace);
+    console.log("exit01 space information:", exitSpace);
+    
+    if (startSpace) {
+      if (path) {
+        mapView.Paths.remove(path);
+      }
+      const directions = mapView.getDirections(startSpace, exitSpace!);
+      const directions2 = mapView.getDirections(startSpace, exitSpace2!);
+      //check the distance here:
+      console.log("checking direcitions: ", directions?.distance);
+      console.log("checking direcitions2: ", directions2?.distance);
+
+      //checking the shortest wayout here:
+      let shortestWayout;
+
+      if (directions && directions2) {
+          shortestWayout = directions.distance <= directions2.distance ? directions : directions2;
+      } else if (directions) {
+          shortestWayout = directions;
+      } else if (directions2) {
+          shortestWayout = directions2;
+      } else {
+          throw new Error("Both directions are undefined");
+      }
+
+      //build the shortest wayout here:
+      if (shortestWayout) {   
+        path = mapView.Paths.add(shortestWayout.coordinates, {
+          nearRadius: 0.5,
+          farRadius: 0.5,
+          color: "red"
+        });
+      }
+    } else {
+      console.error("Please select start space locations.");
+    }
+  });
+
+
   const allPOIs = mapData.getByType("point-of-interest");
   const currentFloor = mapView.currentFloor.id;
 
