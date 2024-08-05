@@ -395,6 +395,8 @@ async function init() {
           farRadius: 0.5,
           color: "red"
         });
+        // Draw the directions on the map.
+        mapView.Navigation.draw(shortestWayout);
       }
     } else {
       console.error("Please select start space locations.");
