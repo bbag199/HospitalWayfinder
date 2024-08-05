@@ -13,6 +13,10 @@ const resources = {
       Light: "Light",
       Dark: "Dark",
       SettingsTitle: "Settings",
+      To: "To: Search destination...",
+      From: "From: Search starting point...",
+      GetDirections: "Get Directions",
+      EmergencyExit: "Emergency Exit"
     },
   },
   cn: {
@@ -27,7 +31,8 @@ const resources = {
       SettingsTitle: "设置",
       To: "到: 搜索目的地...",
       From: "从: 搜索起点...",
-      GetDirections: "获取方向"
+      GetDirections: "获取方向",
+      EmergencyExit: "紧急出口"
     },
   },
   mi: {
@@ -42,7 +47,8 @@ const resources = {
       SettingsTitle: "Tautuhinga",
       To: "Ki: Rapu waahi...",
       From: "Mai: Rapu waahi timatanga...",
-      GetDirections: "Tikina nga Tohutohu"
+      GetDirections: "Tikina nga Tohutohu",
+      EmergencyExit: "Putanga Whawhati Tata"
     },
   },
   vi: {
@@ -57,7 +63,8 @@ const resources = {
       SettingsTitle: "Cài đặt",
       To: "Đến: Tìm điểm đến...",
       From: "Từ: Tìm điểm xuất phát...",
-      GetDirections: "Nhận chỉ đường"
+      GetDirections: "Nhận chỉ đường",
+      EmergencyExit: "Lối Thoát Hiểm"
     },
   },
 };

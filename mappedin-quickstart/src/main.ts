@@ -20,7 +20,7 @@ const options = {
 
 async function init() {
   //set the language to English on initialization
-  //i18n.changeLanguage("en");
+  i18n.changeLanguage("en");
   const language = i18n.language || "en";
   i18n.changeLanguage(language);
 
@@ -219,6 +219,8 @@ async function init() {
   emergencyButton.style.border = "none";
   emergencyButton.style.borderRadius = "5px";
   emergencyButton.style.cursor = "pointer";
+  emergencyButton.setAttribute("data-emergency-btn", "true"); 
+
 
   // Append the button to the map container
   mappedinDiv.appendChild(emergencyButton);

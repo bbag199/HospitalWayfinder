@@ -51,20 +51,25 @@ export function applySettings() {
       fromField.placeholder = i18n.t("From");
     }
 
-    const directionsBtn = document.getElementById("get-directions") as HTMLInputElement;
+    const directionsBtn = document.getElementById("get-directions") as HTMLElement;
     if (directionsBtn) {
-      directionsBtn.placeholder = i18n.t("GetDirections");
+      directionsBtn.innerText = i18n.t("GetDirections");
+    }
+
+    const emergencyBtn = document.querySelector('button[data-emergency-btn]') as HTMLButtonElement;
+    if (emergencyBtn) {
+      emergencyBtn.innerText = i18n.t("EmergencyExit");
     }
 
     const modeSelect = document.getElementById("mode") as HTMLSelectElement;
 
     if (modeSelect) {
-      const lightOption = modeSelect.querySelector('option[value="light"]') as HTMLSelectElement;
+      const lightOption = modeSelect.querySelector('option[value="light"]') as HTMLOptionElement;
       if (lightOption) {
         lightOption.innerText = i18n.t("Light");
       }
 
-      const darkOption = modeSelect.querySelector('option[value="dark"]') as HTMLSelectElement;
+      const darkOption = modeSelect.querySelector('option[value="dark"]') as HTMLOptionElement;
       if (darkOption) {
         darkOption.innerText = i18n.t("Dark");
       }
