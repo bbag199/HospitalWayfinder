@@ -41,6 +41,21 @@ export function applySettings() {
       applyButton.innerText = i18n.t("Apply");
     }
 
+    const toField = document.getElementById("end-search") as HTMLInputElement;
+    if (toField) {
+      toField.placeholder = i18n.t("To");
+    }
+
+    const fromField = document.getElementById("start-search") as HTMLInputElement;
+    if (fromField) {
+      fromField.placeholder = i18n.t("From");
+    }
+
+    const directionsBtn = document.getElementById("get-directions") as HTMLInputElement;
+    if (directionsBtn) {
+      directionsBtn.placeholder = i18n.t("GetDirections");
+    }
+
     const modeSelect = document.getElementById("mode") as HTMLSelectElement;
 
     if (modeSelect) {

@@ -25,6 +25,9 @@ const resources = {
       Light: "浅色",
       Dark: "深色",
       SettingsTitle: "设置",
+      To: "到: 搜索目的地...",
+      From: "从: 搜索起点...",
+      GetDirections: "获取方向"
     },
   },
   mi: {
@@ -37,6 +40,9 @@ const resources = {
       Light: "Māama",
       Dark: "Pōuri",
       SettingsTitle: "Tautuhinga",
+      To: "Ki: Rapu waahi...",
+      From: "Mai: Rapu waahi timatanga...",
+      GetDirections: "Tikina nga Tohutohu"
     },
   },
   vi: {
@@ -49,6 +55,9 @@ const resources = {
       Light: "Sáng",
       Dark: "Tối",
       SettingsTitle: "Cài đặt",
+      To: "Đến: Tìm điểm đến...",
+      From: "Từ: Tìm điểm xuất phát...",
+      GetDirections: "Nhận chỉ đường"
     },
   },
 };
