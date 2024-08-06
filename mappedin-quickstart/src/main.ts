@@ -75,7 +75,7 @@ async function init() {
   let startSpace: Space;
   let endSpace: Space | null = null;
   let path: Path | null = null;
-  //let connectionPath: Path | null = null;
+  let connectionPath: Path | null = null;
   //let selectingStart = true; //
 
   // Set each space to be interactive and its hover color to orange.
