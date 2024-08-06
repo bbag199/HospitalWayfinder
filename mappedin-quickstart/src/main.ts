@@ -5,7 +5,7 @@ import {
   Space,
   Path,
   Coordinate,
-  TDirectionInstruction,
+  //Directions,
 } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
@@ -91,39 +91,41 @@ async function init() {
   // If a path is set, remove the path and start space.
   mapView.on("click", async (event) => {
     if (!event) return;
-  
     if (!startSpace) {
       startSpace = event.spaces[0];
     } else if (!path && event.spaces[0]) {
-      const directions = mapView.getDirections(startSpace, event.spaces[0], {accessible: true});
+      const directions = mapView.getDirections(startSpace, event.spaces[0]);
       if (!directions) return;
-  
-      // Clear existing paths and markers
-      mapView.Paths.removeAll();
-      mapView.Markers.removeAll();
-  
-      const ret = mapView.Navigation.draw(directions, {
-        pathOptions: {
+
+      // Add the main path
+      path = mapView.Paths.add(directions.coordinates, {
+        nearRadius: 0.5,
+        farRadius: 0.5,
+        color: "#3178C6", // Set path color to blue
+      });
+
+      // Check if we need to add the connection path
+      const startFloorId = startSpace?.floor.id;
+      const endFloorId = event.spaces[0]?.floor.id;
+
+      if (
+        (startFloorId === "m_984215ecc8edf2ba" &&
+          endFloorId === "m_79ab96f2683f7824") ||
+        (startFloorId === "m_79ab96f2683f7824" &&
+          endFloorId === "m_984215ecc8edf2ba")
+      ) {
+        const startCoordinate = new Coordinate(-37.008212, 174.887679);
+        const endCoordinate = new Coordinate(-37.008202, 174.88719);
+
+        connectionPath = mapView.Paths.add([startCoordinate, endCoordinate], {
           nearRadius: 0.5,
           farRadius: 0.5,
-        },
-      });
-  
-      directions.instructions.forEach((instruction: TDirectionInstruction) => {
-        const markerTemplate = `
-          <div class="marker">
-            <p>${instruction.action.type} ${instruction.action.bearing ?? ""} and go ${Math.round(instruction.distance)} meters.</p>
-          </div>`;
-  
-        mapView.Markers.add(instruction.coordinate, markerTemplate, {
-          rank: "always-visible",
+          color: "#3178C6", // Set connection path color to red
         });
-      });
-  
+      }
     } else if (path) {
-      mapView.Paths.removeAll();
-      mapView.Markers.removeAll();
-      endSpace = null;
+      mapView.Paths.remove(path);
+      //startSpace = null;
       path = null;
     }
   });
