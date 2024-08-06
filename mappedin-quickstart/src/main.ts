@@ -5,7 +5,7 @@ import {
   Space,
   Path,
   Coordinate,
-  Directions,
+  //Directions,
 } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
@@ -75,8 +75,8 @@ async function init() {
   let startSpace: Space;
   let endSpace: Space | null = null;
   let path: Path | null = null;
-  let connectionPath: Path | null = null;
-  let selectingStart = true; //
+  //let connectionPath: Path | null = null;
+  //let selectingStart = true; //
 
   // Set each space to be interactive and its hover color to orange.
   mapData.getByType("space").forEach((space) => {

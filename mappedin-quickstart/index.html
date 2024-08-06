@@ -1,229 +1,239 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Mappedin Web SDK v6 Getting Started</title>
-  <meta charset="UTF-8" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-    }
-    nav {
-      background-color: #ffffff;
-      color: rgb(15, 34, 64);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 60px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      padding: 0 1rem;
-      font-weight: bold;
-    }
-    .logo {
-      height: 40px;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-    }
-    .nav-links a {
-      color: rgb(15, 23, 47);
-      text-decoration: none;
-      margin: 0 1.5rem;
-      font-size: 1rem;
-      transition: color 0.3s, transform 0.3s;
-    }
-    .nav-links a:hover {
-      color: #ffcc00;
-      transform: scale(1.05);
-    }
-    #mappedin-map {
-      flex: 1;
-      width: 100%;
-      height: calc(100% - 120px); /* Adjust height to accommodate navbar */
-      position: relative;
-    }
-
-    .search-container {
-      position: absolute;
-      top: 70px; /* Adjusted to be below the navbar */
-      left: 10px;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .search-bar {
-      padding: 0.5rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      width: 300px;
-    }
-
-    .search-results {
-      background-color: white;
-      border: 1px solid #ccc;
-      max-height: 200px;
-      overflow-y: auto;
-      width: 300px;
-      display: none;
-    }
-    .search-result-item {
-      padding: 5px;
-      cursor: pointer;
-    }
-    .search-result-item:hover {
-      background-color: #f0f0f0;
-    }
-    .directions-btn {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-      background-color: rgb(15, 34, 64);
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
-    }
-    .settings-btn {
-      margin-left: 1.5rem;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-      background-color: rgb(15, 34, 64);
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
-    }
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed;
-      z-index: 1050;/* ensure the modal appears at the top layer of all elements (do not change)*/
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0, 0, 0);
-      background-color: rgba(0, 0, 0, 0.7) !important; 
-      padding-top: 20px;
-    }
-    .modal-content {
-      background-color: #fefefe;
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 60%;
-      max-width:500px; 
-      box-shadow:0 5px 15px rgba(0,0,0,0.3);
-      position:relative;
-      z-index:1060; /* ensure the content is always on the top layer( do not change)*/
-    }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <div id="nav-container"></div>
-  <nav>
-    <img src="logo.png" alt="Logo" class="logo" />
-    <!--<input type="text" class="search-bar" placeholder="Search..." />-->
-    <div class="nav-links">
-      <a href="#" id="contact-link">Contact</a>
-      <button class="settings-btn" id="setting-btn">Settings</button>
-    </div>
-  </nav>
-  <div class="search-container">
-    <input type="text" id="end-search" class="search-bar" placeholder="To: Search destination..." />
-    <input type="text" id="start-search" class="search-bar" placeholder="From: Search starting point..." />
-    <div class="search-results" id="end-results"></div>
-    <div class="search-results" id="start-results"></div>
-    <button class="directions-btn" id="get-directions">Get Directions</button>
-  </div>
-  <div id="mappedin-map"></div>
-
-  <div id="settingsModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Settings</h2>
-      <div>
-        <label for="mode">Mode:</label>
-        <select id="mode">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
-      </div>
-      <div>
-        <label for="language">Language:</label>
-        <select id="language">
-          <!-- Language options -->
-          <option value="en">English</option>
-          <option value="cn">Chinese</option>
-          <option value="mi">Maori</option>
-          <option value="vi">Vietnamese</option>
-          <!-- Add more languages as needed -->
-        </select>
-      </div>
-      <button id="applySettings">Apply</button>
-    </div>
-  </div>
-
-  <script type="module" src="src/main.ts"></script>
-  <script type="module" src="src/languageHandler.ts"></script>
-    <script type="module">
-    // Get the modal
-    var modal = document.getElementById("settingsModal");
-
-    // Get the button that opens the modal
-    var btn = document.querySelector(".settings-btn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-      modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
+  <head>
+    <title>Mappedin Web SDK v6 Getting Started</title>
+    <meta charset="UTF-8" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
-    }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+      }
+      nav {
+        background-color: #ffffff;
+        color: rgb(15, 34, 64);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 0 1rem;
+        font-weight: bold;
+      }
+      .logo {
+        height: 40px;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+      }
+      .nav-links a {
+        color: rgb(15, 23, 47);
+        text-decoration: none;
+        margin: 0 1.5rem;
+        font-size: 1rem;
+        transition: color 0.3s, transform 0.3s;
+      }
+      .nav-links a:hover {
+        color: #ffcc00;
+        transform: scale(1.05);
+      }
+      #mappedin-map {
+        flex: 1;
+        width: 100%;
+        height: calc(100% - 120px); /* Adjust height to accommodate navbar */
+        position: relative;
+      }
 
-    // Apply settings
-    document.getElementById('applySettings').onclick = function() {
-      window.applySettings();
-    }
-  </script>
-</body>
+      .search-container {
+        position: absolute;
+        top: 70px; /* Adjusted to be below the navbar */
+        left: 10px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .search-bar {
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 300px;
+      }
+
+      .search-results {
+        background-color: white;
+        border: 1px solid #ccc;
+        max-height: 200px;
+        overflow-y: auto;
+        width: 300px;
+        display: none;
+      }
+      .search-result-item {
+        padding: 5px;
+        cursor: pointer;
+      }
+      .search-result-item:hover {
+        background-color: #f0f0f0;
+      }
+      .directions-btn {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+        background-color: rgb(15, 34, 64);
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+      }
+      .settings-btn {
+        margin-left: 1.5rem;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+        background-color: rgb(15, 34, 64);
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+      }
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1050; /* ensure the modal appears at the top layer of all elements (do not change)*/
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.7) !important;
+        padding-top: 20px;
+      }
+      .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%;
+        max-width: 500px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 1060; /* ensure the content is always on the top layer( do not change)*/
+      }
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="nav-container"></div>
+    <nav>
+      <img src="logo.png" alt="Logo" class="logo" />
+      <!--<input type="text" class="search-bar" placeholder="Search..." />-->
+      <div class="nav-links">
+        <a href="#" id="contact-link">Contact</a>
+        <button class="settings-btn" id="setting-btn">Settings</button>
+      </div>
+    </nav>
+    <div class="search-container">
+      <input
+        type="text"
+        id="start-search"
+        class="search-bar"
+        placeholder="From: Search starting point..."
+      />
+      <input
+        type="text"
+        id="end-search"
+        class="search-bar"
+        placeholder="To: Search destination..."
+      />
+      <div class="search-results" id="end-results"></div>
+      <div class="search-results" id="start-results"></div>
+      <button class="directions-btn" id="get-directions">Get Directions</button>
+    </div>
+    <div id="mappedin-map"></div>
+
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Settings</h2>
+        <div>
+          <label for="mode">Mode:</label>
+          <select id="mode">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+        <div>
+          <label for="language">Language:</label>
+          <select id="language">
+            <!-- Language options -->
+            <option value="en">English</option>
+            <option value="cn">Chinese</option>
+            <option value="mi">Maori</option>
+            <option value="vi">Vietnamese</option>
+            <!-- Add more languages as needed -->
+          </select>
+        </div>
+        <button id="applySettings">Apply</button>
+      </div>
+    </div>
+
+    <script type="module" src="src/main.ts"></script>
+    <script type="module" src="src/languageHandler.ts"></script>
+    <script type="module">
+      // Get the modal
+      var modal = document.getElementById("settingsModal");
+
+      // Get the button that opens the modal
+      var btn = document.querySelector(".settings-btn");
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      // When the user clicks the button, open the modal
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      // Apply settings
+      document.getElementById("applySettings").onclick = function () {
+        window.applySettings();
+      };
+    </script>
+  </body>
 </html>
