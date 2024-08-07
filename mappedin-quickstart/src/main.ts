@@ -1,4 +1,4 @@
-import { getMapData, show3dMap, MapView, Space, Path, Coordinate } from "@mappedin/mappedin-js";
+import { getMapData, show3dMap, MapView, Space, Path,TDirectionInstruction, Coordinate } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 
 // See Trial API key Terms and Conditions
@@ -49,8 +49,8 @@ async function init() {
     setCameraPosition(id); // Update the camera position when the floor changes
   });
 
-  // Add interactive space and pathfinding functionality
-  let startSpace: Space | null = null;
+  let startSpace: Space;
+  let endSpace: Space | null = null;
   let path: Path | null = null;
   let connectionPath: Path | null = null;
 
@@ -61,49 +61,44 @@ async function init() {
       hoverColor: "#BAE0F3",
     });
   });
-
   // Act on the click. If no start space is set, set the start space.
   // If a start space is set and no path is set, add the path.
   // If a path is set, remove the path and start space.
   mapView.on("click", async (event) => {
     if (!event) return;
+  
     if (!startSpace) {
       startSpace = event.spaces[0];
     } else if (!path && event.spaces[0]) {
       const directions = mapView.getDirections(startSpace, event.spaces[0]);
       if (!directions) return;
-
-      // Add the main path
-      path = mapView.Paths.add(directions.coordinates, {
-        nearRadius: 0.5,
-        farRadius: 0.5,
-        color: "#3178C6" // Set path color to blue
-      });
-
-      // Check if we need to add the connection path
-      const startFloorId = startSpace?.floor.id;
-      const endFloorId = event.spaces[0]?.floor.id;
-
-      if ((startFloorId === 'm_984215ecc8edf2ba' && endFloorId === 'm_79ab96f2683f7824') ||
-          (startFloorId === 'm_79ab96f2683f7824' && endFloorId === 'm_984215ecc8edf2ba')) {
-
-        const startCoordinate = new Coordinate(-37.008212, 174.887679);
-        const endCoordinate = new Coordinate(-37.008202, 174.887190);
-
-        connectionPath = mapView.Paths.add([startCoordinate, endCoordinate], {
+  
+      // Clear existing paths and markers
+      mapView.Paths.removeAll();
+      mapView.Markers.removeAll();
+  
+      const ret = mapView.Navigation.draw(directions, {
+        pathOptions: {
           nearRadius: 0.5,
           farRadius: 0.5,
-          color: "#3178C6", // Set connection path color to red
-        });
-      }
-
+        },
+      });
+  
+      // directions.instructions.forEach((instruction: TDirectionInstruction) => {
+      //   const markerTemplate = `
+      //     <div class="marker">
+      //       <p>${instruction.action.type} ${instruction.action.bearing ?? ""} and go ${Math.round(instruction.distance)} meters.</p>
+      //     </div>`;
+  
+      //   mapView.Markers.add(instruction.coordinate, markerTemplate, {
+      //     rank: "always-visible",
+      //   });
+      // });
+  
     } else if (path) {
-      mapView.Paths.remove(path);
-      if (connectionPath) {
-        mapView.Paths.remove(connectionPath);
-        connectionPath = null;
-      }
-      startSpace = null;
+      mapView.Paths.removeAll();
+      mapView.Markers.removeAll();
+      endSpace = null;
       path = null;
     }
   });
@@ -135,21 +130,7 @@ async function init() {
 
   setCameraPosition(mapView.currentFloor.id);
 
-  // Iterate through each Connection and label it.
-  mapData.getByType("connection").forEach((connection) => {
-    // Find the coordinates for the current floor.
-    const coords = connection.coordinates.find(
-      (coord) => coord.floorId === mapView.currentFloor.id
-    );
 
-    if (coords) {
-      mapView.Labels.add(coords, connection.name);
-    }
-  });
-
-  console.log(mapData.getByType("floor"));
-
-  // Add labels for each map
   mapData.getByType("space").forEach((space) => {
     if (space.name) {
       mapView.Labels.add(space, space.name, {
@@ -164,8 +145,111 @@ async function init() {
   mapData.getByType('point-of-interest').forEach((poi) => {
     if (poi.floor.id === mapView.currentFloor.id) {
       mapView.Labels.add(poi.coordinate, poi.name);
+    }})
+
+  // Iterate through each Connection and label it.
+  mapData.getByType("connection").forEach((connection) => {
+    // Find the coordinates for the current floor.
+    const coords = connection.coordinates.find(
+      (coord) => coord.floorId === mapView.currentFloor.id
+    );
+
+    if (coords) {
+      mapView.Labels.add(coords, connection.name);
     }
   });
+
+   // Search bar functionality
+   const endSearchBar = document.getElementById('end-search') as HTMLInputElement;
+   const startSearchBar = document.getElementById('start-search') as HTMLInputElement;
+   const endResultsContainer = document.getElementById('end-results') as HTMLDivElement;
+   const startResultsContainer = document.getElementById('start-results') as HTMLDivElement;
+ 
+   endSearchBar.addEventListener('input', function() {
+     const query = endSearchBar.value.toLowerCase();
+     if (query) {
+       performSearch(query, 'end');
+       endResultsContainer.style.display = 'block';
+     } else {
+       endResultsContainer.style.display = 'none';
+     }
+   });
+ 
+   startSearchBar.addEventListener('input', function() {
+     const query = startSearchBar.value.toLowerCase();
+     if (query) {
+       performSearch(query, 'start');
+       startResultsContainer.style.display = 'block';
+     } else {
+       startResultsContainer.style.display = 'none';
+     }
+   });
+ 
+   document.addEventListener('click', function(event) {
+     if (!(event.target as HTMLElement).closest('.search-container')) {
+       endResultsContainer.style.display = 'none';
+       startResultsContainer.style.display = 'none';
+     }
+   });
+ 
+   function performSearch(query: string, type: 'start' | 'end') {
+     const spaces: Space[] = mapData.getByType("space");
+     const results: Space[] = spaces.filter(space => space.name.toLowerCase().includes(query));
+     displayResults(results, type);
+   }
+ 
+   function displayResults(results: Space[], type: 'start' | 'end') {
+     const resultsContainer = type === 'end' ? endResultsContainer : startResultsContainer;
+     resultsContainer.innerHTML = '';
+     results.forEach((result: Space) => {
+       const resultItem = document.createElement('div');
+       resultItem.className = 'search-result-item';
+       resultItem.textContent = result.name;
+       resultItem.style.padding = '5px';
+       resultItem.style.cursor = 'pointer';
+       resultItem.addEventListener('mouseover', function() {
+         mapView.updateState(result, {
+           hoverColor: "hover"
+         });
+       });
+       resultItem.addEventListener('mouseleave', function() {
+         mapView.updateState(result, {
+           hoverColor: "default",
+         });
+       });
+       resultItem.addEventListener('click', function() {
+         if (type === 'end') {
+           endSpace = result;
+           endSearchBar.value = result.name;
+         } else {
+           startSpace = result;
+           startSearchBar.value = result.name;
+         }
+         resultsContainer.style.display = 'none'; // Hide results when a space is selected
+       });
+       resultsContainer.appendChild(resultItem);
+     });
+   }
+ 
+   // Get Directions Button
+   const getDirectionsButton = document.getElementById('get-directions') as HTMLButtonElement;
+   getDirectionsButton.addEventListener('click', function() {
+     if (startSpace && endSpace) {
+       if (path) {
+         mapView.Paths.remove(path);
+       }
+       const directions = mapView.getDirections(startSpace, endSpace);
+       if (directions) {
+         path = mapView.Paths.add(directions.coordinates, {
+           nearRadius: 0.5,
+           farRadius: 0.5,
+           color: "orange"
+         });
+       }
+     } else {
+       console.error("Please select both start and end locations.");
+     }
+   });
 }
 
 init();
