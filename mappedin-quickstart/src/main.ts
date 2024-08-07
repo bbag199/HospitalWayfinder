@@ -1,4 +1,4 @@
-import { getMapData, show3dMap, MapView, Space, Path,TDirectionInstruction } from "@mappedin/mappedin-js";
+import { getMapData, show3dMap, MapView, Space, Path,TDirectionInstruction, Coordinate, Directions } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 
 // See Trial API key Terms and Conditions
@@ -46,17 +46,19 @@ async function init() {
     const id = event?.floor.id;
     if (!id) return;
     floorSelector.value = id;
+    setCameraPosition(id); // Update the camera position when the floor changes
   });
 
   let startSpace: Space;
   let endSpace: Space | null = null;
   let path: Path | null = null;
+  let connectionPath: Path | null = null;
 
   // Set each space to be interactive and its hover color to orange.
   mapData.getByType("space").forEach((space) => {
     mapView.updateState(space, {
       interactive: true,
-      hoverColor: "#f26336",
+      hoverColor: "#BAE0F3",
     });
   });
   // Act on the click. If no start space is set, set the start space.
@@ -82,16 +84,16 @@ async function init() {
         },
       });
   
-      directions.instructions.forEach((instruction: TDirectionInstruction) => {
-        const markerTemplate = `
-          <div class="marker">
-            <p>${instruction.action.type} ${instruction.action.bearing ?? ""} and go ${Math.round(instruction.distance)} meters.</p>
-          </div>`;
+      // directions.instructions.forEach((instruction: TDirectionInstruction) => {
+      //   const markerTemplate = `
+      //     <div class="marker">
+      //       <p>${instruction.action.type} ${instruction.action.bearing ?? ""} and go ${Math.round(instruction.distance)} meters.</p>
+      //     </div>`;
   
-        mapView.Markers.add(instruction.coordinate, markerTemplate, {
-          rank: "always-visible",
-        });
-      });
+      //   mapView.Markers.add(instruction.coordinate, markerTemplate, {
+      //     rank: "always-visible",
+      //   });
+      // });
   
     } else if (path) {
       mapView.Paths.removeAll();
@@ -101,28 +103,61 @@ async function init() {
     }
   });
 
+  // Mapping of floor IDs to their corresponding bearings and coordinates
+  const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+    'm_da4e469267051fe3': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_69cd3f0a0aca0001': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_79ab96f2683f7824': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_984215ecc8edf2ba': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+    'm_94568a67928ac615': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+  };
+
+  // Set the camera position with final bearing, zoom level, and center coordinate
+  const setCameraPosition = (floorId: string) => {
+    const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
+
+    // Set the camera position with final bearing, zoom level, and center coordinate
+    mapView.Camera.animateTo(
+      {
+        bearing: settings.bearing,
+        pitch: 0,
+        zoomLevel: 18,
+        center: settings.coordinate,
+      },
+      { duration: 2000 }
+    );
+  };
+
+  setCameraPosition(mapView.currentFloor.id);
 
 
-  // Add labels for each map
   mapData.getByType("space").forEach((space) => {
     if (space.name) {
       mapView.Labels.add(space, space.name, {
         appearance: {
-          text: { foregroundColor: "orange" }
+          text: { foregroundColor: "black" }
         }
       });
     }
   });
 
-  const allPOIs = mapData.getByType("point-of-interest");
-  const currentFloor = mapView.currentFloor.id;
-
-  // Filter POIs with same floor id
-  for (const poi of allPOIs) {
-    if (poi.floor.id == currentFloor) {
+  // Iterate through each point of interest and label it.
+  mapData.getByType('point-of-interest').forEach((poi) => {
+    if (poi.floor.id === mapView.currentFloor.id) {
       mapView.Labels.add(poi.coordinate, poi.name);
+    }})
+
+  // Iterate through each Connection and label it.
+  mapData.getByType("connection").forEach((connection) => {
+    // Find the coordinates for the current floor.
+    const coords = connection.coordinates.find(
+      (coord) => coord.floorId === mapView.currentFloor.id
+    );
+
+    if (coords) {
+      mapView.Labels.add(coords, connection.name);
     }
-  }
+  });
 
    // Search bar functionality
    const endSearchBar = document.getElementById('end-search') as HTMLInputElement;
@@ -216,5 +251,8 @@ async function init() {
      }
    });
 }
+  
+
+
 
 init();
