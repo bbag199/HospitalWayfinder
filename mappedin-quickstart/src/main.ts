@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 import { getMapData, show3dMap, MapView, Space, Path,TDirectionInstruction, Coordinate } from "@mappedin/mappedin-js";
+=======
+import { getMapData, show3dMap, MapView, Space, Path, Coordinate, Directions } from "@mappedin/mappedin-js";
+>>>>>>> Stashed changes
 import "@mappedin/mappedin-js/lib/index.css";
 
 // See Trial API key Terms and Conditions
@@ -159,6 +163,7 @@ async function init() {
     }
   });
 
+<<<<<<< Updated upstream
    // Search bar functionality
    const endSearchBar = document.getElementById('end-search') as HTMLInputElement;
    const startSearchBar = document.getElementById('start-search') as HTMLInputElement;
@@ -250,6 +255,97 @@ async function init() {
        console.error("Please select both start and end locations.");
      }
    });
+=======
+  // Search bar functionality
+  const searchBar = document.querySelector('.search-bar') as HTMLInputElement;
+  const resultsContainer = document.querySelector('.search-results') as HTMLDivElement;
+  const searchIcon = document.querySelector('.search-icon') as HTMLElement;
+
+  searchBar.addEventListener('input', function() {
+    const query = searchBar.value.toLowerCase();
+    if (query) {
+      performSearch(query);
+      resultsContainer.style.display = 'block';
+    } else {
+      resultsContainer.style.display = 'none';
+    }
+  });
+
+  document.addEventListener('click', function(event) {
+    if (!(event.target as HTMLElement).closest('.search-container')) {
+      resultsContainer.style.display = 'none';
+    }
+  });
+
+  searchBar.addEventListener('input', function() {
+    const query = searchBar.value.toLowerCase();
+    if (query) {
+      performSearch(query);
+      resultsContainer.style.display = 'block';
+    } else {
+      resultsContainer.style.display = 'none';
+    }
+  });
+  
+  searchIcon.addEventListener('click', function() {
+    const query = searchBar.value.toLowerCase();
+    if (query) {
+      performSearch(query);
+      resultsContainer.style.display = 'block';
+    }
+  });
+  
+  document.addEventListener('click', function(event) {
+    if (!(event.target as HTMLElement).closest('.search-container')) {
+      resultsContainer.style.display = 'none';
+    }
+  });
+  
+  function performSearch(query: string) {
+    const spaces: Space[] = mapData.getByType("space");
+    const results: Space[] = spaces.filter(space => space.name.toLowerCase().includes(query));
+    displayResults(results);
+  }
+
+  function displayResults(results: Space[]) {
+    resultsContainer.innerHTML = '';
+    results.forEach((result: Space) => {
+      const resultItem = document.createElement('div');
+      resultItem.textContent = result.name;
+      resultItem.style.padding = '5px';
+      resultItem.style.cursor = 'pointer';
+      resultItem.addEventListener('mouseover', function() {
+        mapView.updateState(result, {
+          hoverColor: "hover", // Simulate hover by setting the state
+        });
+      });
+      resultItem.addEventListener('mouseleave', function() {
+        mapView.updateState(result, {
+          hoverColor: "default", // Revert to default state
+        });
+      });
+      resultItem.addEventListener('click', function() {
+        navigateToSpace(result);
+      });
+      resultsContainer.appendChild(resultItem);
+    });
+  }
+
+  function navigateToSpace(space: Space) {
+    const directions: Directions | undefined = mapView.getDirections(startSpace!, space);
+    if (directions) {
+      mapView.Navigation.draw(directions);
+      mapView.updateState(space, {
+        hoverColor: "selected", // Indicate the space is selected
+      });
+    } else {
+      console.error("Directions not found for the selected space.");
+    }
+  }
+>>>>>>> Stashed changes
 }
+  
+
+
 
 init();
