@@ -16,25 +16,10 @@ const resources = {
       To: "To: Search destination...",
       From: "From: Search starting point...",
       GetDirections: "Get Directions",
-      EmergencyExit: "Emergency Exit"
+      EmergencyExit: "Emergency Exit",
     },
   },
-  cn: {
-    translation: {
-      Contact: "联系方式",
-      Settings: "设置",
-      Mode: "模式",
-      Language: "语言",
-      Apply: "应用",
-      Light: "浅色",
-      Dark: "深色",
-      SettingsTitle: "设置",
-      To: "到: 搜索目的地...",
-      From: "从: 搜索起点...",
-      GetDirections: "获取方向",
-      EmergencyExit: "紧急出口"
-    },
-  },
+
   mi: {
     translation: {
       Contact: "Whakapā",
@@ -48,9 +33,44 @@ const resources = {
       To: "Ki: Rapu waahi...",
       From: "Mai: Rapu waahi timatanga...",
       GetDirections: "Tikina nga Tohutohu",
-      EmergencyExit: "Putanga Whawhati Tata"
+      EmergencyExit: "Putanga Whawhati Tata",
     },
   },
+
+  cn: {
+    translation: {
+      Contact: "联系方式",
+      Settings: "设置",
+      Mode: "模式",
+      Language: "语言",
+      Apply: "应用",
+      Light: "浅色",
+      Dark: "深色",
+      SettingsTitle: "设置",
+      To: "到: 搜索目的地...",
+      From: "从: 搜索起点...",
+      GetDirections: "获取方向",
+      EmergencyExit: "紧急出口",
+    },
+  },
+
+  tw: {
+    translation: {
+      Contact: "聯絡方式",
+      Settings: "設置",
+      Mode: "模式",
+      Language: "語言",
+      Apply: "應用",
+      Light: "淺色",
+      Dark: "深色",
+      SettingsTitle: "設置",
+      To: "到: 搜索目的地...",
+      From: "從: 搜索起點...",
+      GetDirections: "獲取方向",
+      EmergencyExit: "緊急出口",
+    },
+  },
+
   vi: {
     translation: {
       Contact: "Liên hệ",
@@ -64,7 +84,58 @@ const resources = {
       To: "Đến: Tìm điểm đến...",
       From: "Từ: Tìm điểm xuất phát...",
       GetDirections: "Nhận chỉ đường",
-      EmergencyExit: "Lối Thoát Hiểm"
+      EmergencyExit: "Lối Thoát Hiểm",
+    },
+  },
+
+  sm: {
+    translation: {
+      Contact: "Fa'afeso'ota'i",
+      Settings: "Seti",
+      Mode: "Faiga",
+      Language: "Gagana",
+      Apply: "Fa'atino",
+      Light: "Malamalama",
+      Dark: "Pogisa",
+      SettingsTitle: "Seti",
+      To: "I: Saili nofoaga...",
+      From: "Mai: Saili nofoaga amata...",
+      GetDirections: "Maua Faatonuga",
+      EmergencyExit: "Ala Faafuasei",
+    },
+  },
+
+  to: {
+    translation: {
+      Contact: "Fetu'utaki",
+      Settings: "Ngaahi Seti",
+      Mode: "Taimi",
+      Language: "Lea",
+      Apply: "Fakalele",
+      Light: "Maama",
+      Dark: "Pōuli",
+      SettingsTitle: "Ngaahi Seti",
+      To: "Ki he: Fekumi ki he feitu'u...",
+      From: "Mei he: Fekumi ki he feitu'u kamata...",
+      GetDirections: "Ma'u e ngaahi Fokotu'utu'u",
+      EmergencyExit: "Hala Fa'atu'utu'unga",
+    },
+  },
+
+  pa: {
+    translation: {
+      Contact: "ਸੰਪਰਕ ਕਰੋ",
+      Settings: "ਸੈਟਿੰਗਜ਼",
+      Mode: "ਮੋਡ",
+      Language: "ਭਾਸ਼ਾ",
+      Apply: "ਲਾਗੂ ਕਰੋ",
+      Light: "ਹਲਕਾ",
+      Dark: "ਗੂੜਾ",
+      SettingsTitle: "ਸੈਟਿੰਗਜ਼",
+      To: "ਨੂੰ: ਗੰਟਵਿਓ ਖੋਜੋ...",
+      From: "ਤੋਂ: ਸ਼ੁਰੂਆਤੀ ਬਿੰਦੂ ਖੋਜੋ...",
+      GetDirections: "ਦਿਸ਼ਾਵਾਂ ਪ੍ਰਾਪਤ ਕਰੋ",
+      EmergencyExit: "ਐਮਰਜੈਂਸੀ ਐਗਜ਼ਿਟ",
     },
   },
 };
