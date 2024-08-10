@@ -24,11 +24,6 @@ async function init() {
   const language = i18n.language || "en";
   i18n.changeLanguage(language);
 
-  const contactLink = document.getElementById("contact-link");
-  if (contactLink) {
-    contactLink.innerText = i18n.t("Contact");
-  }
-
   const mapData = await getMapData(options);
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
