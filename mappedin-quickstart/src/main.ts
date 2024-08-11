@@ -6,7 +6,7 @@ import "@mappedin/mappedin-js/lib/index.css";
 const options = {
   key: '6666f9ba8de671000ba55c63',
   secret: 'd15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80',
-  mapId: '6637fd20269972f02bf839da',
+  mapId: '66b179460dad9e000b5ee951',
 };
 
 async function init() {
@@ -105,11 +105,11 @@ async function init() {
 
   // Mapping of floor IDs to their corresponding bearings and coordinates
   const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
-    'm_da4e469267051fe3': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-    'm_69cd3f0a0aca0001': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-    'm_79ab96f2683f7824': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-    'm_984215ecc8edf2ba': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
-    'm_94568a67928ac615': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+    'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+
+    'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+    'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
   };
 
   // Set the camera position with final bearing, zoom level, and center coordinate
