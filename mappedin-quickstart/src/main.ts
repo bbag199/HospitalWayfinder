@@ -2,6 +2,7 @@ import { getMapData, show3dMap, MapView, Space, Path, Coordinate, Directions, sh
 import "@mappedin/mappedin-js/lib/index.css";
 
 
+
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
 const options = {
@@ -34,16 +35,8 @@ async function init() {
   // Display the default map in the mappedin-map div.
   const mapView: MapView = await show3dMap(
     document.getElementById("mappedin-map") as HTMLDivElement,
-    mapData
+    mapData,
   );
-  
-  /*show3dMapGeojson(
-    document.getElementById("mappedin-map") as HTMLDivElement,
-    mapData
-  );*/
-  //const mapObject = new GeojsonApiMapObject('map-id', parsedMVF, styleMap, show3DMapOptions, rendererCore);
-
-
 
 
   floorSelector.value = mapView.currentFloor.id;
@@ -125,6 +118,61 @@ async function init() {
     }
   });
 
+  //Add the Stack Map and testing:
+  //1)Add the stack "enable button":
+  const stackMapButton = document.createElement("button");
+  // Add any classes, text, or other properties (these two code can be linked to the css file):
+  stackMapButton.className = "reset-button mi-button";
+  stackMapButton.textContent = "Enable Stack Map";
+
+  // Append the button to the desired parent element:
+  mappedinDiv.appendChild(stackMapButton);
+
+  //Testing: no show floors:
+  //Find the floor that need to do the Stack Map, at this case, we testing 
+  const noShowFloor2: Floor[] = mapData.getByType("floor").filter((floor: Floor) => (floor.name !== "Level 1" && floor.name !== "Ground floor"));
+
+  // The enable Button is used to enable and disable Stacked Maps.
+  stackMapButton.onclick = () => {
+    
+    //debug here:
+    console.log("Chekcing noShowFloor2", noShowFloor2);
+    //show the stack map here and hide the no used floor:
+    //at here noShowFloor2 is no need floor.
+    // Check the current state of the button text to determine the action
+    if (stackMapButton.textContent === "Enable Stack Map") {
+      // Show the stack map and hide the unused floor
+      mapView.expand({ excludeFloors: noShowFloor2 });
+      stackMapButton.textContent = "Disable Stack Map";
+    } else {
+      // Collapse the stack map
+      mapView.collapse();
+      stackMapButton.textContent = "Enable Stack Map";
+    }
+    
+    //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
+    mapView.Camera.set({
+      zoomLevel: 19, // set the zoom level, better in 17-22
+      pitch: 78,    // the angle from the top-down (0: Top-down, 90: Eye-level)
+      //bearing: 0    // set the angle, e.g. North or South facing
+    })
+
+  };
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
   const exitSpace = mapData.getByType('object').find(object => object.name.includes("exit01"));
@@ -145,32 +193,14 @@ async function init() {
   emergencyButton.style.borderRadius = "5px";
   emergencyButton.style.cursor = "pointer";
 
-  
-  //editing a map within Mappedin CMS.
-
-
-  //Testing: no show floors:
-  //const noShowFloor: Floor[] = mapData.getByType("floor").filter(floor => floor.name !== "level 1");
-  const noShowFloor: any[] = [];
-  mapData.getByType("floor").forEach((floor: any) => {
-    if (floor.name !== "level 1") {
-      noShowFloor.push(floor);
-    }
-  });
-
-  let foolArray: Floor;
-
-  const noShowFloor2: Floor[] = mapData.getByType("floor").filter((floor: Floor) => (floor.name !== "Level 1" && floor.name !== "Ground floor"));
-
   // Append the button to the map container
   mappedinDiv.appendChild(emergencyButton);
+
+
   emergencyButton.addEventListener('click', function() {
     console.log("chekcing startSpace input:", startSpace);
     console.log("exit01 space information:", exitSpace);
-    console.log("Checking noShowFloor", noShowFloor);
-    console.log("Chekcing noShowFloor2", noShowFloor2);
-    mapView.expand({excludeFloors: noShowFloor2});
-
+    
     if (startSpace) {
       if (path) {
         mapView.Paths.remove(path);
@@ -317,5 +347,6 @@ async function init() {
      }
    });
 }
+
 
 init();

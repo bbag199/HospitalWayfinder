@@ -95,6 +95,54 @@
       border: none;
       border-radius: 4px;
     }
+
+    /* Add the enableStackMap button style here: */
+    .reset-button {
+      background-color: transparent;
+      border-width: 0;
+      font-family: inherit;
+      font-size: inherit;
+      font-style: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+      padding: 0;
+    }
+    .mi-button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      user-select: none;
+      pointer-events: all;
+      position: fixed; /* Use fixed to keep the button in the same place even when scrolling */
+      bottom: 70px; /* Distance from the bottom of the screen */
+      right: 20px; /* Distance from the right side of the screen */
+      height: 36px;
+      width: fit-content;
+      border-radius: 37.5px;
+      background: #0F2240;
+      color: #ffffff; /*set font color to white*/
+      box-shadow: 0 4px 0 0 var(--burnt-orange), 0 3px 8px 0 rgba(0, 0, 0, 0.3);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 7.5px;
+      z-index: 1000; /* Ensure the button stays on top of other elements */
+    }
+
+    .mi-button:hover:not(.mobile) {
+      filter: brightness(0.85);
+    }
+
+    .mi-button.pressed,
+    .mi-button:active {
+      filter: brightness(0.8) !important;
+      box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .mi-button > svg {
+      margin-right: 0;
+    }
   </style>
 </head>
 <body>
