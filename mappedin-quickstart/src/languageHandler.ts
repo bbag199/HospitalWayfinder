@@ -1,4 +1,31 @@
 import i18n from "./i18n";
+import { getVenue } from "@mappedin/mappedin-js";
+
+// to store the venue object
+let venue:any; 
+
+export async function initVenue(options:any){
+  //initialize the venue
+  venue = await getVenue(options);
+
+  venue.on("LANGUAGE_CHANGED", () => {
+    //remove current labels
+    const mapView = venue.getMapView();
+    mapView.Labels.removeAll();
+
+    //re-add labels with the new language
+    const mapData = venue.getMapData();
+    mapData.getByType("space").forEach((space:any)=>{
+      if(space.name){
+        mapView.Labels.add(space,space.name, {
+          appearance:{
+            text:{foregroundColor:"orange"},
+          },
+        });
+      }
+    });
+  });
+}
 
 export function applySettings() {
   const mode = (document.getElementById("mode") as HTMLSelectElement).value;
@@ -78,6 +105,11 @@ export function applySettings() {
       if(settingsTitle){
         settingsTitle.innerText = i18n.t("SettingsTitle");
       }
+    }
+
+    //change the language in the map
+    if(venue){
+      venue.changeLanguage(language);
     }
   });
 
