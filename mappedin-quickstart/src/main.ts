@@ -1,6 +1,7 @@
 import { getMapData, show3dMap, MapView, Space, Path,TDirectionInstruction, Coordinate, Directions } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 
+
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
 const options = {
@@ -29,6 +30,8 @@ async function init() {
     option.value = floor.id;
     floorSelector.appendChild(option);
   });
+
+
 
   // Display the default map in the mappedin-map div.
   const mapView: MapView = await show3dMap(
@@ -250,6 +253,7 @@ async function init() {
        console.error("Please select both start and end locations.");
      }
    });
+   
 }
   
 
