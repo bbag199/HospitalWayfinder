@@ -24,7 +24,7 @@
       background-color: #ffffff;
       color: rgb(15, 34, 64);
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       height: 60px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -52,6 +52,7 @@
     #mappedin-map {
       flex: 1;
       width: 100%;
+      height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
       height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
       position: relative;
     }
@@ -86,7 +87,9 @@
     .search-result-item:hover {
       background-color: #f0f0f0;
     }
-    .directions-btn {
+
+    .settings-btn {
+      margin-left: 1.5rem;
       padding: 0.5rem 1rem;
       font-size: 1rem;
       cursor: pointer;
@@ -96,56 +99,7 @@
       border-radius: 4px;
     }
 
-    .hidden {
-      display: none;
-    }
-    .visible {
-      display: flex;
-    }
-
-    .category-input {
-      display: flex;
-      flex-direction: row;
-      
-    }
-    nav {
-      background-color: #ffffff;
-      color: rgb(15, 34, 64);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 60px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      padding: 0 1rem;
-      font-weight: bold;
-    }
-    .logo {
-      height: 40px;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-    }
-    .nav-links a {
-      color: rgb(15, 23, 47);
-      text-decoration: none;
-      margin: 0 1.5rem;
-      font-size: 1rem;
-      transition: color 0.3s, transform 0.3s;
-    }
-    .nav-links a:hover {
-      color: #ffcc00;
-      transform: scale(1.05);
-    }
-    .search-bar {
-      margin-left: 1rem;
-      padding: 0.5rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .settings-btn {
-      margin-left: 1.5rem;
+    .directions-btn {
       padding: 0.5rem 1rem;
       font-size: 1rem;
       cursor: pointer;
@@ -185,6 +139,54 @@
       color: black;
       text-decoration: none;
       cursor: pointer;
+    }
+
+    /* Add the enableStackMap button style here: */
+    .reset-button {
+      background-color: transparent;
+      border-width: 0;
+      font-family: inherit;
+      font-size: inherit;
+      font-style: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+      padding: 0;
+    }
+    .mi-button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      user-select: none;
+      pointer-events: all;
+      position: fixed; /* Use fixed to keep the button in the same place even when scrolling */
+      bottom: 70px; /* Distance from the bottom of the screen */
+      right: 20px; /* Distance from the right side of the screen */
+      height: 36px;
+      width: fit-content;
+      border-radius: 37.5px;
+      background: #0F2240;
+      color: #ffffff; /*set font color to white*/
+      box-shadow: 0 4px 0 0 var(--burnt-orange), 0 3px 8px 0 rgba(0, 0, 0, 0.3);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 7.5px;
+      z-index: 1000; /* Ensure the button stays on top of other elements */
+    }
+
+    .mi-button:hover:not(.mobile) {
+      filter: brightness(0.85);
+    }
+
+    .mi-button.pressed,
+    .mi-button:active {
+      filter: brightness(0.8) !important;
+      box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .mi-button > svg {
+      margin-right: 0;
     }
 
     .icons-container {
