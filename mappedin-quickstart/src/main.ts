@@ -8,8 +8,6 @@ import {
   //Directions,
 } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
-// to initialize the venue
-import { initVenue } from "./languageHandler"; 
 import i18n from "./i18n";
 
 // See Trial API key Terms and Conditions
@@ -23,10 +21,6 @@ const options = {
 async function init() {
   //set the language to English on initialization
   i18n.changeLanguage("en");
-  
-  // initialise venue for language change
-  await initVenue(options);
-
   const language = i18n.language || "en";
   i18n.changeLanguage(language);
 
@@ -197,7 +191,6 @@ async function init() {
       });
     }
   });
-  
 
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
