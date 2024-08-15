@@ -26,12 +26,16 @@ export function applySettings() {
       settingsBtn.innerText = i18n.t("Settings");
     }
 
-    const modeLabel = document.querySelector('label[for="mode"]') as HTMLElement;
+    const modeLabel = document.querySelector(
+      'label[for="mode"]'
+    ) as HTMLElement;
     if (modeLabel) {
       modeLabel.innerText = i18n.t("Mode");
     }
 
-    const languageLabel = document.querySelector('label[for="language"]') as HTMLSelectElement;
+    const languageLabel = document.querySelector(
+      'label[for="language"]'
+    ) as HTMLSelectElement;
     if (languageLabel) {
       languageLabel.innerText = i18n.t("Language");
     }
@@ -46,17 +50,23 @@ export function applySettings() {
       toField.placeholder = i18n.t("To");
     }
 
-    const fromField = document.getElementById("start-search") as HTMLInputElement;
+    const fromField = document.getElementById(
+      "start-search"
+    ) as HTMLInputElement;
     if (fromField) {
       fromField.placeholder = i18n.t("From");
     }
 
-    const directionsBtn = document.getElementById("get-directions") as HTMLElement;
+    const directionsBtn = document.getElementById(
+      "get-directions"
+    ) as HTMLElement;
     if (directionsBtn) {
       directionsBtn.innerText = i18n.t("GetDirections");
     }
 
-    const emergencyBtn = document.querySelector('button[data-emergency-btn]') as HTMLButtonElement;
+    const emergencyBtn = document.querySelector(
+      "button[data-emergency-btn]"
+    ) as HTMLButtonElement;
     if (emergencyBtn) {
       emergencyBtn.innerText = i18n.t("EmergencyExit");
     }
@@ -64,18 +74,24 @@ export function applySettings() {
     const modeSelect = document.getElementById("mode") as HTMLSelectElement;
 
     if (modeSelect) {
-      const lightOption = modeSelect.querySelector('option[value="light"]') as HTMLOptionElement;
+      const lightOption = modeSelect.querySelector(
+        'option[value="light"]'
+      ) as HTMLOptionElement;
       if (lightOption) {
         lightOption.innerText = i18n.t("Light");
       }
 
-      const darkOption = modeSelect.querySelector('option[value="dark"]') as HTMLOptionElement;
+      const darkOption = modeSelect.querySelector(
+        'option[value="dark"]'
+      ) as HTMLOptionElement;
       if (darkOption) {
         darkOption.innerText = i18n.t("Dark");
       }
 
-      const settingsTitle = document.getElementById("settings-title") as HTMLElement;
-      if(settingsTitle){
+      const settingsTitle = document.getElementById(
+        "settings-title"
+      ) as HTMLElement;
+      if (settingsTitle) {
         settingsTitle.innerText = i18n.t("SettingsTitle");
       }
     }

@@ -50,6 +50,33 @@ async function init() {
     mapData
   );
 
+  // Function to translate and label locations
+  function translateAndLabelLocations() {
+    mapView.Labels.removeAll();
+
+    mapData.getByType("space").forEach((space) => {
+      const originalName = space.name;
+      const translatedName = i18n.t(originalName);
+
+      mapView.Labels.add(space, translatedName, {
+        appearance: {
+          text: { foregroundColor: "orange" },
+        },
+      });
+    });
+  }
+
+  // Initial labeling
+  translateAndLabelLocations();
+
+  // Handle language change
+  document.getElementById("language")?.addEventListener("change", () => {
+    i18n.changeLanguage(
+      (document.getElementById("language") as HTMLSelectElement).value,
+      translateAndLabelLocations
+    );
+  });
+
   floorSelector.value = mapView.currentFloor.id;
 
   floorSelector.addEventListener("change", (e) => {
@@ -184,7 +211,14 @@ async function init() {
   // Add labels for each map
   mapData.getByType("space").forEach((space) => {
     if (space.name) {
-      mapView.Labels.add(space, space.name, {
+      //get translated location name
+      let translatedName = space.name;
+
+      if (space.name === "Module 2a ") {
+        translatedName = i18n.t("Module 2a ");
+      }
+      //use translated name to re-label
+      mapView.Labels.add(space, translatedName, {
         appearance: {
           text: { foregroundColor: "orange" },
         },
