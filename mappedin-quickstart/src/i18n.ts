@@ -17,6 +17,7 @@ const resources = {
       From: "From: Search starting point...",
       GetDirections: "Get Directions",
       EmergencyExit: "Emergency Exit",
+      "Module 2a": "Module 2a", //testing
     },
   },
 
@@ -34,6 +35,7 @@ const resources = {
       From: "Mai: Rapu waahi timatanga...",
       GetDirections: "Tikina nga Tohutohu",
       EmergencyExit: "Putanga Whawhati Tata",
+      "Module 2a": "Mōtū 2a",//testing
     },
   },
 
@@ -51,6 +53,7 @@ const resources = {
       From: "从: 搜索起点...",
       GetDirections: "获取方向",
       EmergencyExit: "紧急出口",
+      "Module 2a": "模块 2a",//testing
     },
   },
 
