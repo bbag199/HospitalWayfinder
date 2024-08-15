@@ -144,18 +144,28 @@ async function init() {
       // Show the stack map and hide the unused floor
       mapView.expand({ excludeFloors: noShowFloor2 });
       stackMapButton.textContent = "Disable Stack Map";
+
+      // Set the camera to zoomLevel 17 and pitch 0
+      mapView.Camera.set({
+        zoomLevel: 19, // set the zoom level, better in 17-22
+        pitch: 78,      // the angle from the top-down (0: Top-down, 90: Eye-level)
+        //bearing: 0    // set the angle, e.g. North or South facing
+      });
+
     } else {
       // Collapse the stack map
       mapView.collapse();
       stackMapButton.textContent = "Enable Stack Map";
+
+      //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
+      mapView.Camera.set({
+        zoomLevel: 18.5, // set the zoom level, better in 17-22
+        pitch: 0,    // the angle from the top-down (0: Top-down, 90: Eye-level)
+        //bearing: 0    // set the angle, e.g. North or South facing
+      })
     }
     
-    //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
-    mapView.Camera.set({
-      zoomLevel: 19, // set the zoom level, better in 17-22
-      pitch: 78,    // the angle from the top-down (0: Top-down, 90: Eye-level)
-      //bearing: 0    // set the angle, e.g. North or South facing
-    })
+    
 
   };
 

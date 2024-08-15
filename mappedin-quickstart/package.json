@@ -13,6 +13,7 @@
     "vite": "^5.3.4"
   },
   "dependencies": {
-    "@mappedin/mappedin-js": "^6.0.1-alpha.31"
+    "@mappedin/mappedin-js": "^6.0.1-alpha.31",
+    "i18next": "^23.12.7"
   }
 }
