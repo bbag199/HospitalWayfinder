@@ -143,6 +143,81 @@
     .mi-button > svg {
       margin-right: 0;
     }
+
+    /*The below code is for the drop dowm list css: */
+    /*.dropdown {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        max-height: 200px;
+        overflow-y: auto;
+        width: 100%;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+
+    .dropdown-item {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f0f0f0;
+    }*/
+
+    .search-container-dropdown {
+    position: relative;
+    width: 100%;
+    }
+
+    #end-search {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    #end-dropdown {
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        max-height: 200px;
+        overflow-y: auto;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: none; /* Hidden by default */
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    .dropdown-item {
+        padding: 12px;
+        font-size: 16px;
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .dropdown-item:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown-item:hover {
+        background-color: #e0e0e0;
+    }
+
+    .dropdown-item::after {
+        content: '>';
+        font-weight: bold;
+        color: #ccc;
+    }
+
   </style>
 </head>
 <body>
@@ -152,9 +227,16 @@
   </nav>
   <div class="search-container">
     <input type="text" id="end-search" class="search-bar" placeholder="To: Search destination..." />
-    <input type="text" id="start-search" class="search-bar" placeholder="From: Search starting point..." />
+    <div class="search-container-dropdown">
+      <div class="dropdown" id="end-dropdown">
+        <!-- This is where the dropdown items will go -->
+      </div>
+    </div>
     <div class="search-results" id="end-results"></div>
+    
+    <input type="text" id="start-search" class="search-bar" placeholder="From: Search starting point..." /> 
     <div class="search-results" id="start-results"></div>
+    
     <button class="directions-btn" id="get-directions">Get Directions</button>
   </div>
   <div id="mappedin-map"></div>

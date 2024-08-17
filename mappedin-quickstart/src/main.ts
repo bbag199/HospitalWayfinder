@@ -274,13 +274,137 @@ async function init() {
    endSearchBar.addEventListener('input', function() {
      const query = endSearchBar.value.toLowerCase();
      if (query) {
+      //if the user input something, the drop down list will hide and show the searching result:
+       dropdown.style.display = 'none'; //the drop dowe list hiding when there is some input
        performSearch(query, 'end');
        endResultsContainer.style.display = 'block';
      } else {
        endResultsContainer.style.display = 'none';
      }
    });
- 
+   
+   //testing the start search bar drop down list function:
+   const spaces: Space[] = mapData.getByType("space");
+
+   // Get the dropdown and input elements
+    const dropdown = document.getElementById('end-dropdown') as HTMLDivElement;
+    const searchInput = document.getElementById('end-search') as HTMLInputElement;
+
+    if (dropdown && searchInput) {
+      // Create "Module List" and "Toilet List" containers
+    const moduleListContainer = document.createElement('div');
+    moduleListContainer.className = 'dropdown-item';
+    moduleListContainer.textContent = 'Module List';
+    moduleListContainer.style.cursor = 'pointer';
+    dropdown.appendChild(moduleListContainer);
+
+    const toiletListContainer = document.createElement('div');
+    toiletListContainer.className = 'dropdown-item';
+    toiletListContainer.textContent = 'Toilet List';
+    //toiletListContainer.style.cursor = 'pointer';
+    dropdown.appendChild(toiletListContainer);
+
+    // Create a container for module items
+    const moduleItemsContainer = document.createElement('div');
+    moduleItemsContainer.style.display = 'none'; // Initially hidden
+    moduleItemsContainer.className = 'module-items';
+    dropdown.appendChild(moduleItemsContainer);
+
+    // Create a container for toilet items
+    const toiletItemsContainer = document.createElement('div');
+    toiletItemsContainer.style.display = 'none'; // Initially hidden
+    toiletItemsContainer.className = 'toilet-items';
+    dropdown.appendChild(toiletItemsContainer);
+
+    // Populate the lists with spaces
+    spaces.forEach(space => {
+        const spaceOption = document.createElement('div');
+        spaceOption.className = 'dropdown-item';
+        spaceOption.textContent = space.name; // The property containing the space name
+
+        if (space.name.includes('Module')) {     
+            moduleItemsContainer.appendChild(spaceOption);
+        } else if (space.name.includes('Toilets')) {
+            toiletItemsContainer.appendChild(spaceOption);
+        }
+    });
+
+    // Handle "Module List" click to toggle sub-items
+    moduleListContainer.addEventListener('click', () => {
+        const isVisible = moduleItemsContainer.style.display === 'block';
+        moduleItemsContainer.style.display = isVisible ? 'none' : 'block';
+    });
+
+    // Handle "Toilet List" click to show items
+    toiletListContainer.addEventListener('click', () => {
+      const isVisible = toiletItemsContainer.style.display === 'block';
+      toiletItemsContainer.style.display = isVisible ? 'none' : 'block';
+    });
+      
+      // Populate the dropdown with space names
+      /* spaces.forEach(space => {
+          const spaceOption = document.createElement('div');
+          spaceOption.className = 'dropdown-item';
+          spaceOption.textContent = space.name; // The property containing the space name
+          dropdown.appendChild(spaceOption);
+      }); */
+
+      // Function to show the dropdown
+      const showDropdown = () => {
+        dropdown.style.display = 'block';
+      };
+  
+      // Function to hide the dropdown
+      const hideDropdown = () => {
+          dropdown.style.display = 'none';
+      };
+  
+      // Show the dropdown when the user clicks on the search bar
+      searchInput.addEventListener('focus', () => {
+          showDropdown();
+      });
+  
+      // Prevent immediate hiding of the dropdown on click
+      searchInput.addEventListener('click', (event) => {
+          event.stopPropagation();
+          showDropdown();
+      });
+  
+      dropdown.addEventListener('click', (event) => {
+          event.stopPropagation();
+      });
+  
+      // Hide the dropdown when clicking outside of it, after a short delay
+      document.addEventListener('click', function (event: MouseEvent) {
+          if (!dropdown.contains(event.target as Node) && event.target !== searchInput) {
+              setTimeout(() => {
+                  hideDropdown();
+              }, 150); // Adjust delay as needed
+          }
+      });
+
+      //create function according to the input string to find the Space from database:
+      function getSpaceByName(name: string): Space | undefined {
+        // Retrieve the Space instance
+        const spaceCollection: Space[] = mapData.getByType("space"); // get the space array from the mapData
+        return spaceCollection.find(space => space.name === name);
+    }
+
+      // Allow selecting an item from the dropdown
+       dropdown.addEventListener('click', function(event: MouseEvent) {
+        const target = event.target as HTMLElement;
+        if (target.classList.contains('dropdown-item') && target.classList.contains('module-items')) {
+            searchInput.value = target.textContent || '';
+            if(endSpace == null){
+              endSpace = getSpaceByName(searchInput.value)!;
+            }
+            dropdown.style.display = 'none';
+        }
+      }); 
+
+    }
+
+  
    startSearchBar.addEventListener('input', function() {
      const query = startSearchBar.value.toLowerCase();
      if (query) {
