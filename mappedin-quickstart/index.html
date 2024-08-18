@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -103,20 +102,21 @@
     }
   </style>
 </head>
-<body>
-  <div id="nav-container"></div>
-  <nav>
-    <img src="logo.png" alt="Logo" class="logo" />
-  </nav>
-  <div class="search-container">
-    <input type="text" id="end-search" class="search-bar" placeholder="To: Search destination..." />
-    <input type="text" id="start-search" class="search-bar" placeholder="From: Search starting point..." />
-    <div class="search-results" id="end-results"></div>
-    <div class="search-results" id="start-results"></div>
-    <button class="directions-btn" id="get-directions">Get Directions</button>
-  </div>
-  <div id="mappedin-map"></div>
-
-  <script type="module" src="src/main.ts"></script>
-</body>
+  <body><div id="nav-container"></div>
+    <nav>
+      <img src="logo.png" alt="Logo" class="logo" />
+    </nav>
+    <div class="search-container">
+      <input type="text" id="end-search" class="search-bar" placeholder="To: Search destination..." />
+      <input type="text" id="start-search" class="search-bar" placeholder="From: Search starting point..." />
+      <div class="search-results" id="end-results"></div>
+      <div class="search-results" id="start-results"></div>
+      <button class="directions-btn" id="get-directions">Get Directions</button>
+    </div>
+    <div id="mappedin-map"></div>
+    <div id="ui">
+      <img id="qr" alt="QR Code" />
+    </div>
+    <script type="module" src="src/main.ts"></script>
+  </body>
 </html>

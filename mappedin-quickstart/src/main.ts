@@ -1,9 +1,8 @@
-import { getMapData, show3dMap, MapView, Space, Path,TDirectionInstruction, Coordinate, Directions } from "@mappedin/mappedin-js";
+import QRCode from 'qrcode';
+import { getMapData, show3dMap, MapView, Space, Path, Coordinate } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 
-
-// See Trial API key Terms and Conditions
-// https://developer.mappedin.com/web/v6/trial-keys-and-maps/
+// Map options
 const options = {
   key: '6666f9ba8de671000ba55c63',
   secret: 'd15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80',
@@ -11,7 +10,8 @@ const options = {
 };
 
 async function init() {
-  const mapData = await getMapData(options);
+  try {
+    const mapData = await getMapData(options);
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
 
@@ -254,9 +254,32 @@ async function init() {
      }
    });
    
+    // Ensure the QR image element is available in the DOM
+    const qrImgEl = document.getElementById("qr") as HTMLImageElement;
+    if (!qrImgEl) {
+      console.error("QR code image element not found");
+      return;
+    }
+
+    // QR Code URL
+    const qrUrl = `https://app.mappedin.com/map/${options.mapId}`;
+    generateQRCode(qrUrl, qrImgEl);
+
+    // Other map setup code...
+    // (Floor selector, event listeners, camera positioning, etc.)
+
+    function generateQRCode(url: string, qrImgEl: HTMLImageElement) {
+      QRCode.toDataURL(url, { type: 'image/jpeg', margin: 1 }, (err, dataUrl) => {
+        if (err) {
+          console.error("Failed to generate QR code:", err);
+        } else {
+          qrImgEl.src = dataUrl;
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Initialization failed:", error);
+  }
 }
-  
-
-
 
 init();
