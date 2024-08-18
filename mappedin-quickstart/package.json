@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "vite --host",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -17,7 +17,6 @@
     "@deck.gl/core": "^9.0.26",
     "@deck.gl/layers": "^9.0.26",
     "@mappedin/mappedin-js": "^6.0.1-alpha.31",
-    "@types/geojson": "^7946.0.14",
-    "qrcode": "^1.5.4"
+    "@types/geojson": "^7946.0.14"
   }
 }

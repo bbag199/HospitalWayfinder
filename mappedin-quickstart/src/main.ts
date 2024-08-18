@@ -7,6 +7,7 @@ const options = {
   key: '6666f9ba8de671000ba55c63',
   secret: 'd15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80',
   mapId: '66b179460dad9e000b5ee951',
+  locationId: 's_3cac89436c55b009',
 };
 
 async function init() {
@@ -263,7 +264,9 @@ async function init() {
 
     // QR Code URL
     const qrUrl = `https://app.mappedin.com/map/${options.mapId}`;
-    generateQRCode(qrUrl, qrImgEl);
+    const qrUrl2 = `https://app.mappedin.com/map/${options.locationId}`;
+    generateQRCode(qrUrl2, qrImgEl);
+    
 
     // Other map setup code...
     // (Floor selector, event listeners, camera positioning, etc.)
