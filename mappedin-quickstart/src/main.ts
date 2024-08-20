@@ -8,7 +8,8 @@ import "@mappedin/mappedin-js/lib/index.css";
 const options = {
   key: '6666f9ba8de671000ba55c63',
   secret: 'd15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80',
-  mapId: '6637fd20269972f02bf839da',
+  //old ID: mapId: '6637fd20269972f02bf839da',
+  mapId: '66b179460dad9e000b5ee951',
 };
 
 async function init() {
@@ -156,7 +157,7 @@ async function init() {
 
   //Testing: no show floors:
   //Find the floor that need to do the Stack Map, at this case, we testing 
-  const noShowFloor2: Floor[] = mapData.getByType("floor").filter((floor: Floor) => (floor.name !== "Level 1" && floor.name !== "Ground floor"));
+  const noShowFloor2: Floor[] = mapData.getByType("floor").filter((floor: Floor) => (floor.name !== "SuperClinic Level 1" && floor.name !== "SuperClinic & Surgical Centre Ground Lvl"));
 
   // The enable Button is used to enable and disable Stacked Maps.
   stackMapButton.onclick = () => {
@@ -176,7 +177,7 @@ async function init() {
         bearing: 178.5,
         zoomLevel: 19, // set the zoom level, better in 17-22
         pitch: 78,      // the angle from the top-down (0: Top-down, 90: Eye-level)
-        //bearing: 0    // set the angle, e.g. North or South facing
+        //bearing: 100    // set the angle, e.g. North or South facing
       });
 
     } else {
