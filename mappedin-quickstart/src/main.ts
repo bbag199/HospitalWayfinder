@@ -1,4 +1,13 @@
-import { getMapData, show3dMap, MapView, Space, Path, Coordinate, Directions, show3dMapGeojson, Floor } from "@mappedin/mappedin-js";
+import { getMapData, 
+  show3dMap, 
+  MapView, 
+  Space, 
+  Path, 
+  Coordinate, 
+  //Directions, 
+  show3dMapGeojson, 
+  Floor } 
+  from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
 
@@ -76,7 +85,7 @@ async function init() {
     const id = event?.floor.id;
     if (!id) return;
     floorSelector.value = id;
-    setCameraPosition(id); // Update the camera position when the floor changes
+    setCameraPosition(); // Update the camera position when the floor changes
   });
 
   let startSpace: Space;
