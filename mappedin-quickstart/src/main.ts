@@ -4,7 +4,7 @@ import { getMapData,
   Space, 
   Path, 
   Coordinate, 
-  //Directions, 
+  Directions, 
   show3dMapGeojson, 
   Floor } 
   from "@mappedin/mappedin-js";
@@ -16,7 +16,7 @@ import i18n from "./i18n";
 const options = {
   key: "6666f9ba8de671000ba55c63",
   secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
-  mapId: "66b179460dad9e000b5ee951",
+  mapId: "6637fd20269972f02bf839da",
 };
 
 async function init() {
@@ -169,7 +169,7 @@ async function init() {
 
   //Testing: no show floors:
   //Find the floor that need to do the Stack Map, at this case, we testing 
-  const noShowFloor2: Floor[] = mapData.getByType("floor").filter((floor: Floor) => (floor.name !== "SuperClinic Level 1" && floor.name !== "SuperClinic & Surgical Centre Ground Lvl"));
+  const noShowFloor2: Floor[] = mapData.getByType("floor").filter((floor: Floor) => (floor.name !== "Level 1" && floor.name !== "Ground floor"));
 
   // The enable Button is used to enable and disable Stacked Maps.
   stackMapButton.onclick = () => {
