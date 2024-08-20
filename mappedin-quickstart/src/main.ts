@@ -217,6 +217,7 @@ async function init() {
   emergencyButton.style.border = "none";
   emergencyButton.style.borderRadius = "5px";
   emergencyButton.style.cursor = "pointer";
+  emergencyButton.setAttribute("data-emergency-btn", "true");
 
   // Append the button to the map container
   mappedinDiv.appendChild(emergencyButton);
