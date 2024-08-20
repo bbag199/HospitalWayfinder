@@ -1,9 +1,23 @@
+<<<<<<< HEAD
 import QRCode from 'qrcode';
 import { getMapData, show3dMap, MapView, Space, Path, Coordinate } from "@mappedin/mappedin-js";
+=======
+import {
+  getMapData,
+  show3dMap,
+  MapView,
+  Space,
+  Path,
+  Coordinate,
+  //Directions,
+} from "@mappedin/mappedin-js";
+>>>>>>> origin/main
 import "@mappedin/mappedin-js/lib/index.css";
+import i18n from "./i18n";
 
 // Map options
 const options = {
+<<<<<<< HEAD
   key: '6666f9ba8de671000ba55c63',
   secret: 'd15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80',
   mapId: '66b179460dad9e000b5ee951',
@@ -13,6 +27,20 @@ const options = {
 async function init() {
   try {
     const mapData = await getMapData(options);
+=======
+  key: "6666f9ba8de671000ba55c63",
+  secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
+  mapId: "6637fd20269972f02bf839da",
+};
+
+async function init() {
+  //set the language to English on initialization
+  i18n.changeLanguage("en");
+  const language = i18n.language || "en";
+  i18n.changeLanguage(language);
+
+  const mapData = await getMapData(options);
+>>>>>>> origin/main
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
 
@@ -40,6 +68,33 @@ async function init() {
     mapData
   );
 
+  // Function to translate and label locations
+  function translateAndLabelLocations() {
+    mapView.Labels.removeAll();
+
+    mapData.getByType("space").forEach((space) => {
+      const originalName = space.name;
+      const translatedName = i18n.t(originalName);
+
+      mapView.Labels.add(space, translatedName, {
+        appearance: {
+          text: { foregroundColor: "orange" },
+        },
+      });
+    });
+  }
+
+  // Initial labeling
+  translateAndLabelLocations();
+
+  // Handle language change
+  document.getElementById("language")?.addEventListener("change", () => {
+    i18n.changeLanguage(
+      (document.getElementById("language") as HTMLSelectElement).value,
+      translateAndLabelLocations
+    );
+  });
+
   floorSelector.value = mapView.currentFloor.id;
 
   floorSelector.addEventListener("change", (e) => {
@@ -57,6 +112,10 @@ async function init() {
   let endSpace: Space | null = null;
   let path: Path | null = null;
   let connectionPath: Path | null = null;
+<<<<<<< HEAD
+=======
+  //let selectingStart = true; //
+>>>>>>> origin/main
 
   // Set each space to be interactive and its hover color to orange.
   mapData.getByType("space").forEach((space) => {
@@ -76,6 +135,7 @@ async function init() {
     } else if (!path && event.spaces[0]) {
       const directions = mapView.getDirections(startSpace, event.spaces[0]);
       if (!directions) return;
+<<<<<<< HEAD
   
       // Clear existing paths and markers
       mapView.Paths.removeAll();
@@ -103,11 +163,44 @@ async function init() {
       mapView.Paths.removeAll();
       mapView.Markers.removeAll();
       endSpace = null;
+=======
+
+      // Add the main path
+      path = mapView.Paths.add(directions.coordinates, {
+        nearRadius: 0.5,
+        farRadius: 0.5,
+        color: "#3178C6", // Set path color to blue
+      });
+
+      // Check if we need to add the connection path
+      const startFloorId = startSpace?.floor.id;
+      const endFloorId = event.spaces[0]?.floor.id;
+
+      if (
+        (startFloorId === "m_984215ecc8edf2ba" &&
+          endFloorId === "m_79ab96f2683f7824") ||
+        (startFloorId === "m_79ab96f2683f7824" &&
+          endFloorId === "m_984215ecc8edf2ba")
+      ) {
+        const startCoordinate = new Coordinate(-37.008212, 174.887679);
+        const endCoordinate = new Coordinate(-37.008202, 174.88719);
+
+        connectionPath = mapView.Paths.add([startCoordinate, endCoordinate], {
+          nearRadius: 0.5,
+          farRadius: 0.5,
+          color: "#3178C6", // Set connection path color to red
+        });
+      }
+    } else if (path) {
+      mapView.Paths.remove(path);
+      //startSpace = null;
+>>>>>>> origin/main
       path = null;
     }
   });
 
   // Mapping of floor IDs to their corresponding bearings and coordinates
+<<<<<<< HEAD
   const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
     'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
     'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
@@ -119,6 +212,39 @@ async function init() {
   // Set the camera position with final bearing, zoom level, and center coordinate
   const setCameraPosition = (floorId: string) => {
     const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
+=======
+  const floorSettings: {
+    [key: string]: { bearing: number; coordinate: Coordinate };
+  } = {
+    m_da4e469267051fe3: {
+      bearing: 200,
+      coordinate: new Coordinate(-37.0082, 174.887104),
+    },
+    m_69cd3f0a0aca0001: {
+      bearing: 200,
+      coordinate: new Coordinate(-37.0082, 174.887104),
+    },
+    m_79ab96f2683f7824: {
+      bearing: 200,
+      coordinate: new Coordinate(-37.0082, 174.887104),
+    },
+    m_984215ecc8edf2ba: {
+      bearing: 178.5,
+      coordinate: new Coordinate(-37.008164, 174.888221),
+    },
+    m_94568a67928ac615: {
+      bearing: 178.5,
+      coordinate: new Coordinate(-37.008164, 174.888221),
+    },
+  };
+
+  // Set the camera position with final bearing, zoom level, and center coordinate
+  const setCameraPosition = (floorId: string) => {
+    const settings = floorSettings[floorId] || {
+      bearing: 178.5,
+      coordinate: new Coordinate(0, 0),
+    };
+>>>>>>> origin/main
 
     // Set the camera position with final bearing, zoom level, and center coordinate
     mapView.Camera.animateTo(
@@ -137,17 +263,107 @@ async function init() {
 
   mapData.getByType("space").forEach((space) => {
     if (space.name) {
-      mapView.Labels.add(space, space.name, {
+      //get translated location name
+      let translatedName = space.name;
+
+      if (space.name === "Module 2a ") {
+        translatedName = i18n.t("Module 2a ");
+      }
+      //use translated name to re-label
+      mapView.Labels.add(space, translatedName, {
         appearance: {
+<<<<<<< HEAD
           text: { foregroundColor: "black" }
         }
+=======
+          text: { foregroundColor: "orange" },
+        },
+>>>>>>> origin/main
       });
     }
   });
 
+<<<<<<< HEAD
   // Iterate through each point of interest and label it.
   mapData.getByType('point-of-interest').forEach((poi) => {
     if (poi.floor.id === mapView.currentFloor.id) {
+=======
+  //Emergency exit function:
+  //get the exit object (already build a exit01 and exit02 object in the dashboard map):
+  const exitSpace = mapData
+    .getByType("object")
+    .find((object) => object.name.includes("exit01"));
+  const exitSpace2 = mapData
+    .getByType("object")
+    .find((object) => object.name.includes("exit02"));
+
+  //add an emergency square button here:
+  const emergencyButton = document.createElement("button");
+  emergencyButton.textContent = "Emergency Exit";
+  emergencyButton.style.position = "absolute";
+  emergencyButton.style.bottom = "15px";
+  emergencyButton.style.right = "10px";
+  emergencyButton.style.zIndex = "1000";
+  emergencyButton.style.padding = "10px";
+  emergencyButton.style.backgroundColor = "#FF0000";
+  emergencyButton.style.color = "#FFFFFF";
+  emergencyButton.style.border = "none";
+  emergencyButton.style.borderRadius = "5px";
+  emergencyButton.style.cursor = "pointer";
+  emergencyButton.setAttribute("data-emergency-btn", "true");
+
+  // Append the button to the map container
+  mappedinDiv.appendChild(emergencyButton);
+  emergencyButton.addEventListener("click", function () {
+    console.log("chekcing startSpace input:", startSpace);
+    console.log("exit01 space information:", exitSpace);
+
+    if (startSpace) {
+      if (path) {
+        mapView.Paths.remove(path);
+      }
+      const directions = mapView.getDirections(startSpace, exitSpace!);
+      const directions2 = mapView.getDirections(startSpace, exitSpace2!);
+      //check the distance here:
+      console.log("checking direcitions: ", directions?.distance);
+      console.log("checking direcitions2: ", directions2?.distance);
+
+      //checking the shortest wayout here:
+      let shortestWayout;
+
+      if (directions && directions2) {
+        shortestWayout =
+          directions.distance <= directions2.distance
+            ? directions
+            : directions2;
+      } else if (directions) {
+        shortestWayout = directions;
+      } else if (directions2) {
+        shortestWayout = directions2;
+      } else {
+        throw new Error("Both directions are undefined");
+      }
+
+      //build the shortest wayout here:
+      if (shortestWayout) {
+        path = mapView.Paths.add(shortestWayout.coordinates, {
+          nearRadius: 0.5,
+          farRadius: 0.5,
+          color: "red",
+        });
+      }
+    } else {
+      console.error("Please select start space locations.");
+    }
+  });
+
+  const allPOIs = mapData.getByType("point-of-interest");
+  const currentFloor = mapView.currentFloor.id;
+
+  // Filter POIs with same floor id
+  for (const poi of allPOIs) {
+    if (poi.floor.id == currentFloor) {
+>>>>>>> origin/main
       mapView.Labels.add(poi.coordinate, poi.name);
     }})
 
@@ -163,6 +379,7 @@ async function init() {
     }
   });
 
+<<<<<<< HEAD
    // Search bar functionality
    const endSearchBar = document.getElementById('end-search') as HTMLInputElement;
    const startSearchBar = document.getElementById('start-search') as HTMLInputElement;
@@ -283,6 +500,112 @@ async function init() {
   } catch (error) {
     console.error("Initialization failed:", error);
   }
+=======
+  // Search bar functionality
+  const endSearchBar = document.getElementById(
+    "end-search"
+  ) as HTMLInputElement;
+  const startSearchBar = document.getElementById(
+    "start-search"
+  ) as HTMLInputElement;
+  const endResultsContainer = document.getElementById(
+    "end-results"
+  ) as HTMLDivElement;
+  const startResultsContainer = document.getElementById(
+    "start-results"
+  ) as HTMLDivElement;
+
+  endSearchBar.addEventListener("input", function () {
+    const query = endSearchBar.value.toLowerCase();
+    if (query) {
+      performSearch(query, "end");
+      endResultsContainer.style.display = "block";
+    } else {
+      endResultsContainer.style.display = "none";
+    }
+  });
+
+  startSearchBar.addEventListener("input", function () {
+    const query = startSearchBar.value.toLowerCase();
+    if (query) {
+      performSearch(query, "start");
+      startResultsContainer.style.display = "block";
+    } else {
+      startResultsContainer.style.display = "none";
+    }
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!(event.target as HTMLElement).closest(".search-container")) {
+      endResultsContainer.style.display = "none";
+      startResultsContainer.style.display = "none";
+    }
+  });
+
+  function performSearch(query: string, type: "start" | "end") {
+    const spaces: Space[] = mapData.getByType("space");
+    const results: Space[] = spaces.filter((space) =>
+      space.name.toLowerCase().includes(query)
+    );
+    displayResults(results, type);
+  }
+
+  function displayResults(results: Space[], type: "start" | "end") {
+    const resultsContainer =
+      type === "end" ? endResultsContainer : startResultsContainer;
+    resultsContainer.innerHTML = "";
+    results.forEach((result: Space) => {
+      const resultItem = document.createElement("div");
+      resultItem.className = "search-result-item";
+      resultItem.textContent = result.name;
+      resultItem.style.padding = "5px";
+      resultItem.style.cursor = "pointer";
+      resultItem.addEventListener("mouseover", function () {
+        mapView.updateState(result, {
+          hoverColor: "hover", // Simulate hover by setting the state
+        });
+      });
+      resultItem.addEventListener("mouseleave", function () {
+        mapView.updateState(result, {
+          hoverColor: "default", // Revert to default state
+        });
+      });
+      resultItem.addEventListener("click", function () {
+        if (type === "end") {
+          endSpace = result;
+          endSearchBar.value = result.name;
+        } else {
+          startSpace = result;
+          startSearchBar.value = result.name;
+        }
+        resultsContainer.style.display = "none"; // Hide results when a space is selected
+      });
+      resultsContainer.appendChild(resultItem);
+    });
+  }
+
+  // Get Directions Button
+  const getDirectionsButton = document.getElementById(
+    "get-directions"
+  ) as HTMLButtonElement;
+  getDirectionsButton.addEventListener("click", function () {
+    if (startSpace && endSpace) {
+      if (path) {
+        mapView.Paths.remove(path);
+      }
+      const directions = mapView.getDirections(startSpace, endSpace);
+      if (directions) {
+        path = mapView.Paths.add(directions.coordinates, {
+          nearRadius: 0.5,
+          farRadius: 0.5,
+          color: "orange",
+        });
+      }
+    } else {
+      console.error("Please select both start and end locations.");
+    }
+  });
+>>>>>>> origin/main
 }
 
 init();
