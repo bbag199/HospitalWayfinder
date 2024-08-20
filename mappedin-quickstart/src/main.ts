@@ -91,19 +91,45 @@ async function init() {
 
   // Set the camera position with final bearing and zoom level
   const setCameraPosition = () => {
-    const entranceCoordinate = new Coordinate(-37.007839, 174.888214); // Replace with actual coordinates
+    const entranceCoordinate = new Coordinate(-37.00820, 174.888214); // Replace with actual coordinates
 
     // Set the camera position with final bearing and zoom level
     mapView.Camera.animateTo(
       {
-        bearing: 167.5 + 10, // Total rotation of 177.5 degrees (167.5 + 10)
-        pitch: 80,
-        zoomLevel: 300, // Increase zoom level to zoom out further
+        bearing: 178.5, // Total rotation of 177.5 degrees (167.5 + 10)
+        pitch: 0,
+        zoomLevel: 18.5, // Increase zoom level to zoom out further
         center: entranceCoordinate,
       },
       { duration: 2000 } // Set duration to 0 for an instant move
     );
+  }; 
+
+  setCameraPosition();
+  /* const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+    'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+
+    'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+    'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
   };
+
+  const setCameraPosition = (floorId: string) => {
+    const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
+
+    // Set the camera position with final bearing, zoom level, and center coordinate
+    mapView.Camera.animateTo(
+      {
+        bearing: settings.bearing,
+        pitch: 0,
+        zoomLevel: 18,
+        center: settings.coordinate,
+      },
+      { duration: 2000 }
+    );
+  };
+
+  setCameraPosition(mapView.currentFloor.id); */
 
 
 
@@ -147,6 +173,7 @@ async function init() {
 
       // Set the camera to zoomLevel 17 and pitch 0
       mapView.Camera.set({
+        bearing: 178.5,
         zoomLevel: 19, // set the zoom level, better in 17-22
         pitch: 78,      // the angle from the top-down (0: Top-down, 90: Eye-level)
         //bearing: 0    // set the angle, e.g. North or South facing
@@ -159,6 +186,7 @@ async function init() {
 
       //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
       mapView.Camera.set({
+        bearing: 178.5,
         zoomLevel: 18.5, // set the zoom level, better in 17-22
         pitch: 0,    // the angle from the top-down (0: Top-down, 90: Eye-level)
         //bearing: 0    // set the angle, e.g. North or South facing
