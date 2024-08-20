@@ -45,6 +45,7 @@ const resources = {
     "Renal Unit/ Rito Dialysis Centre": "Renal Unit/ Rito Dialysis Centre",
     "Module 7a Medicine & Sub": "Module 7a Medicine & Sub",
     "Module 7 Medicine & Subspecialites": "Module 7 Medicine & Subspecialties",
+    "Module 8 ": "Module 8",
     "Module 9 Breast & General Surgery": "Module 9 Breast & General Surgery",
     "Module 10 Women's Health & Urology": "Module 10 Women's Health & Urology",
     "Module 11": "Module 11"
@@ -94,6 +95,7 @@ const resources = {
     "Renal Unit/ Rito Dialysis Centre": "Wāhanga Tātari Toto/Rito Dialysis Centre",
     "Module 7a Medicine & Sub": "Wāhanga 7a Rongoā me Ngā Wāhanga Āpiti",
     "Module 7 Medicine & Subspecialites": "Wāhanga 7 Rongoā me Ngā Wāhanga Āpiti",
+    "Module 8 ": "Mōtū 8",
     "Module 9 Breast & General Surgery": "Wāhanga 9 Mahi Hāparapara Ū me te Whānui",
     "Module 10 Women's Health & Urology": "Wāhanga 10 Hauora Wahine me te Urology",
     "Module 11": "Wāhanga 11"
@@ -141,6 +143,7 @@ const resources = {
     "Renal Unit/ Rito Dialysis Centre": "肾脏科/ Rito 透析中心",
     "Module 7a Medicine & Sub": "模块 7a 医学与附属",
     "Module 7 Medicine & Subspecialites": "模块 7 医学与附属专科",
+    "Module 8 ": "模块 8",
     "Module 9 Breast & General Surgery": "模块 9 乳房与普通外科",
     "Module 10 Women's Health & Urology": "模块 10 妇女健康与泌尿外科",
     "Module 11": "模块 11"
@@ -188,6 +191,7 @@ const resources = {
     "Renal Unit/ Rito Dialysis Centre": "腎臟科/ Rito 透析中心",
     "Module 7a Medicine & Sub": "模組 7a 醫學與附屬",
     "Module 7 Medicine & Subspecialites": "模組 7 醫學與附屬專科",
+    "Module 8 ": "模組 8",
     "Module 9 Breast & General Surgery": "模組 9 乳房與普通外科",
     "Module 10 Women's Health & Urology": "模組 10 婦女健康與泌尿外科",
     "Module 11": "模組 11"
