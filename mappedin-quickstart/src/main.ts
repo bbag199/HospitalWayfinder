@@ -62,45 +62,61 @@ async function init() {
   // Act on the click. If no start space is set, set the start space.
   // If a start space is set and no path is set, add the path.
   // If a path is set, remove the path and start space.
-  mapView.on("click", async (event) => {
-    if (!event) return;
   
-    if (!startSpace) {
-      startSpace = event.spaces[0];
-    } else if (!path && event.spaces[0]) {
-      const directions = mapView.getDirections(startSpace, event.spaces[0]);
-      if (!directions) return;
-  
-      // Clear existing paths and markers
-      mapView.Paths.removeAll();
-      mapView.Markers.removeAll();
-  
-      const ret = mapView.Navigation.draw(directions, {
-        pathOptions: {
-          nearRadius: 0.5,
-          farRadius: 0.5,
-        },
-      });
-  
-      directions.instructions.forEach((instruction: TDirectionInstruction) => {
-        const markerTemplate = `
-          <div class="marker">
-            <p>${instruction.action.type} ${instruction.action.bearing ?? ""} and go ${Math.round(instruction.distance)} meters.</p>
-          </div>`;
-  
-        mapView.Markers.add(instruction.coordinate, markerTemplate, {
-          rank: "always-visible",
-        });
-      });
-  
-    } else if (path) {
-      mapView.Paths.removeAll();
-      mapView.Markers.removeAll();
-      endSpace = null;
-      path = null;
-    }
-  });
+  // Define a navigation state object
+let navigationState = {
+  startSpace: null as Space | null,
+  endSpace: null as Space | null,
+  isPathDrawn: false
+};
 
+mapView.on("click", async (event) => {
+  if (!event) return;
+
+  // Check if it's the first click for the start space
+  if (!navigationState.startSpace) {
+      navigationState.startSpace = event.spaces[0];
+  }
+  // Check if it's the second click for the end space
+  else if (!navigationState.endSpace && event.spaces[0] !== navigationState.startSpace) {
+      navigationState.endSpace = event.spaces[0];
+
+      // Check and draw path if both start and end are set
+      if (navigationState.startSpace && navigationState.endSpace) {
+          // Clear any previous paths if any
+          if (navigationState.isPathDrawn) {
+              mapView.Paths.removeAll();
+              mapView.Markers.removeAll();
+              navigationState.isPathDrawn = false;
+          }
+
+          // Draw the path
+          const directions = await mapView.getDirections(navigationState.startSpace, navigationState.endSpace);
+          if (directions) {
+              mapView.Navigation.draw(directions, {
+                  pathOptions: {
+                      nearRadius: 0.5,
+                      farRadius: 0.5,
+                      color: "orange"
+                  }
+              });
+              navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
+          }
+      }
+  } else {
+      // Reset everything for a new route if a path is already drawn
+      if (navigationState.isPathDrawn) {
+          mapView.Paths.removeAll();
+          mapView.Markers.removeAll();
+          navigationState.isPathDrawn = false;
+      }
+      // Start a new path with the current click as the new start space
+      navigationState.startSpace = event.spaces[0];
+      navigationState.endSpace = null; // Clear previous end space
+  }
+});
+
+  
 
 
   // Add labels for each map
@@ -205,11 +221,12 @@ async function init() {
        }
        const directions = mapView.getDirections(startSpace, endSpace);
        if (directions) {
-         path = mapView.Paths.add(directions.coordinates, {
-           nearRadius: 0.5,
-           farRadius: 0.5,
-           color: "orange"
-         });
+        mapView.Navigation.draw(directions, {
+          pathOptions: {
+              nearRadius: 0.5,
+              farRadius: 0.5,
+              color: "orange"
+          }});
        }
      } else {
        console.error("Please select both start and end locations.");
