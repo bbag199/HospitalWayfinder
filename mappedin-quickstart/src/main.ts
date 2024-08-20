@@ -1,12 +1,4 @@
-import {
-  getMapData,
-  show3dMap,
-  MapView,
-  Space,
-  Path,
-  Coordinate,
-  //Directions,
-} from "@mappedin/mappedin-js";
+import { getMapData, show3dMap, MapView, Space, Path, Coordinate, Directions, show3dMapGeojson, Floor } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
 
@@ -28,15 +20,13 @@ async function init() {
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
 
-  // Add styles to the floor selector to position it
   floorSelector.style.position = "absolute";
-  floorSelector.style.top = "10px"; // Adjust as needed
-  floorSelector.style.right = "10px"; // Adjust as needed
-  floorSelector.style.zIndex = "1000"; // Ensure it is above other elements
+  floorSelector.style.top = "10px";
+  floorSelector.style.right = "10px";
+  floorSelector.style.zIndex = "1000";
 
   mappedinDiv.appendChild(floorSelector);
 
-  // Add each floor to the floor selector.
   mapData.getByType("floor").forEach((floor) => {
     const option = document.createElement("option");
     option.text = floor.name;
@@ -44,7 +34,6 @@ async function init() {
     floorSelector.appendChild(option);
   });
 
-  // Display the default map in the mappedin-map div.
   const mapView: MapView = await show3dMap(
     document.getElementById("mappedin-map") as HTMLDivElement,
     mapData
@@ -90,17 +79,12 @@ async function init() {
     setCameraPosition(id); // Update the camera position when the floor changes
   });
 
-  // Add interactive space and pathfinding functionality
-  // let startSpace: Space | null = null;
-  // let path: Path | null = null;
-
   let startSpace: Space;
   let endSpace: Space | null = null;
   let path: Path | null = null;
-  let connectionPath: Path | null = null;
-  //let selectingStart = true; //
+  let accessibilityEnabled = false;
+  let selectingStart = true; // 
 
-  // Set each space to be interactive and its hover color to orange.
   mapData.getByType("space").forEach((space) => {
     mapView.updateState(space, {
       interactive: true,
@@ -108,43 +92,20 @@ async function init() {
     });
   });
 
-  // Act on the click. If no start space is set, set the start space.
-  // If a start space is set and no path is set, add the path.
-  // If a path is set, remove the path and start space.
   mapView.on("click", async (event) => {
     if (!event) return;
     if (!startSpace) {
       startSpace = event.spaces[0];
     } else if (!path && event.spaces[0]) {
-      const directions = mapView.getDirections(startSpace, event.spaces[0]);
+      const directions = await mapView.getDirections(startSpace, event.spaces[0], { accessible: accessibilityEnabled });
       if (!directions) return;
 
       // Add the main path
       path = mapView.Paths.add(directions.coordinates, {
         nearRadius: 0.5,
         farRadius: 0.5,
-        color: "#3178C6", // Set path color to blue
+        color: "orange"
       });
-
-      // Check if we need to add the connection path
-      const startFloorId = startSpace?.floor.id;
-      const endFloorId = event.spaces[0]?.floor.id;
-
-      if (
-        (startFloorId === "m_984215ecc8edf2ba" &&
-          endFloorId === "m_79ab96f2683f7824") ||
-        (startFloorId === "m_79ab96f2683f7824" &&
-          endFloorId === "m_984215ecc8edf2ba")
-      ) {
-        const startCoordinate = new Coordinate(-37.008212, 174.887679);
-        const endCoordinate = new Coordinate(-37.008202, 174.88719);
-
-        connectionPath = mapView.Paths.add([startCoordinate, endCoordinate], {
-          nearRadius: 0.5,
-          farRadius: 0.5,
-          color: "#3178C6", // Set connection path color to red
-        });
-      }
     } else if (path) {
       mapView.Paths.remove(path);
       //startSpace = null;
@@ -152,61 +113,22 @@ async function init() {
     }
   });
 
-  // Mapping of floor IDs to their corresponding bearings and coordinates
-  const floorSettings: {
-    [key: string]: { bearing: number; coordinate: Coordinate };
-  } = {
-    m_da4e469267051fe3: {
-      bearing: 200,
-      coordinate: new Coordinate(-37.0082, 174.887104),
-    },
-    m_69cd3f0a0aca0001: {
-      bearing: 200,
-      coordinate: new Coordinate(-37.0082, 174.887104),
-    },
-    m_79ab96f2683f7824: {
-      bearing: 200,
-      coordinate: new Coordinate(-37.0082, 174.887104),
-    },
-    m_984215ecc8edf2ba: {
-      bearing: 178.5,
-      coordinate: new Coordinate(-37.008164, 174.888221),
-    },
-    m_94568a67928ac615: {
-      bearing: 178.5,
-      coordinate: new Coordinate(-37.008164, 174.888221),
-    },
-  };
-
-  // Set the camera position with final bearing, zoom level, and center coordinate
-  const setCameraPosition = (floorId: string) => {
-    const settings = floorSettings[floorId] || {
-      bearing: 178.5,
-      coordinate: new Coordinate(0, 0),
-    };
+  const setCameraPosition = () => {
+    const entranceCoordinate = new Coordinate(-37.007839, 174.888214);
 
     // Set the camera position with final bearing, zoom level, and center coordinate
     mapView.Camera.animateTo(
       {
-        bearing: settings.bearing,
-        pitch: 0,
-        zoomLevel: 18,
-        center: settings.coordinate,
+        bearing: 177.5,
+        pitch: 80,
+        zoomLevel: 300,
+        center: entranceCoordinate,
       },
       { duration: 2000 }
     );
   };
 
-  // Call the function to set the camera position
-  //setCameraPosition();
 
-  // Iterate through each point of interest and label it.
-  // for (const poi of mapData.getByType('point-of-interest')) {
-  // 	// Label the point of interest if it's on the map floor currently shown.
-  // 	if (poi.floor.id === mapView.currentFloor.id) {
-  // 		mapView.Labels.add(poi.coordinate, poi.name);
-  // 	}
-  // }
 
   // Add labels for each map
   mapData.getByType("space").forEach((space) => {
@@ -226,16 +148,68 @@ async function init() {
     }
   });
 
+  //Add the Stack Map and testing:
+  //1)Add the stack "enable button":
+  const stackMapButton = document.createElement("button");
+  // Add any classes, text, or other properties (these two code can be linked to the css file):
+  stackMapButton.className = "reset-button mi-button";
+  stackMapButton.textContent = "Enable Stack Map";
+
+  // Append the button to the desired parent element:
+  mappedinDiv.appendChild(stackMapButton);
+
+  //Testing: no show floors:
+  //Find the floor that need to do the Stack Map, at this case, we testing 
+  const noShowFloor2: Floor[] = mapData.getByType("floor").filter((floor: Floor) => (floor.name !== "Level 1" && floor.name !== "Ground floor"));
+
+  // The enable Button is used to enable and disable Stacked Maps.
+  stackMapButton.onclick = () => {
+    
+    //debug here:
+    console.log("Chekcing noShowFloor2", noShowFloor2);
+    //show the stack map here and hide the no used floor:
+    //at here noShowFloor2 is no need floor.
+    // Check the current state of the button text to determine the action
+    if (stackMapButton.textContent === "Enable Stack Map") {
+      // Show the stack map and hide the unused floor
+      mapView.expand({ excludeFloors: noShowFloor2 });
+      stackMapButton.textContent = "Disable Stack Map";
+    } else {
+      // Collapse the stack map
+      mapView.collapse();
+      stackMapButton.textContent = "Enable Stack Map";
+    }
+    
+    //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
+    mapView.Camera.set({
+      zoomLevel: 19, // set the zoom level, better in 17-22
+      pitch: 78,    // the angle from the top-down (0: Top-down, 90: Eye-level)
+      //bearing: 0    // set the angle, e.g. North or South facing
+    })
+
+  };
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
-  const exitSpace = mapData
-    .getByType("object")
-    .find((object) => object.name.includes("exit01"));
-  const exitSpace2 = mapData
-    .getByType("object")
-    .find((object) => object.name.includes("exit02"));
+  const exitSpace = mapData.getByType('object').find(object => object.name.includes("exit01"));
+  const exitSpace2 = mapData.getByType('object').find(object => object.name.includes("exit02"));
+   
 
-  //add an emergency square button here:
+  //add an emergency square button here: 
   const emergencyButton = document.createElement("button");
   emergencyButton.textContent = "Emergency Exit";
   emergencyButton.style.position = "absolute";
@@ -248,14 +222,15 @@ async function init() {
   emergencyButton.style.border = "none";
   emergencyButton.style.borderRadius = "5px";
   emergencyButton.style.cursor = "pointer";
-  emergencyButton.setAttribute("data-emergency-btn", "true");
 
   // Append the button to the map container
   mappedinDiv.appendChild(emergencyButton);
-  emergencyButton.addEventListener("click", function () {
+
+
+  emergencyButton.addEventListener('click', function() {
     console.log("chekcing startSpace input:", startSpace);
     console.log("exit01 space information:", exitSpace);
-
+    
     if (startSpace) {
       if (path) {
         mapView.Paths.remove(path);
@@ -270,30 +245,35 @@ async function init() {
       let shortestWayout;
 
       if (directions && directions2) {
-        shortestWayout =
-          directions.distance <= directions2.distance
-            ? directions
-            : directions2;
+          shortestWayout = directions.distance <= directions2.distance ? directions : directions2;
       } else if (directions) {
-        shortestWayout = directions;
+          shortestWayout = directions;
       } else if (directions2) {
-        shortestWayout = directions2;
+          shortestWayout = directions2;
       } else {
-        throw new Error("Both directions are undefined");
+          throw new Error("Both directions are undefined");
       }
 
       //build the shortest wayout here:
-      if (shortestWayout) {
+      if (shortestWayout) {   
         path = mapView.Paths.add(shortestWayout.coordinates, {
           nearRadius: 0.5,
           farRadius: 0.5,
           color: "red",
+          animateDrawing: true, 
+          drawDuration: 500,
+          animateArrowsOnPath: true,
+          displayArrowsOnPath: true
+
         });
+        // Draw the directions on the map.
+        mapView.Navigation.draw(shortestWayout);
       }
     } else {
       console.error("Please select start space locations.");
     }
-  });
+  }); 
+
 
   const allPOIs = mapData.getByType("point-of-interest");
   const currentFloor = mapView.currentFloor.id;
