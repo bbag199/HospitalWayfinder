@@ -17,6 +17,7 @@
     "@deck.gl/core": "^9.0.26",
     "@deck.gl/layers": "^9.0.26",
     "@mappedin/mappedin-js": "^6.0.1-alpha.31",
-    "@types/geojson": "^7946.0.14"
+    "@types/geojson": "^7946.0.14",
+    "qrcode": "^1.5.4"
   }
 }
