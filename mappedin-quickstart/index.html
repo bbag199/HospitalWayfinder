@@ -63,6 +63,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      
     }
     .search-bar {
       padding: 0.5rem;
@@ -144,40 +145,16 @@
       margin-right: 0;
     }
 
-    /*The below code is for the drop dowm list css: */
-    /*.dropdown {
-        display: none;
-        position: absolute;
-        background-color: white;
-        border: 1px solid #ccc;
-        max-height: 200px;
-        overflow-y: auto;
-        width: 100%;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-    }
-
-    .dropdown-item {
-        padding: 10px;
-        cursor: pointer;
-    }
-
-    .dropdown-item:hover {
-        background-color: #f0f0f0;
-    }*/
-
+    /* This is the seaching-container-dropdown things */
     .search-container-dropdown {
-    position: relative;
-    width: 100%;
+        position: relative;
+        width: 100%;
     }
 
     #end-search {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
+      position: relative; /* Change to relative to ensure dropdown does not overlap #start-search */
+      width: 100%;
+      display: block; /* Show the dropdown for layout testing */
     }
 
     #end-dropdown {
@@ -191,6 +168,7 @@
         display: none; /* Hidden by default */
         border-radius: 4px;
         width: 100%;
+        justify-content: space-between;
     }
 
     .dropdown-item {

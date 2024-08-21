@@ -90,27 +90,10 @@ async function init() {
     }
   });
 
-  // Set the camera position with final bearing and zoom level
-  /* const setCameraPosition = () => {
-    const entranceCoordinate = new Coordinate(-37.00820, 174.888214); // Replace with actual coordinates
-
-    // Set the camera position with final bearing and zoom level
-    mapView.Camera.animateTo(
-      {
-        bearing: 178.5, // Total rotation of 177.5 degrees (167.5 + 10)
-        pitch: 0,
-        zoomLevel: 18.5, // Increase zoom level to zoom out further
-        center: entranceCoordinate,
-      },
-      { duration: 2000 } // Set duration to 0 for an instant move
-    );
-  }; 
-
-  setCameraPosition(); */
+  
   const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
     'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-    'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-    
+    'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },  
     'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.887859) }, //ground floor id
     'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.887859) }, //level 1
   };
@@ -174,10 +157,9 @@ async function init() {
 
       // Set the camera to zoomLevel 17 and pitch 0
       mapView.Camera.animateTo({
-        bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5
-        zoomLevel: 18.5, // set the zoom level, better in 17-22
-        pitch: 78,      // the angle from the top-down (0: Top-down, 90: Eye-level)
-        //bearing: 100    // set the angle, e.g. North or South facing
+        bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
+        zoomLevel: 18.7, // set the zoom level, better in 17-22
+        pitch: 85,      // the angle from the top-down (0: Top-down, 90: Eye-level)   
       });
 
     } else {
@@ -186,51 +168,32 @@ async function init() {
       stackMapButton.textContent = "Enable Stack Map";
       setCameraPosition(mapView.currentFloor.id);
       
-      //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
-      /* mapView.Camera.set({
-        bearing: 178.5,
-        zoomLevel: 18.5, // set the zoom level, better in 17-22
-        pitch: 0,    // the angle from the top-down (0: Top-down, 90: Eye-level)
-        //bearing: 0    // set the angle, e.g. North or South facing
-      }) */
     }
     
-    
-
   };
-
-  
-
-
-
-
-
-
-
-
-
-
-
 
 
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
-  const exitSpace = mapData.getByType('object').find(object => object.name.includes("exit01"));
-  const exitSpace2 = mapData.getByType('object').find(object => object.name.includes("exit02"));
+  const exitSpace = mapData.getByType('object').find(object => object.name.includes("exit01")); //this one should be the main door 
+  const exitSpace2 = mapData.getByType('object').find(object => object.name.includes("exit02"));  //this one should be the back door
    
 
   //add an emergency square button here: 
   const emergencyButton = document.createElement("button");
+  //make this button has the same class of the stack map button 
+  emergencyButton.className = "reset-button mi-button";
+  
   emergencyButton.textContent = "Emergency Exit";
   emergencyButton.style.position = "absolute";
-  emergencyButton.style.bottom = "15px";
-  emergencyButton.style.right = "10px";
-  emergencyButton.style.zIndex = "1000";
-  emergencyButton.style.padding = "10px";
+  emergencyButton.style.bottom = "18px";
+  //emergencyButton.style.right = "10px";
+  //emergencyButton.style.zIndex = "1000";
+  //emergencyButton.style.padding = "10px";
   emergencyButton.style.backgroundColor = "#FF0000";
-  emergencyButton.style.color = "#FFFFFF";
-  emergencyButton.style.border = "none";
-  emergencyButton.style.borderRadius = "5px";
+  //emergencyButton.style.color = "#FFFFFF";
+  //emergencyButton.style.border = "none";
+  //emergencyButton.style.borderRadius = "5px";
   emergencyButton.style.cursor = "pointer";
 
   // Append the button to the map container
@@ -245,15 +208,15 @@ async function init() {
       if (path) {
         mapView.Paths.remove(path);
       }
+      //create two distance for exit01 and exit02, will check the shortest way out later:
       const directions = mapView.getDirections(startSpace, exitSpace!);
       const directions2 = mapView.getDirections(startSpace, exitSpace2!);
-      //check the distance here:
+      //debug the distance here:
       console.log("checking direcitions: ", directions?.distance);
       console.log("checking direcitions2: ", directions2?.distance);
 
       //checking the shortest wayout here:
       let shortestWayout;
-
       if (directions && directions2) {
           shortestWayout = directions.distance <= directions2.distance ? directions : directions2;
       } else if (directions) {
@@ -270,14 +233,7 @@ async function init() {
           nearRadius: 0.5,
           farRadius: 0.5,
           color: "red",
-          animateDrawing: true, 
-          drawDuration: 500,
-          animateArrowsOnPath: true,
-          displayArrowsOnPath: true
-
         });
-        // Draw the directions on the map.
-        mapView.Navigation.draw(shortestWayout);
       }
     } else {
       console.error("Please select start space locations.");
@@ -312,7 +268,12 @@ async function init() {
        endResultsContainer.style.display = 'none';
      }
    });
-   
+  
+
+
+   ///////////////////////////////////
+   ///////////////////////////////////
+   ///////////////////////////////////
    //testing the start search bar drop down list function:
    const spaces: Space[] = mapData.getByType("space");
 
@@ -321,18 +282,26 @@ async function init() {
     const searchInput = document.getElementById('end-search') as HTMLInputElement;
 
     if (dropdown && searchInput) {
-      // Create "Module List" and "Toilet List" containers
-    const moduleListContainer = document.createElement('div');
-    moduleListContainer.className = 'dropdown-item';
-    moduleListContainer.textContent = 'Module List';
-    moduleListContainer.style.cursor = 'pointer';
-    dropdown.appendChild(moduleListContainer);
+    // Create "Module List" and "Toilet List" containers
+    // Create "Module List" and "Toilet List" buttons
+    const moduleListButton = document.createElement('button');
+    moduleListButton.className = 'dropdown-item';
+    moduleListButton.textContent = 'Module List';
+    moduleListButton.style.cursor = 'pointer';
+    moduleListButton.style.backgroundColor = 'transparent'; // Optional: Make it look like a div
+    moduleListButton.style.border = 'none'; // Optional: Remove button border
 
-    const toiletListContainer = document.createElement('div');
-    toiletListContainer.className = 'dropdown-item';
-    toiletListContainer.textContent = 'Toilet List';
-    //toiletListContainer.style.cursor = 'pointer';
-    dropdown.appendChild(toiletListContainer);
+    // Similarly, create the "Toilet List" button
+    const toiletListButton = document.createElement('button');
+    toiletListButton.className = 'dropdown-item';
+    toiletListButton.textContent = 'Toilet List';
+    toiletListButton.style.cursor = 'pointer';
+    toiletListButton.style.backgroundColor = 'transparent'; // Optional: Make it look like a div
+    toiletListButton.style.border = 'none'; // Optional: Remove button border
+
+    // Append these buttons to the dropdown container 
+    dropdown.appendChild(moduleListButton);
+    dropdown.appendChild(toiletListButton);
 
     // Create a container for module items
     const moduleItemsContainer = document.createElement('div');
@@ -348,7 +317,7 @@ async function init() {
 
     // Populate the lists with spaces
     spaces.forEach(space => {
-        const spaceOption = document.createElement('div');
+        const spaceOption = document.createElement('button');
         spaceOption.className = 'dropdown-item';
         spaceOption.textContent = space.name; // The property containing the space name
 
@@ -360,27 +329,28 @@ async function init() {
     });
 
     // Handle "Module List" click to toggle sub-items
-    moduleListContainer.addEventListener('click', () => {
+    moduleListButton.addEventListener('click', () => {
         const isVisible = moduleItemsContainer.style.display === 'block';
         moduleItemsContainer.style.display = isVisible ? 'none' : 'block';
     });
 
     // Handle "Toilet List" click to show items
-    toiletListContainer.addEventListener('click', () => {
+    toiletListButton.addEventListener('click', () => {
       const isVisible = toiletItemsContainer.style.display === 'block';
       toiletItemsContainer.style.display = isVisible ? 'none' : 'block';
     });
       
       // Populate the dropdown with space names
-      /* spaces.forEach(space => {
+     /*   spaces.forEach(space => {
           const spaceOption = document.createElement('div');
           spaceOption.className = 'dropdown-item';
           spaceOption.textContent = space.name; // The property containing the space name
           dropdown.appendChild(spaceOption);
-      }); */
+      }); */ 
 
       // Function to show the dropdown
       const showDropdown = () => {
+        
         dropdown.style.display = 'block';
       };
   
@@ -390,7 +360,7 @@ async function init() {
       };
   
       // Show the dropdown when the user clicks on the search bar
-      searchInput.addEventListener('focus', () => {
+      searchInput.addEventListener('focus', () => {    
           showDropdown();
       });
   
@@ -418,7 +388,7 @@ async function init() {
         // Retrieve the Space instance
         const spaceCollection: Space[] = mapData.getByType("space"); // get the space array from the mapData
         return spaceCollection.find(space => space.name === name);
-    }
+      }
 
       // Allow selecting an item from the dropdown
        dropdown.addEventListener('click', function(event: MouseEvent) {
@@ -432,9 +402,11 @@ async function init() {
         }
       }); 
 
-    }
+    } 
 
-  
+   ///////////////////////////////////
+   ///////////////////////////////////
+   ///////////////////////////////////
    startSearchBar.addEventListener('input', function() {
      const query = startSearchBar.value.toLowerCase();
      if (query) {
