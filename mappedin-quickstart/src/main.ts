@@ -392,7 +392,7 @@ async function init() {
       if (path) {
         mapView.Paths.remove(path);
       }
-      const directions = mapView.getDirections(startSpace, endSpace);
+      const directions = mapView.getDirections(startSpace, endSpace, { accessible: accessibilityEnabled });
       if (directions) {
         path = mapView.Paths.add(directions.coordinates, {
           nearRadius: 0.5,
