@@ -90,7 +90,7 @@ async function init() {
     const id = event?.floor.id;
     if (!id) return;
     floorSelector.value = id;
-    setCameraPosition(); // Update the camera position when the floor changes
+    setCameraPosition(id); // Update the camera position when the floor changes
   });
 
   let startSpace: Space;
@@ -127,20 +127,34 @@ async function init() {
     }
   });
 
-  const setCameraPosition = () => {
-    const entranceCoordinate = new Coordinate(-37.007839, 174.888214);
-
-    // Set the camera position with final bearing, zoom level, and center coordinate
+  const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+    'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+    'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+  };
+  
+   // Set the camera position
+   const setCameraPosition = (floorId: string) => {
+    const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
     mapView.Camera.animateTo(
       {
-        bearing: 177.5,
-        pitch: 80,
-        zoomLevel: 300,
-        center: entranceCoordinate,
+        bearing: settings.bearing,
+        pitch: 0,
+        zoomLevel: 18,
+        center: settings.coordinate,
       },
       { duration: 2000 }
     );
   };
+  
+  setCameraPosition(mapView.currentFloor.id);
+  for (const poi of mapData.getByType('point-of-interest')) {
+      // Label the point of interest if it's on the map floor currently shown.
+      if (poi.floor.id === mapView.currentFloor.id) {
+          mapView.Labels.add(poi.coordinate, poi.name);
+      }
+  }
 
 
 
@@ -417,7 +431,10 @@ accessibilityEnabled = false;
 
 accessibilityButton.addEventListener("click", () => {
   accessibilityEnabled = !accessibilityEnabled;
-  const lifts = mapData.getByType("space").filter(space => space.name.toLowerCase().includes("lift"));
+  const lifts = mapData.getByType("space").filter((space) => 
+    space.name.toLowerCase().includes("elevator") || 
+    space.name.toLowerCase().includes("lifts")
+  );
 
   lifts.forEach(lift => {
     if (!liftsHighlighted) {
@@ -439,7 +456,7 @@ accessibilityButton.addEventListener("click", () => {
   liftsHighlighted = !liftsHighlighted;
   if (liftsHighlighted) {
     accessibilityButton.style.backgroundColor = "#0f2240";
-    accessibilityButton.style.color = "#fff"
+    accessibilityButton.style.color = "#fff";
   } else {
     accessibilityButton.style.backgroundColor = "#fff";
     accessibilityButton.style.color = "#000";
