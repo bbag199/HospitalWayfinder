@@ -16,7 +16,7 @@ import i18n from "./i18n";
 const options = {
   key: "6666f9ba8de671000ba55c63",
   secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
-  mapId: "6637fd20269972f02bf839da",
+  mapId: "66b179460dad9e000b5ee951",
 };
 
 async function init() {
@@ -29,13 +29,36 @@ async function init() {
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
 
+  // Add styles to the floor selector to position it
   floorSelector.style.position = "absolute";
-  floorSelector.style.top = "10px";
-  floorSelector.style.right = "10px";
-  floorSelector.style.zIndex = "1000";
+  floorSelector.style.top = "10px"; // Adjust as needed
+  floorSelector.style.right = "10px"; // Adjust as needed
+  floorSelector.style.zIndex = "1000"; // Ensure it is above other elements
 
   mappedinDiv.appendChild(floorSelector);
 
+
+     // Display the default map in the mappedin-map div
+     const mapView: MapView = await show3dMap(
+      document.getElementById("mappedin-map") as HTMLDivElement,
+      mapData
+    );
+  
+    floorSelector.value = mapView.currentFloor.id;
+
+    floorSelector.addEventListener("change", (e) => {
+      mapView.setFloor((e.target as HTMLSelectElement)?.value);
+    });
+
+    mapView.on("floor-change", (event) => {
+      const id = event?.floor.id;
+      if (!id) return;
+      floorSelector.value = id;
+      setCameraPosition(id); // Update the camera position when the floor changes
+    });
+
+
+  // Add each floor to the floor selector
   mapData.getByType("floor").forEach((floor) => {
     const option = document.createElement("option");
     option.text = floor.name;
@@ -43,51 +66,7 @@ async function init() {
     floorSelector.appendChild(option);
   });
 
-  const mapView: MapView = await show3dMap(
-    document.getElementById("mappedin-map") as HTMLDivElement,
-    mapData
-  );
-
-  // Function to translate and label locations
-  function translateAndLabelLocations() {
-    mapView.Labels.removeAll();
-
-    mapData.getByType("space").forEach((space) => {
-      const originalName = space.name;
-      const translatedName = i18n.t(originalName);
-
-      mapView.Labels.add(space, translatedName, {
-        appearance: {
-          text: { foregroundColor: "orange" },
-        },
-      });
-    });
-  }
-
-  // Initial labeling
-  translateAndLabelLocations();
-
-  // Handle language change
-  document.getElementById("language")?.addEventListener("change", () => {
-    i18n.changeLanguage(
-      (document.getElementById("language") as HTMLSelectElement).value,
-      translateAndLabelLocations
-    );
-  });
-
-  floorSelector.value = mapView.currentFloor.id;
-
-  floorSelector.addEventListener("change", (e) => {
-    mapView.setFloor((e.target as HTMLSelectElement)?.value);
-  });
-
-  mapView.on("floor-change", (event) => {
-    const id = event?.floor.id;
-    if (!id) return;
-    floorSelector.value = id;
-    setCameraPosition(); // Update the camera position when the floor changes
-  });
-
+  
   let startSpace: Space;
   let endSpace: Space | null = null;
   let path: Path | null = null;
@@ -122,21 +101,110 @@ async function init() {
     }
   });
 
-  const setCameraPosition = () => {
-    const entranceCoordinate = new Coordinate(-37.007839, 174.888214);
 
-    // Set the camera position with final bearing, zoom level, and center coordinate
+
+  
+
+ // Mapping of floor IDs to their corresponding bearings and coordinates
+ const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+  'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+  'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+  'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+  'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+};
+
+  
+
+  // Function to translate and label locations
+  function translateAndLabelLocations() {
+    mapView.Labels.removeAll();
+
+    mapData.getByType("space").forEach((space) => {
+      const originalName = space.name;
+      const translatedName = i18n.t(originalName);
+
+      mapView.Labels.add(space, translatedName, {
+        appearance: {
+          text: { foregroundColor: "orange" },
+        },
+      });
+    });
+  }
+
+  // Initial labeling
+  translateAndLabelLocations();
+
+  // Handle language change
+  document.getElementById("language")?.addEventListener("change", () => {
+    i18n.changeLanguage(
+      (document.getElementById("language") as HTMLSelectElement).value,
+      translateAndLabelLocations
+    );
+  });
+
+  floorSelector.value = mapView.currentFloor.id;
+
+  floorSelector.addEventListener("change", (e) => {
+    mapView.setFloor((e.target as HTMLSelectElement)?.value);
+  });
+
+  
+
+  
+   // Set the camera position
+   const setCameraPosition = (floorId: string) => {
+    const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
     mapView.Camera.animateTo(
       {
-        bearing: 177.5,
-        pitch: 80,
-        zoomLevel: 300,
-        center: entranceCoordinate,
+        bearing: settings.bearing,
+        pitch: 0,
+        zoomLevel: 18,
+        center: settings.coordinate,
       },
       { duration: 2000 }
     );
   };
 
+  setCameraPosition(mapView.currentFloor.id);
+  function addPOILabels() {
+    mapData.getByType('point-of-interest').forEach((poi) => {
+        if (poi.floor.id === mapView.currentFloor.id) {
+            mapView.Labels.add(poi.coordinate, poi.name);
+        }
+    });
+}
+
+// Call function to add labels initially
+addPOILabels();
+
+ 
+  const allElements = [
+    ...mapData.getByType("object"),
+    ...mapData.getByType("space"),
+    ...mapData.getByType("point-of-interest"),
+    ...mapData.getByType("door"),
+  ];
+   // Function to add labels to all map elements
+  /* const addAllLabels = () => {
+    allElements.forEach((element) => {
+      if (element.name) {
+        mapView.Labels.add(element, element.name);
+      }
+    });
+  };
+
+  // Add initial labels to all elements
+  addAllLabels(); */
+
+
+
+// Update labels when the floor changes
+mapView.on('floor-change', (event) => {
+    const floorId = event?.floor.id;
+    if (floorId) {
+        addPOILabels(); // Re-add labels for the new floor
+    }
+});
 
 
   // Add labels for each map
