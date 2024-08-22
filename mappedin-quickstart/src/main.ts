@@ -1,4 +1,4 @@
-import { getMapData, show3dMap, MapView, Space, Path, Coordinate, Directions, show3dMapGeojson, Floor } from "@mappedin/mappedin-js";
+import { getMapData, show3dMap, MapView, Space, Path, Coordinate, Directions, show3dMapGeojson, Floor, Connection } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 
 
@@ -62,7 +62,12 @@ async function init() {
   let startSpace: Space;
   let endSpace: Space | null = null;
   let path: Path | null = null;
-  let selectingStart = true; // 
+  let accessibilityEnabled = false;
+  let selectingStart = true; //
+  let connectionPath: Path | null = null;
+
+  
+
 
   // Set each space to be interactive and its hover color to orange.
   mapData.getByType("space").forEach((space) => {
