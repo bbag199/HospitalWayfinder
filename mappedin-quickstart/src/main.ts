@@ -9,7 +9,10 @@ const options = {
   key: '6666f9ba8de671000ba55c63',
   secret: 'd15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80',
   //old ID: mapId: '6637fd20269972f02bf839da',
-  mapId: '66b179460dad9e000b5ee951',
+  mapId: '66b179460dad9e000b5ee951',     
+  //6637fd20269972f02bf839da
+  //new: 66b179460dad9e000b5ee951
+
 };
 
 async function init() {
@@ -340,13 +343,6 @@ async function init() {
       toiletItemsContainer.style.display = isVisible ? 'none' : 'block';
     });
       
-      // Populate the dropdown with space names
-     /*   spaces.forEach(space => {
-          const spaceOption = document.createElement('div');
-          spaceOption.className = 'dropdown-item';
-          spaceOption.textContent = space.name; // The property containing the space name
-          dropdown.appendChild(spaceOption);
-      }); */ 
 
       // Function to show the dropdown
       const showDropdown = () => {
