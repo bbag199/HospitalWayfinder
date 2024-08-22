@@ -176,7 +176,7 @@ async function init() {
     }
   });
 
-  //Add the Stack Map and testing:
+   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
   const stackMapButton = document.createElement("button");
   // Add any classes, text, or other properties (these two code can be linked to the css file):
@@ -188,7 +188,7 @@ async function init() {
 
   //Testing: no show floors:
   //Find the floor that need to do the Stack Map, at this case, we testing 
-  const noShowFloor2: Floor[] = mapData.getByType("floor").filter((floor: Floor) => (floor.name !== "Level 1" && floor.name !== "Ground floor"));
+  const noShowFloor2: Floor[] = mapData.getByType("floor").filter((floor: Floor) => (floor.name !== "SuperClinic Level 1" && floor.name !== "SuperClinic & Surgical Centre Ground Lvl"));
 
   // The enable Button is used to enable and disable Stacked Maps.
   stackMapButton.onclick = () => {
@@ -202,20 +202,24 @@ async function init() {
       // Show the stack map and hide the unused floor
       mapView.expand({ excludeFloors: noShowFloor2 });
       stackMapButton.textContent = "Disable Stack Map";
+
+      // Set the camera to zoomLevel 17 and pitch 0
+      mapView.Camera.animateTo({
+        bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
+        zoomLevel: 18.7, // set the zoom level, better in 17-22
+        pitch: 85,      // the angle from the top-down (0: Top-down, 90: Eye-level)   
+      });
+
     } else {
       // Collapse the stack map
       mapView.collapse();
       stackMapButton.textContent = "Enable Stack Map";
+      setCameraPosition(mapView.currentFloor.id);
+      
     }
     
-    //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
-    mapView.Camera.set({
-      zoomLevel: 19, // set the zoom level, better in 17-22
-      pitch: 78,    // the angle from the top-down (0: Top-down, 90: Eye-level)
-      //bearing: 0    // set the angle, e.g. North or South facing
-    })
-
   };
+
 
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
