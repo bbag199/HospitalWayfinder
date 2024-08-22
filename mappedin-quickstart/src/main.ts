@@ -16,9 +16,14 @@ import i18n from "./i18n";
 const options = {
   key: "6666f9ba8de671000ba55c63",
   secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
-  mapId: "6637fd20269972f02bf839da",
+  mapId: "66b179460dad9e000b5ee951",
 };
-
+const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+  'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+  'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+  'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+  'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+};
 async function init() {
   //set the language to English on initialization
   i18n.changeLanguage("en");
