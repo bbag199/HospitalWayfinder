@@ -63,6 +63,23 @@ async function init() {
         },
       });
     });
+
+    // Translate and label points of interest (POIs)
+    const allPOIs = mapData.getByType("point-of-interest");
+    const currentFloor = mapView.currentFloor.id;
+
+    allPOIs.forEach((poi) => {
+      if (poi.floor.id == currentFloor) {
+        const originalName = poi.name;
+        const translatedName = i18n.t(originalName);
+
+        mapView.Labels.add(poi.coordinate, translatedName, {
+          appearance: {
+            text: { foregroundColor: "orange" },
+          },
+        });
+      }
+    });
   }
 
   // Initial labeling
@@ -161,24 +178,6 @@ async function init() {
       { duration: 2000 }
     );
   };
-
-  // Add labels for each map
-  mapData.getByType("space").forEach((space) => {
-    if (space.name) {
-      //get translated location name
-      let translatedName = space.name;
-
-      if (space.name === "Module 2a ") {
-        translatedName = i18n.t("Module 2a ");
-      }
-      //use translated name to re-label
-      mapView.Labels.add(space, translatedName, {
-        appearance: {
-          text: { foregroundColor: "orange" },
-        },
-      });
-    }
-  });
 
   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
