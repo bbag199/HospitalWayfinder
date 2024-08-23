@@ -55,6 +55,7 @@ async function init() {
       if (!id) return;
       floorSelector.value = id;
       setCameraPosition(id); // Update the camera position when the floor changes
+      addAllLabels();
     });
 
 
@@ -113,117 +114,113 @@ async function init() {
   'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
 };
 
-  
+ // Set the camera position
+ const setCameraPosition = (floorId: string) => {
+  const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
+  mapView.Camera.animateTo(
+    {
+      bearing: settings.bearing,
+      pitch: 0,
+      zoomLevel: 18,
+      center: settings.coordinate,
+    },
+    { duration: 2000 }
+  );
+};
 
-  // Function to translate and label locations
-  function translateAndLabelLocations() {
-    mapView.Labels.removeAll();
-
-    mapData.getByType("space").forEach((space) => {
-      const originalName = space.name;
-      const translatedName = i18n.t(originalName);
-
-      mapView.Labels.add(space, translatedName, {
-        appearance: {
-          text: { foregroundColor: "orange" },
-        },
-      });
-    });
-  }
-
-  // Initial labeling
-  translateAndLabelLocations();
-
-  // Handle language change
-  document.getElementById("language")?.addEventListener("change", () => {
-    i18n.changeLanguage(
-      (document.getElementById("language") as HTMLSelectElement).value,
-      translateAndLabelLocations
-    );
-  });
-
-  floorSelector.value = mapView.currentFloor.id;
-
-  floorSelector.addEventListener("change", (e) => {
-    mapView.setFloor((e.target as HTMLSelectElement)?.value);
-  });
-
-  
-
-  
-   // Set the camera position
-   const setCameraPosition = (floorId: string) => {
-    const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
-    mapView.Camera.animateTo(
-      {
-        bearing: settings.bearing,
-        pitch: 0,
-        zoomLevel: 18,
-        center: settings.coordinate,
-      },
-      { duration: 2000 }
-    );
-  };
-
-  setCameraPosition(mapView.currentFloor.id);
-  function addPOILabels() {
-    mapData.getByType('point-of-interest').forEach((poi) => {
-        if (poi.floor.id === mapView.currentFloor.id) {
-            mapView.Labels.add(poi.coordinate, poi.name);
-        }
-    });
+setCameraPosition(mapView.currentFloor.id);
+for (const poi of mapData.getByType('point-of-interest')) {
+	// Label the point of interest if it's on the map floor currently shown.
+	if (poi.floor.id === mapView.currentFloor.id) {
+		mapView.Labels.add(poi.coordinate, poi.name);
+	}
 }
-
-// Call function to add labels initially
-addPOILabels();
-
- 
-  const allElements = [
-    ...mapData.getByType("object"),
-    ...mapData.getByType("space"),
-    ...mapData.getByType("point-of-interest"),
-    ...mapData.getByType("door"),
-  ];
-   // Function to add labels to all map elements
-  /* const addAllLabels = () => {
-    allElements.forEach((element) => {
-      if (element.name) {
-        mapView.Labels.add(element, element.name);
-      }
-    });
-  };
-
-  // Add initial labels to all elements
-  addAllLabels(); */
-
 
 
 // Update labels when the floor changes
 mapView.on('floor-change', (event) => {
-    const floorId = event?.floor.id;
-    if (floorId) {
-        addPOILabels(); // Re-add labels for the new floor
-    }
+  const floorId = event?.floor.id;
+  if (floorId) {
+      addAllLabels(); // Re-add labels for the new floor
+  }
 });
 
 
-  // Add labels for each map
-  mapData.getByType("space").forEach((space) => {
-    if (space.name) {
-      //get translated location name
-      let translatedName = space.name;
 
-      if (space.name === "Module 2a ") {
-        translatedName = i18n.t("Module 2a ");
-      }
-      //use translated name to re-label
-      mapView.Labels.add(space, translatedName, {
+const allElements = [
+  ...mapData.getByType("space"),
+  ...mapData.getByType("point-of-interest"),
+  ...mapData.getByType("door"),
+];
+ // Function to add labels to all map elements
+ const addAllLabels = () => {
+  allElements.forEach((element) => {
+    if (element.name) {
+      mapView.Labels.add(element, element.name);
+    }
+  });
+};
+
+// Add initial labels to all elements
+addAllLabels();
+
+// Update labels when the floor changes
+mapView.on('floor-change', (event) => {
+  const floorId = event?.floor.id;
+  if (floorId) {
+      addAllLabels(); // Re-add labels for the new floor
+  }
+});
+
+ // Function to add labels to all map elements with translation
+const addAndTranslateLabels = () => {
+  // Remove existing labels to avoid duplicates
+  mapView.Labels.removeAll();
+
+  // Combine all elements into a single array
+  const allElements = [
+    ...mapData.getByType("space"),
+    ...mapData.getByType("point-of-interest"),
+    ...mapData.getByType("door"),
+  ];
+
+  // Add labels to each element, translating if possible
+  allElements.forEach((element) => {
+    if (element.name) {
+      const translatedName = i18n.t(element.name) || element.name;
+      mapView.Labels.add(element, translatedName, {
         appearance: {
           text: { foregroundColor: "orange" },
         },
       });
     }
   });
+};
+
+// Initial labeling
+addAndTranslateLabels();
+
+// Handle language change
+document.getElementById("language")?.addEventListener("change", () => {
+  i18n.changeLanguage(
+    (document.getElementById("language") as HTMLSelectElement).value,
+    addAndTranslateLabels // Re-add labels with translation on language change
+  );
+});
+
+// Update labels when the floor changes
+mapView.on("floor-change", (event) => {
+  const floorId = event?.floor.id;
+  if (floorId) {
+    addAndTranslateLabels(); // Re-add labels for the new floor with translation
+  }
+});
+
+// Handle floor selection change
+floorSelector.value = mapView.currentFloor.id;
+floorSelector.addEventListener("change", (e) => {
+  mapView.setFloor((e.target as HTMLSelectElement)?.value);
+});
 
   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
@@ -453,6 +450,8 @@ mapView.on('floor-change', (event) => {
       console.error("Please select both start and end locations.");
     }
   });
+
+  
 
 // Button Accessibility
 const accessibilityButton = document.createElement("button");
