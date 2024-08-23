@@ -437,7 +437,7 @@ accessibilityButton.addEventListener("click", () => {
   accessibilityEnabled = !accessibilityEnabled;
   const lifts = mapData.getByType("space").filter((space) => 
     space.name.toLowerCase().includes("elevator") || 
-    space.name.toLowerCase().includes("lifts")
+    space.name.toLowerCase().includes("lifts") 
   );
 
   lifts.forEach(lift => {
