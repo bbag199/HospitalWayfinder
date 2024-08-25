@@ -51,6 +51,7 @@ async function init() {
   let startSpace: Space;
   let endSpace: Space | null = null;
   let path: Path | null = null;
+  let isSelectingStart = false;
 
   // Set each space to be interactive and its hover color to orange.
   mapData.getByType("space").forEach((space) => {
@@ -70,8 +71,58 @@ let navigationState = {
   isPathDrawn: false
 };
 
+// mapView.on("click", async (event) => {
+//   if (!event) return;
+
+//   // Check if it's the first click for the start space
+//   if (!navigationState.startSpace) {
+//       navigationState.startSpace = event.spaces[0];
+//   }
+//   // Check if it's the second click for the end space
+//   else if (!navigationState.endSpace && event.spaces[0] !== navigationState.startSpace) {
+//       navigationState.endSpace = event.spaces[0];
+
+//       // Check and draw path if both start and end are set
+//       if (navigationState.startSpace && navigationState.endSpace) {
+//           // Clear any previous paths if any
+//           if (navigationState.isPathDrawn) {
+//               mapView.Paths.removeAll();
+//               mapView.Markers.removeAll();
+//               navigationState.isPathDrawn = false;
+//           }
+
+//           // Draw the path
+//           const directions = await mapView.getDirections(navigationState.startSpace, navigationState.endSpace);
+//           if (directions) {
+//               mapView.Navigation.draw(directions, {
+//                   pathOptions: {
+//                       nearRadius: 0.5,
+//                       farRadius: 0.5,
+//                       color: "orange"
+//                   }
+//               });
+//               navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
+//           }
+//       }
+//   } else {
+//       // Reset everything for a new route if a path is already drawn
+//       if (navigationState.isPathDrawn) {
+//           mapView.Paths.removeAll();
+//           mapView.Markers.removeAll();
+//           navigationState.isPathDrawn = false;
+//       }
+//       // Start a new path with the current click as the new start space
+//       navigationState.startSpace = event.spaces[0];
+//       navigationState.endSpace = null; // Clear previous end space
+//   }
+// });
+
+
+
+
+//with directiopns
 mapView.on("click", async (event) => {
-  if (!event) return;
+  if (!event || !event.spaces.length) return;
 
   // Check if it's the first click for the start space
   if (!navigationState.startSpace) {
@@ -90,17 +141,38 @@ mapView.on("click", async (event) => {
               navigationState.isPathDrawn = false;
           }
 
-          // Draw the path
-          const directions = await mapView.getDirections(navigationState.startSpace, navigationState.endSpace);
-          if (directions) {
-              mapView.Navigation.draw(directions, {
-                  pathOptions: {
-                      nearRadius: 0.5,
-                      farRadius: 0.5,
-                      color: "orange"
-                  }
-              });
-              navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
+          try {
+              // Draw the path
+              const directions = await mapView.getDirections(navigationState.startSpace, navigationState.endSpace);
+              if (directions) {
+                  mapView.Navigation.draw(directions, {
+                      pathOptions: {
+                          nearRadius: 0.5,
+                          farRadius: 0.5,
+                          color: "orange"
+                      }
+                  });
+                  navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
+
+                  // Add markers based on directions
+                  directions.instructions.forEach(instruction => {
+                      const markerTemplate = `
+                          <div class="marker">
+                              <p>${instruction.action.type} ${
+                                  instruction.action.bearing ?? ""
+                              } and go ${Math.round(instruction.distance)} meters.</p>
+                          </div>`;
+          
+                      mapView.Markers.add(instruction.coordinate, markerTemplate, {
+                          rank: "always-visible",
+                      });
+                  });
+              } else {
+                  throw new Error("Failed to retrieve directions.");
+              }
+          } catch (error) {
+              console.error("Error fetching directions:", error);
+              alert('Failed to draw directions.');
           }
       }
   } else {
@@ -116,7 +188,6 @@ mapView.on("click", async (event) => {
   }
 });
 
-  
 
 
   // Add labels for each map
