@@ -81,27 +81,57 @@ async function init() {
     });
   });
 
+  // Define a navigation state object
+  let navigationState = {
+    startSpace: null as Space | null,
+    endSpace: null as Space | null,
+    isPathDrawn: false
+  };
+  
   mapView.on("click", async (event) => {
     if (!event) return;
-    if (!startSpace) {
-      startSpace = event.spaces[0];
-    } else if (!path && event.spaces[0]) {
-      const directions = await mapView.getDirections(startSpace, event.spaces[0], { accessible: accessibilityEnabled });
-      if (!directions) return;
-
-      // Add the main path
-      path = mapView.Paths.add(directions.coordinates, {
-        nearRadius: 0.5,
-        farRadius: 0.5,
-        color: "orange"
-      });
-    } else if (path) {
-      mapView.Paths.remove(path);
-      //startSpace = null;
-      path = null;
+  
+    // Check if it's the first click for the start space
+    if (!navigationState.startSpace) {
+        navigationState.startSpace = event.spaces[0];
+    }
+    // Check if it's the second click for the end space
+    else if (!navigationState.endSpace && event.spaces[0] !== navigationState.startSpace) {
+        navigationState.endSpace = event.spaces[0];
+  
+        // Check and draw path if both start and end are set
+        if (navigationState.startSpace && navigationState.endSpace) {
+            // Clear any previous paths if any
+            if (navigationState.isPathDrawn) {
+                mapView.Paths.removeAll();
+                mapView.Markers.removeAll();
+                navigationState.isPathDrawn = false;
+            }
+  
+            // Draw the path
+            const directions = await mapView.getDirections(navigationState.startSpace, navigationState.endSpace);
+            if (directions) {
+                mapView.Navigation.draw(directions, {
+                    pathOptions: {
+                        nearRadius: 0.5,
+                        farRadius: 0.5,
+                    }
+                });
+                navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
+            }
+        }
+    } else {
+        // Reset everything for a new route if a path is already drawn
+        if (navigationState.isPathDrawn) {
+            mapView.Paths.removeAll();
+            mapView.Markers.removeAll();
+            navigationState.isPathDrawn = false;
+        }
+        // Start a new path with the current click as the new start space
+        navigationState.startSpace = event.spaces[0];
+        navigationState.endSpace = null; // Clear previous end space
     }
   });
-
 
 
   
@@ -121,7 +151,7 @@ async function init() {
     {
       bearing: settings.bearing,
       pitch: 0,
-      zoomLevel: 18,
+      zoomLevel: 18.5,
       center: settings.coordinate,
     },
     { duration: 2000 }
