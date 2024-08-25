@@ -46,7 +46,7 @@
       transition: color 0.3s, transform 0.3s;
     }
     .nav-links a:hover {
-      color: #ffcc00;
+      color: #0059e8;
       transform: scale(1.05);
     }
     #mappedin-map {
@@ -87,27 +87,36 @@
     .search-result-item:hover {
       background-color: #f0f0f0;
     }
+    
 
     .settings-btn {
       margin-left: 1.5rem;
       padding: 0.5rem 1rem;
       font-size: 1rem;
       cursor: pointer;
-      background-color: rgb(15, 34, 64);
+      background-color: #0F2240;
       color: #ffffff;
       border: none;
       border-radius: 4px;
+    }
+    .settings-btn:hover {
+      background-color:#002a6d;
     }
 
     .directions-btn {
       padding: 0.5rem 1rem;
       font-size: 1rem;
       cursor: pointer;
-      background-color: rgb(15, 34, 64);
+      background-color: #0F2240;
       color: #ffffff;
       border: none;
       border-radius: 4px;
     }
+
+    .directions-btn:hover {
+      background-color: #002a6d;
+    }
+
     .modal {
       display: none; /* Hidden by default */
       position: fixed;
@@ -124,13 +133,19 @@
       background-color: #fefefe;
       margin: 10% auto;
       padding: 20px;
-      border: 1px solid #888;
+      border: 1px solid #ccc;
       width: 60%;
       max-width:500px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Added box-shadow for better visibility */
       position: relative;
       z-index: 1060; /* Ensure content is above modal background */
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+      justify-items: center;
     }
+
     .close {
       color: #aaa;
       float: right;
@@ -142,6 +157,19 @@
       color: black;
       text-decoration: none;
       cursor: pointer;
+    }
+
+    #applySettings {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #0F2240;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #applySettings:hover {
+      background-color: #002a6d;
     }
 
     /* Add the enableStackMap button style here: */
@@ -164,11 +192,11 @@
       user-select: none;
       pointer-events: all;
       position: fixed; /* Use fixed to keep the button in the same place even when scrolling */
-      bottom: 70px; /* Distance from the bottom of the screen */
-      right: 20px; /* Distance from the right side of the screen */
+      bottom: 60px; /* Distance from the bottom of the screen */
+      right: 12px; /* Distance from the right side of the screen */
       height: 36px;
       width: fit-content;
-      border-radius: 37.5px;
+      border-radius: 5px;
       background: #0F2240;
       color: #ffffff; /*set font color to white*/
       box-shadow: 0 4px 0 0 var(--burnt-orange), 0 3px 8px 0 rgba(0, 0, 0, 0.3);
@@ -215,15 +243,22 @@
     }
 
     .icons-container > button:hover {
-      border: 1px dotted #1d1d1d;
+      border: 1px dotted #fff;
+      background-color: #0F2240;
+      color: #fff;
     }
+
+    select {
+      padding: 7px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
   </style>
 </head>
 <body>
-  <div id="nav-container"></div>
   <nav>
     <img src="logo.png" alt="Logo" class="logo" />
-    <!--<input type="text" class="search-bar" placeholder="Search..." />-->
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="contact.html" id="contact-link">Contact</a>
@@ -246,8 +281,10 @@
 
   <div id="settingsModal" class="modal">
     <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Settings</h2>
+      <div>
+        <span class="close">&times;</span>
+        <h2>Settings</h2>
+      </div>
       <div>
         <label for="mode">Mode:</label>
         <select id="mode">

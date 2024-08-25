@@ -19,7 +19,12 @@ const options = {
   secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
   mapId: "66b179460dad9e000b5ee951",
 };
-
+const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+  'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+  'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+  'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+  'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+};
 async function init() {
   //set the language to English on initialization
   i18n.changeLanguage("en");
@@ -86,7 +91,7 @@ async function init() {
     const id = event?.floor.id;
     if (!id) return;
     floorSelector.value = id;
-    setCameraPosition(); // Update the camera position when the floor changes
+    setCameraPosition(id); // Update the camera position when the floor changes
   });
 
   let startSpace: Space;
@@ -147,20 +152,34 @@ async function init() {
     }
   });
 
-  const setCameraPosition = () => {
-    const entranceCoordinate = new Coordinate(-37.007839, 174.888214);
-
-    // Set the camera position with final bearing, zoom level, and center coordinate
+  const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+    'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+    'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+  };
+  
+   // Set the camera position
+   const setCameraPosition = (floorId: string) => {
+    const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
     mapView.Camera.animateTo(
       {
-        bearing: 177.5,
-        pitch: 80,
-        zoomLevel: 300,
-        center: entranceCoordinate,
+        bearing: settings.bearing,
+        pitch: 0,
+        zoomLevel: 18,
+        center: settings.coordinate,
       },
       { duration: 2000 }
     );
   };
+  
+  setCameraPosition(mapView.currentFloor.id);
+  for (const poi of mapData.getByType('point-of-interest')) {
+      // Label the point of interest if it's on the map floor currently shown.
+      if (poi.floor.id === mapView.currentFloor.id) {
+          mapView.Labels.add(poi.coordinate, poi.name);
+      }
+  }
 
   // Add labels for each map
   mapData.getByType("space").forEach((space) => {
@@ -180,7 +199,7 @@ async function init() {
     }
   });
 
-  //Add the Stack Map and testing:
+   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
   const stackMapButton = document.createElement("button");
   // Add any classes, text, or other properties (these two code can be linked to the css file):
@@ -211,19 +230,24 @@ async function init() {
       // Show the stack map and hide the unused floor
       mapView.expand({ excludeFloors: noShowFloor2 });
       stackMapButton.textContent = "Disable Stack Map";
+
+      // Set the camera to zoomLevel 17 and pitch 0
+      mapView.Camera.animateTo({
+        bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
+        zoomLevel: 18.7, // set the zoom level, better in 17-22
+        pitch: 85,      // the angle from the top-down (0: Top-down, 90: Eye-level)   
+      });
+
     } else {
       // Collapse the stack map
       mapView.collapse();
       stackMapButton.textContent = "Enable Stack Map";
+      setCameraPosition(mapView.currentFloor.id);
+      
     }
-
-    //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
-    mapView.Camera.set({
-      zoomLevel: 19, // set the zoom level, better in 17-22
-      pitch: 78, // the angle from the top-down (0: Top-down, 90: Eye-level)
-      //bearing: 0    // set the angle, e.g. North or South facing
-    });
+    
   };
+
 
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
@@ -403,7 +427,7 @@ async function init() {
       if (path) {
         mapView.Paths.remove(path);
       }
-      const directions = mapView.getDirections(startSpace, endSpace);
+      const directions = mapView.getDirections(startSpace, endSpace, { accessible: accessibilityEnabled });
       if (directions) {
         path = mapView.Paths.add(directions.coordinates, {
           nearRadius: 0.5,
@@ -440,11 +464,12 @@ async function init() {
   let liftsHighlighted = false;
   accessibilityEnabled = false;
 
-  accessibilityButton.addEventListener("click", () => {
-    accessibilityEnabled = !accessibilityEnabled;
-    const lifts = mapData
-      .getByType("space")
-      .filter((space) => space.name.toLowerCase().includes("lift"));
+accessibilityButton.addEventListener("click", () => {
+  accessibilityEnabled = !accessibilityEnabled;
+  const lifts = mapData.getByType("space").filter((space) => 
+    space.name.toLowerCase().includes("elevator") || 
+    space.name.toLowerCase().includes("lifts") 
+  );
 
     lifts.forEach((lift) => {
       if (!liftsHighlighted) {
@@ -478,6 +503,15 @@ async function init() {
     "toilet-btn"
   ) as HTMLButtonElement;
   let toiletActive = false;
+
+  liftsHighlighted = !liftsHighlighted;
+  if (liftsHighlighted) {
+    accessibilityButton.style.backgroundColor = "#0f2240";
+    accessibilityButton.style.color = "#fff";
+  } else {
+    accessibilityButton.style.backgroundColor = "#fff";
+    accessibilityButton.style.color = "#000";
+  }
 
   toiletButton.addEventListener("click", () => {
     const toilets = mapData
