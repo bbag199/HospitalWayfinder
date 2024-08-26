@@ -19,25 +19,11 @@ const options = {
   secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
   mapId: "66b179460dad9e000b5ee951",
 };
-const floorSettings: {
-  [key: string]: { bearing: number; coordinate: Coordinate };
-} = {
-  m_9f758af082f72a25: {
-    bearing: 200,
-    coordinate: new Coordinate(-37.0082, 174.887104),
-  },
-  m_649c1af3056991cb: {
-    bearing: 200,
-    coordinate: new Coordinate(-37.0082, 174.887104),
-  },
-  m_48ded7311ca820bd: {
-    bearing: 178.5,
-    coordinate: new Coordinate(-37.008164, 174.888221),
-  },
-  m_4574347856f74034: {
-    bearing: 178.5,
-    coordinate: new Coordinate(-37.008164, 174.888221),
-  },
+const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+  'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+  'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+  'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+  'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
 };
 async function init() {
   //set the language to English on initialization
@@ -108,69 +94,12 @@ async function init() {
     setCameraPosition(id); // Update the camera position when the floor changes
   });
 
-  // let startSpace: Space;
-  // let endSpace: Space | null = null;
-  // let path: Path | null = null;
-  // let accessibilityEnabled = false;
-  // let selectingStart = true; //
-  // let connectionPath: Path | null = null;
-
-  // mapData.getByType("space").forEach((space) => {
-  //   mapView.updateState(space, {
-  //     interactive: true,
-  //     hoverColor: "#BAE0F3",
-  //   });
-  // });
-
-  // mapView.on("click", async (event) => {
-  //   if (!event) return;
-  //   if (!startSpace) {
-  //     startSpace = event.spaces[0];
-  //   } else if (!path && event.spaces[0]) {
-  //     const directions = await mapView.getDirections(
-  //       startSpace,
-  //       event.spaces[0],
-  //       { accessible: accessibilityEnabled }
-  //     );
-  //     if (!directions) return;
-
-  //     // Add the main path
-  //     path = mapView.Paths.add(directions.coordinates, {
-  //       nearRadius: 0.5,
-  //       farRadius: 0.5,
-  //       color: "orange",
-  //     });
-
-  //     // Check if we need to add the connection path
-  //     const startFloorId = startSpace?.floor.id;
-  //     const endFloorId = event.spaces[0]?.floor.id;
-
-  //     if (startFloorId && endFloorId && startFloorId !== endFloorId) {
-  //       const startCoordinate = new Coordinate(-37.008212, 174.887679);
-  //       const endCoordinate = new Coordinate(-37.008202, 174.88719);
-
-  //       if (connectionPath) {
-  //         mapView.Paths.remove(connectionPath);
-  //       }
-  //       //add the connection path
-  //       connectionPath = mapView.Paths.add([startCoordinate, endCoordinate], {
-  //         nearRadius: 0.5,
-  //         farRadius: 0.5,
-  //         color: "#3178C6", // Set connection path color to blue
-  //       });
-  //     }
-  //   } else if (path) {
-  //     mapView.Paths.remove(path);
-  //     //startSpace = null;
-  //     path = null;
-  //   }
-  // });
-
   let startSpace: Space;
   let endSpace: Space | null = null;
   let path: Path | null = null;
   let accessibilityEnabled = false;
   let selectingStart = true; //
+  let connectionPath: Path | null = null;
 
   mapData.getByType("space").forEach((space) => {
     mapView.updateState(space, {
@@ -179,147 +108,60 @@ async function init() {
     });
   });
 
-  // Define a navigation state object
-  let navigationState = {
-    startSpace: null as Space | null,
-    endSpace: null as Space | null,
-    isPathDrawn: false,
-  };
-
-  // mapView.on("click", async (event) => {
-  //   if (!event) return;
-
-  //   // Check if it's the first click for the start space
-  //   if (!navigationState.startSpace) {
-  //       navigationState.startSpace = event.spaces[0];
-  //   }
-  //   // Check if it's the second click for the end space
-  //   else if (!navigationState.endSpace && event.spaces[0] !== navigationState.startSpace) {
-  //       navigationState.endSpace = event.spaces[0];
-
-  //       // Check and draw path if both start and end are set
-  //       if (navigationState.startSpace && navigationState.endSpace) {
-  //           // Clear any previous paths if any
-  //           if (navigationState.isPathDrawn) {
-  //               mapView.Paths.removeAll();
-  //               mapView.Markers.removeAll();
-  //               navigationState.isPathDrawn = false;
-  //           }
-
-  //           // Draw the path
-  //           const directions = await mapView.getDirections(navigationState.startSpace, navigationState.endSpace);
-  //           if (directions) {
-  //               mapView.Navigation.draw(directions, {
-  //                   pathOptions: {
-  //                       nearRadius: 0.5,
-  //                       farRadius: 0.5,
-  //                   }
-  //               });
-  //               navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
-  //           }
-  //       }
-  //   } else {
-  //       // Reset everything for a new route if a path is already drawn
-  //       if (navigationState.isPathDrawn) {
-  //           mapView.Paths.removeAll();
-  //           mapView.Markers.removeAll();
-  //           navigationState.isPathDrawn = false;
-  //       }
-  //       // Start a new path with the current click as the new start space
-  //       navigationState.startSpace = event.spaces[0];
-  //       navigationState.endSpace = null; // Clear previous end space
-  //   }
-  // });
-
   mapView.on("click", async (event) => {
     if (!event) return;
+    if (!startSpace) {
+      startSpace = event.spaces[0];
+    } else if (!path && event.spaces[0]) {
+      const directions = await mapView.getDirections(
+        startSpace,
+        event.spaces[0],
+        { accessible: accessibilityEnabled }
+      );
+      if (!directions) return;
 
-    // Check if it's the first click for the start space
-    if (!navigationState.startSpace) {
-      navigationState.startSpace = event.spaces[0];
-    }
-    // Check if it's the second click for the end space
-    else if (
-      !navigationState.endSpace &&
-      event.spaces[0] !== navigationState.startSpace
-    ) {
-      navigationState.endSpace = event.spaces[0];
+      // Add the main path
+      path = mapView.Paths.add(directions.coordinates, {
+        nearRadius: 0.5,
+        farRadius: 0.5,
+        color: "orange",
+      });
 
-      // Check and draw path if both start and end are set
-      if (navigationState.startSpace && navigationState.endSpace) {
-        // Clear any previous paths if any
-        if (navigationState.isPathDrawn) {
-          mapView.Paths.removeAll();
-          mapView.Markers.removeAll();
-          setSpaceInteractivity(true); // Make spaces interactive again
-          navigationState.isPathDrawn = false;
+      // Check if we need to add the connection path
+      const startFloorId = startSpace?.floor.id;
+      const endFloorId = event.spaces[0]?.floor.id;
+
+      if (startFloorId && endFloorId && startFloorId !== endFloorId) {
+        const startCoordinate = new Coordinate(-37.008212, 174.887679);
+        const endCoordinate = new Coordinate(-37.008202, 174.88719);
+
+        if (connectionPath) {
+          mapView.Paths.remove(connectionPath);
         }
-
-        // Draw the path
-        const directions = await mapView.getDirections(
-          navigationState.startSpace,
-          navigationState.endSpace
-        );
-        if (directions) {
-          mapView.Navigation.draw(directions, {
-            pathOptions: {
-              nearRadius: 0.5,
-              farRadius: 0.5,
-            },
-          });
-          navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
-          setSpaceInteractivity(false); // Disable interactivity while path is drawn
-        }
+        //add the connection path
+        connectionPath = mapView.Paths.add([startCoordinate, endCoordinate], {
+          nearRadius: 0.5,
+          farRadius: 0.5,
+          color: "#3178C6", // Set connection path color to blue
+        });
       }
-    } else {
-      // Reset everything for a new route if a path is already drawn
-      if (navigationState.isPathDrawn) {
-        mapView.Paths.removeAll();
-        mapView.Markers.removeAll();
-        setSpaceInteractivity(true); // Make spaces interactive again
-        navigationState.isPathDrawn = false;
-      }
-      // Start a new path with the current click as the new start space
-      navigationState.startSpace = event.spaces[0];
-      navigationState.endSpace = null; // Clear previous end space
+    } else if (path) {
+      mapView.Paths.remove(path);
+      //startSpace = null;
+      path = null;
     }
   });
 
-  function setSpaceInteractivity(isInteractive: boolean): void {
-    mapData.getByType("space").forEach((space) => {
-      mapView.updateState(space, {
-        interactive: isInteractive,
-      });
-    });
-  }
-
-  const floorSettings: {
-    [key: string]: { bearing: number; coordinate: Coordinate };
-  } = {
-    m_9f758af082f72a25: {
-      bearing: 200,
-      coordinate: new Coordinate(-37.0082, 174.887104),
-    },
-    m_649c1af3056991cb: {
-      bearing: 200,
-      coordinate: new Coordinate(-37.0082, 174.887104),
-    },
-    m_48ded7311ca820bd: {
-      bearing: 178.5,
-      coordinate: new Coordinate(-37.008164, 174.888221),
-    },
-    m_4574347856f74034: {
-      bearing: 178.5,
-      coordinate: new Coordinate(-37.008164, 174.888221),
-    },
+  const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
+    'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
+    'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
+    'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
   };
-
-  // Set the camera position
-  const setCameraPosition = (floorId: string) => {
-    const settings = floorSettings[floorId] || {
-      bearing: 178.5,
-      coordinate: new Coordinate(0, 0),
-    };
+  
+   // Set the camera position
+   const setCameraPosition = (floorId: string) => {
+    const settings = floorSettings[floorId] || { bearing: 178.5, coordinate: new Coordinate(0, 0) };
     mapView.Camera.animateTo(
       {
         bearing: settings.bearing,
@@ -330,13 +172,13 @@ async function init() {
       { duration: 2000 }
     );
   };
-
+  
   setCameraPosition(mapView.currentFloor.id);
-  for (const poi of mapData.getByType("point-of-interest")) {
-    // Label the point of interest if it's on the map floor currently shown.
-    if (poi.floor.id === mapView.currentFloor.id) {
-      mapView.Labels.add(poi.coordinate, poi.name);
-    }
+  for (const poi of mapData.getByType('point-of-interest')) {
+      // Label the point of interest if it's on the map floor currently shown.
+      if (poi.floor.id === mapView.currentFloor.id) {
+          mapView.Labels.add(poi.coordinate, poi.name);
+      }
   }
 
   // Add labels for each map
@@ -357,7 +199,7 @@ async function init() {
     }
   });
 
-  //Add the Stack Map and testing:
+   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
   const stackMapButton = document.createElement("button");
   // Add any classes, text, or other properties (these two code can be linked to the css file):
@@ -393,15 +235,19 @@ async function init() {
       mapView.Camera.animateTo({
         bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
         zoomLevel: 18.7, // set the zoom level, better in 17-22
-        pitch: 85, // the angle from the top-down (0: Top-down, 90: Eye-level)
+        pitch: 85,      // the angle from the top-down (0: Top-down, 90: Eye-level)   
       });
+
     } else {
       // Collapse the stack map
       mapView.collapse();
       stackMapButton.textContent = "Enable Stack Map";
       setCameraPosition(mapView.currentFloor.id);
+      
     }
+    
   };
+
 
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
@@ -581,9 +427,7 @@ async function init() {
       if (path) {
         mapView.Paths.remove(path);
       }
-      const directions = mapView.getDirections(startSpace, endSpace, {
-        accessible: accessibilityEnabled,
-      });
+      const directions = mapView.getDirections(startSpace, endSpace, { accessible: accessibilityEnabled });
       if (directions) {
         path = mapView.Paths.add(directions.coordinates, {
           nearRadius: 0.5,
@@ -620,15 +464,12 @@ async function init() {
   let liftsHighlighted = false;
   accessibilityEnabled = false;
 
-  accessibilityButton.addEventListener("click", () => {
-    accessibilityEnabled = !accessibilityEnabled;
-    const lifts = mapData
-      .getByType("space")
-      .filter(
-        (space) =>
-          space.name.toLowerCase().includes("elevator") ||
-          space.name.toLowerCase().includes("lifts")
-      );
+accessibilityButton.addEventListener("click", () => {
+  accessibilityEnabled = !accessibilityEnabled;
+  const lifts = mapData.getByType("space").filter((space) => 
+    space.name.toLowerCase().includes("elevator") || 
+    space.name.toLowerCase().includes("lifts") 
+  );
 
     lifts.forEach((lift) => {
       if (!liftsHighlighted) {
