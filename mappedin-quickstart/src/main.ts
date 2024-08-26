@@ -121,7 +121,7 @@ async function init() {
     );
   };
 
-  setCameraPosition(mapView.currentFloor.id); 
+  setCameraPosition(mapView.currentFloor.id);  
 
 
 
@@ -165,7 +165,7 @@ async function init() {
 
       // Set the camera to zoomLevel 17 and pitch 0
       mapView.Camera.animateTo({
-        bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
+        bearing:floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
         zoomLevel: 18.7, // set the zoom level, better in 17-22
         pitch: 85,      // the angle from the top-down (0: Top-down, 90: Eye-level)   
       });
@@ -175,7 +175,11 @@ async function init() {
       mapView.collapse();
       stackMapButton.textContent = "Enable Stack Map";
       setCameraPosition(mapView.currentFloor.id);
-      
+      /*mapView.Camera.animateTo({
+        bearing:178.5,
+        zoomLevel: 18.7, 
+        pitch: 0,        
+      });*/
     }
     
   };
@@ -185,7 +189,7 @@ async function init() {
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
   const exitSpace = mapData.getByType('object').find(object => object.name.includes("exit01")); //this one should be the main door 
   const exitSpace2 = mapData.getByType('object').find(object => object.name.includes("exit02"));  //this one should be the back door
-   
+  const exitSpace3 = mapData.getByType('object').find(object => object.name.includes("exit03"));  //this one should be the other building door 
 
   //add an emergency square button here: 
   const emergencyButton = document.createElement("button");
@@ -219,6 +223,8 @@ async function init() {
       //create two distance for exit01 and exit02, will check the shortest way out later:
       const directions = mapView.getDirections(startSpace, exitSpace!);
       const directions2 = mapView.getDirections(startSpace, exitSpace2!);
+      const directions3 = mapView.getDirections(startSpace, exitSpace3!);
+
       //debug the distance here:
       console.log("checking direcitions: ", directions?.distance);
       console.log("checking direcitions2: ", directions2?.distance);
@@ -235,9 +241,23 @@ async function init() {
           throw new Error("Both directions are undefined");
       }
 
+      //checing the shortesWayout to the exit03 way:
+      //checking the second shortest wayout with exit03 here:
+      let shortestWayout2;
+      if (shortestWayout && directions3) {
+          shortestWayout2 = shortestWayout.distance <= directions3.distance ? shortestWayout : directions3;
+      } else if (shortestWayout) {
+          shortestWayout2 = shortestWayout;
+      } else if (directions3) {
+          shortestWayout2 = directions3;
+      } else {
+          throw new Error("exit way is undefined");
+      }
+
+
       //build the shortest wayout here:
-      if (shortestWayout) {   
-        path = mapView.Paths.add(shortestWayout.coordinates, {
+      if (shortestWayout2) {   
+        path = mapView.Paths.add(shortestWayout2.coordinates, {
           nearRadius: 0.5,
           farRadius: 0.5,
           color: "red",
