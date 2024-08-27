@@ -19,7 +19,26 @@ const options = {
   secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
   mapId: "66b179460dad9e000b5ee951",
 };
-
+const floorSettings: {
+  [key: string]: { bearing: number; coordinate: Coordinate };
+} = {
+  m_9f758af082f72a25: {
+    bearing: 200,
+    coordinate: new Coordinate(-37.0082, 174.887104),
+  },
+  m_649c1af3056991cb: {
+    bearing: 200,
+    coordinate: new Coordinate(-37.0082, 174.887104),
+  },
+  m_48ded7311ca820bd: {
+    bearing: 178.5,
+    coordinate: new Coordinate(-37.008164, 174.888221),
+  },
+  m_4574347856f74034: {
+    bearing: 178.5,
+    coordinate: new Coordinate(-37.008164, 174.888221),
+  },
+};
 async function init() {
   //set the language to English on initialization
   i18n.changeLanguage("en");
@@ -30,19 +49,51 @@ async function init() {
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
 
-  // Add styles to the floor selector to position it
   floorSelector.style.position = "absolute";
-  floorSelector.style.top = "10px"; // Adjust as needed
-  floorSelector.style.right = "10px"; // Adjust as needed
-  floorSelector.style.zIndex = "1000"; // Ensure it is above other elements
+  floorSelector.style.top = "10px";
+  floorSelector.style.right = "10px";
+  floorSelector.style.zIndex = "1000";
 
   mappedinDiv.appendChild(floorSelector);
 
-  // Display the default map in the mappedin-map div
+  mapData.getByType("floor").forEach((floor) => {
+    const option = document.createElement("option");
+    option.text = floor.name;
+    option.value = floor.id;
+    floorSelector.appendChild(option);
+  });
+
   const mapView: MapView = await show3dMap(
     document.getElementById("mappedin-map") as HTMLDivElement,
     mapData
   );
+
+  // Function to translate and label locations
+  function translateAndLabelLocations() {
+    mapView.Labels.removeAll();
+
+    mapData.getByType("space").forEach((space) => {
+      const originalName = space.name;
+      const translatedName = i18n.t(originalName);
+
+      mapView.Labels.add(space, translatedName, {
+        appearance: {
+          text: { foregroundColor: "orange" },
+        },
+      });
+    });
+  }
+
+  // Initial labeling
+  translateAndLabelLocations();
+
+  // Handle language change
+  document.getElementById("language")?.addEventListener("change", () => {
+    i18n.changeLanguage(
+      (document.getElementById("language") as HTMLSelectElement).value,
+      translateAndLabelLocations
+    );
+  });
 
   floorSelector.value = mapView.currentFloor.id;
 
@@ -55,14 +106,6 @@ async function init() {
     if (!id) return;
     floorSelector.value = id;
     setCameraPosition(id); // Update the camera position when the floor changes
-  });
-
-  // Add each floor to the floor selector
-  mapData.getByType("floor").forEach((floor) => {
-    const option = document.createElement("option");
-    option.text = floor.name;
-    option.value = floor.id;
-    floorSelector.appendChild(option);
   });
 
   let startSpace: Space;
@@ -84,51 +127,6 @@ async function init() {
     endSpace: null as Space | null,
     isPathDrawn: false,
   };
-
-  // mapView.on("click", async (event) => {
-  //   if (!event) return;
-
-  //   // Check if it's the first click for the start space
-  //   if (!navigationState.startSpace) {
-  //       navigationState.startSpace = event.spaces[0];
-  //   }
-  //   // Check if it's the second click for the end space
-  //   else if (!navigationState.endSpace && event.spaces[0] !== navigationState.startSpace) {
-  //       navigationState.endSpace = event.spaces[0];
-
-  //       // Check and draw path if both start and end are set
-  //       if (navigationState.startSpace && navigationState.endSpace) {
-  //           // Clear any previous paths if any
-  //           if (navigationState.isPathDrawn) {
-  //               mapView.Paths.removeAll();
-  //               mapView.Markers.removeAll();
-  //               navigationState.isPathDrawn = false;
-  //           }
-
-  //           // Draw the path
-  //           const directions = await mapView.getDirections(navigationState.startSpace, navigationState.endSpace);
-  //           if (directions) {
-  //               mapView.Navigation.draw(directions, {
-  //                   pathOptions: {
-  //                       nearRadius: 0.5,
-  //                       farRadius: 0.5,
-  //                   }
-  //               });
-  //               navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
-  //           }
-  //       }
-  //   } else {
-  //       // Reset everything for a new route if a path is already drawn
-  //       if (navigationState.isPathDrawn) {
-  //           mapView.Paths.removeAll();
-  //           mapView.Markers.removeAll();
-  //           navigationState.isPathDrawn = false;
-  //       }
-  //       // Start a new path with the current click as the new start space
-  //       navigationState.startSpace = event.spaces[0];
-  //       navigationState.endSpace = null; // Clear previous end space
-  //   }
-  // });
 
   mapView.on("click", async (event) => {
     if (!event) return;
@@ -170,17 +168,6 @@ async function init() {
           setSpaceInteractivity(false); // Disable interactivity while path is drawn
         }
       }
-    } else {
-      // Reset everything for a new route if a path is already drawn
-      if (navigationState.isPathDrawn) {
-        mapView.Paths.removeAll();
-        mapView.Markers.removeAll();
-        setSpaceInteractivity(true); // Make spaces interactive again
-        navigationState.isPathDrawn = false;
-      }
-      // Start a new path with the current click as the new start space
-      navigationState.startSpace = event.spaces[0];
-      navigationState.endSpace = null; // Clear previous end space
     }
   });
 
@@ -192,7 +179,6 @@ async function init() {
     });
   }
 
-  // Mapping of floor IDs to their corresponding bearings and coordinates
   const floorSettings: {
     [key: string]: { bearing: number; coordinate: Coordinate };
   } = {
@@ -214,39 +200,6 @@ async function init() {
     },
   };
 
-  // Function to translate and label locations
-  function translateAndLabelLocations() {
-    mapView.Labels.removeAll();
-
-    mapData.getByType("space").forEach((space) => {
-      const originalName = space.name;
-      const translatedName = i18n.t(originalName);
-
-      mapView.Labels.add(space, translatedName, {
-        appearance: {
-          text: { foregroundColor: "orange" },
-        },
-      });
-    });
-  }
-
-  // Initial labeling
-  translateAndLabelLocations();
-
-  // Handle language change
-  document.getElementById("language")?.addEventListener("change", () => {
-    i18n.changeLanguage(
-      (document.getElementById("language") as HTMLSelectElement).value,
-      translateAndLabelLocations
-    );
-  });
-
-  floorSelector.value = mapView.currentFloor.id;
-
-  floorSelector.addEventListener("change", (e) => {
-    mapView.setFloor((e.target as HTMLSelectElement)?.value);
-  });
-
   // Set the camera position
   const setCameraPosition = (floorId: string) => {
     const settings = floorSettings[floorId] || {
@@ -265,42 +218,12 @@ async function init() {
   };
 
   setCameraPosition(mapView.currentFloor.id);
-  function addPOILabels() {
-    mapData.getByType("point-of-interest").forEach((poi) => {
-      if (poi.floor.id === mapView.currentFloor.id) {
-        mapView.Labels.add(poi.coordinate, poi.name);
-      }
-    });
-  }
-
-  // Call function to add labels initially
-  addPOILabels();
-
-  const allElements = [
-    ...mapData.getByType("object"),
-    ...mapData.getByType("space"),
-    ...mapData.getByType("point-of-interest"),
-    ...mapData.getByType("door"),
-  ];
-  // Function to add labels to all map elements
-  /* const addAllLabels = () => {
-    allElements.forEach((element) => {
-      if (element.name) {
-        mapView.Labels.add(element, element.name);
-      }
-    });
-  };
-
-  // Add initial labels to all elements
-  addAllLabels(); */
-
-  // Update labels when the floor changes
-  mapView.on("floor-change", (event) => {
-    const floorId = event?.floor.id;
-    if (floorId) {
-      addPOILabels(); // Re-add labels for the new floor
+  for (const poi of mapData.getByType("point-of-interest")) {
+    // Label the point of interest if it's on the map floor currently shown.
+    if (poi.floor.id === mapView.currentFloor.id) {
+      mapView.Labels.add(poi.coordinate, poi.name);
     }
-  });
+  }
 
   // Add labels for each map
   mapData.getByType("space").forEach((space) => {
@@ -336,7 +259,8 @@ async function init() {
     .getByType("floor")
     .filter(
       (floor: Floor) =>
-        floor.name !== "Level 1" && floor.name !== "Ground floor"
+        floor.name !== "SuperClinic Level 1" &&
+        floor.name !== "SuperClinic & Surgical Centre Ground Lvl"
     );
 
   // The enable Button is used to enable and disable Stacked Maps.
@@ -350,18 +274,19 @@ async function init() {
       // Show the stack map and hide the unused floor
       mapView.expand({ excludeFloors: noShowFloor2 });
       stackMapButton.textContent = "Disable Stack Map";
+
+      // Set the camera to zoomLevel 17 and pitch 0
+      mapView.Camera.animateTo({
+        bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
+        zoomLevel: 18.7, // set the zoom level, better in 17-22
+        pitch: 85, // the angle from the top-down (0: Top-down, 90: Eye-level)
+      });
     } else {
       // Collapse the stack map
       mapView.collapse();
       stackMapButton.textContent = "Enable Stack Map";
+      setCameraPosition(mapView.currentFloor.id);
     }
-
-    //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
-    mapView.Camera.set({
-      zoomLevel: 19, // set the zoom level, better in 17-22
-      pitch: 78, // the angle from the top-down (0: Top-down, 90: Eye-level)
-      //bearing: 0    // set the angle, e.g. North or South facing
-    });
   };
 
   //Emergency exit function:
@@ -533,39 +458,54 @@ async function init() {
     });
   }
 
+  // Stop Navigation Button
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const stopNavigationButton = document.getElementById("stop-navigation");
+    if (stopNavigationButton) {
+      stopNavigationButton.addEventListener("click", function () {
+        // Assuming mapView and navigationState are accessible here
+
+        // Clear any paths or markers if a path has been drawn
+        if (navigationState.isPathDrawn) {
+          mapView.Paths.removeAll();
+          mapView.Markers.removeAll();
+          setSpaceInteractivity(true); // Make spaces interactive again if needed
+          navigationState.isPathDrawn = false; // Reset the path drawn state
+        }
+
+        // Reset start and end spaces regardless of path state
+        navigationState.startSpace = null;
+        navigationState.endSpace = null;
+
+        // Optionally, add any visual or log confirmation
+        console.log("Navigation has been stopped and paths cleared.");
+      });
+    } else {
+      console.error("Stop Navigation button not found!");
+    }
+  });
+
   // Get Directions Button
   const getDirectionsButton = document.getElementById(
     "get-directions"
   ) as HTMLButtonElement;
-  getDirectionsButton.addEventListener("click", function () {
+  getDirectionsButton.addEventListener("click", () => {
     if (startSpace && endSpace) {
-      if (navigationState.isPathDrawn) {
-        mapView.Paths.removeAll();
-        mapView.Markers.removeAll();
-        navigationState.isPathDrawn = false;
-        setSpaceInteractivity(true); // Make spaces interactive again
+      if (path) {
+        mapView.Paths.remove(path);
       }
-      const directions = mapView.getDirections(startSpace, endSpace);
+      const directions = mapView.getDirections(startSpace, endSpace, {
+        accessible: accessibilityEnabled,
+      });
       if (directions) {
-        mapView.Navigation.draw(directions, {
-          pathOptions: {
-            nearRadius: 0.5,
-            farRadius: 0.5,
-          },
+        path = mapView.Paths.add(directions.coordinates, {
+          nearRadius: 0.5,
+          farRadius: 0.5,
+          color: "orange",
         });
-        navigationState.isPathDrawn = true;
-        setSpaceInteractivity(false); // Disable interactivity of spaces
       }
     } else {
-      if (navigationState.isPathDrawn) {
-        mapView.Paths.removeAll();
-        mapView.Markers.removeAll();
-        setSpaceInteractivity(true); // Make spaces interactive again
-        navigationState.isPathDrawn = false;
-      }
-      // Start a new path with the current click as the new start space
-      navigationState.startSpace = startSpace;
-      navigationState.endSpace = null; // Clear previous end space
       console.error("Please select both start and end locations.");
     }
   });
@@ -598,7 +538,11 @@ async function init() {
     accessibilityEnabled = !accessibilityEnabled;
     const lifts = mapData
       .getByType("space")
-      .filter((space) => space.name.toLowerCase().includes("lift"));
+      .filter(
+        (space) =>
+          space.name.toLowerCase().includes("elevator") ||
+          space.name.toLowerCase().includes("lifts")
+      );
 
     lifts.forEach((lift) => {
       if (!liftsHighlighted) {
@@ -632,6 +576,15 @@ async function init() {
     "toilet-btn"
   ) as HTMLButtonElement;
   let toiletActive = false;
+
+  liftsHighlighted = !liftsHighlighted;
+  if (liftsHighlighted) {
+    accessibilityButton.style.backgroundColor = "#0f2240";
+    accessibilityButton.style.color = "#fff";
+  } else {
+    accessibilityButton.style.backgroundColor = "#fff";
+    accessibilityButton.style.color = "#000";
+  }
 
   toiletButton.addEventListener("click", () => {
     const toilets = mapData
