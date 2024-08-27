@@ -170,17 +170,6 @@ async function init() {
           setSpaceInteractivity(false); // Disable interactivity while path is drawn
         }
       }
-    } else {
-      // Reset everything for a new route if a path is already drawn
-      if (navigationState.isPathDrawn) {
-        mapView.Paths.removeAll();
-        mapView.Markers.removeAll();
-        setSpaceInteractivity(true); // Make spaces interactive again
-        navigationState.isPathDrawn = false;
-      }
-      // Start a new path with the current click as the new start space
-      navigationState.startSpace = event.spaces[0];
-      navigationState.endSpace = null; // Clear previous end space
     }
   });
 
@@ -533,6 +522,23 @@ async function init() {
     });
   }
 
+  // Stop Navigation Button
+  const stopNavigationButton = document.getElementById(
+    "stop-navigation"
+  ) as HTMLButtonElement;
+
+  stopNavigationButton.addEventListener("click", function () {
+    if (navigationState.isPathDrawn) {
+      mapView.Paths.removeAll();
+      mapView.Markers.removeAll();
+      setSpaceInteractivity(true); // Make spaces interactive again if needed
+      navigationState.isPathDrawn = false; // Reset the path drawn state
+    }
+
+    // Reset start and end spaces regardless of path state
+    navigationState.startSpace = null;
+    navigationState.endSpace = null;
+  });
   // Get Directions Button
   const getDirectionsButton = document.getElementById(
     "get-directions"

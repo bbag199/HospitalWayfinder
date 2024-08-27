@@ -1,96 +1,235 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #00008B;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  flex-direction: column;
+  margin: 0;
 }
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+nav {
+  background-color: #ffffff;
+  color: rgb(15, 34, 64);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0 1rem;
+  font-weight: bold;
 }
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+  height: 40px;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.nav-links {
+  display: flex;
+  align-items: center;
 }
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #3178c6aa);
+.nav-links a {
+  color: rgb(15, 23, 47);
+  text-decoration: none;
+  margin: 0 1.5rem;
+  font-size: 1rem;
+  transition: color 0.3s, transform 0.3s;
 }
-
-.card {
-  padding: 2em;
+.nav-links a:hover {
+  color: #ffcc00;
+  transform: scale(1.05);
 }
-
-.read-the-docs {
-  color: #888;
+#mappedin-map {
+  flex: 1;
+  width: 100%;
+  height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
+  height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
+  position: relative;
 }
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+.search-container {
+  position: absolute;
+  top: 70px; /* Adjusted to be below the navbar */
+  left: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.search-bar {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+}
+.search-results {
+  background-color: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 300px;
+  display: none;
+}
+.search-result-item {
+  padding: 5px;
   cursor: pointer;
-  transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.search-result-item:hover {
+  background-color: #f0f0f0;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.settings-btn {
+  margin-left: 1.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: rgb(15, 34, 64);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+}
+
+.directions-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: rgb(15, 34, 64);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+}
+
+.directions-btn:hover {
+  background-color: rgb(30, 59, 104);
+  transform: scale(1.05); 
+}
+
+.stop-nav-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #d35400;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.stop-nav-btn:hover {
+  background-color: #e67e22; 
+  transform: scale(1.05); 
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1050;/* please do not change, this will keep the setting window on the top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 20px;
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  max-width:500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Added box-shadow for better visibility */
+  position: relative;
+  z-index: 1060; /* Ensure content is above modal background */
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Add the enableStackMap button style here: */
+.reset-button {
+  background-color: transparent;
+  border-width: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 0;
+}
+.mi-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  user-select: none;
+  pointer-events: all;
+  position: fixed; /* Use fixed to keep the button in the same place even when scrolling */
+  bottom: 70px; /* Distance from the bottom of the screen */
+  right: 20px; /* Distance from the right side of the screen */
+  height: 36px;
+  width: fit-content;
+  border-radius: 37.5px;
+  background: #0F2240;
+  color: #ffffff; /*set font color to white*/
+  box-shadow: 0 4px 0 0 var(--burnt-orange), 0 3px 8px 0 rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 7.5px;
+  z-index: 1000; /* Ensure the button stays on top of other elements */
+}
+
+.mi-button:hover:not(.mobile) {
+  filter: brightness(0.85);
+}
+
+.mi-button.pressed,
+.mi-button:active {
+  filter: brightness(0.8) !important;
+  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.3);
+}
+
+.mi-button > svg {
+  margin-right: 0;
+}
+
+.icons-container {
+  position: absolute;
+  top: 70px; 
+  left: 45%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.icons-container > button {
+  border-radius: 20px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.icons-container > button:hover {
+  border: 1px dotted #1d1d1d;
 }
