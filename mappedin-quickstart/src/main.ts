@@ -391,23 +391,35 @@ async function init() {
   const getDirectionsButton = document.getElementById(
     "get-directions"
   ) as HTMLButtonElement;
-  getDirectionsButton.addEventListener("click", function () {
+  
+  getDirectionsButton.addEventListener("click", async function () {
     if (startSpace && endSpace) {
       if (path) {
         mapView.Paths.remove(path);
       }
-      const directions = mapView.getDirections(startSpace, endSpace, { accessible: accessibilityEnabled });
-      if (directions) {
-        path = mapView.Paths.add(directions.coordinates, {
-          nearRadius: 0.5,
-          farRadius: 0.5,
-          color: "orange",
-        });
+  
+      try {
+        const sameFloor = startSpace.floor.id === endSpace.floor.id;
+        const accessibleOption = sameFloor ? false : accessibilityEnabled;
+        const directions = await mapView.getDirections(startSpace, endSpace, { accessible: accessibleOption });
+  
+        if (directions) {
+          path = mapView.Paths.add(directions.coordinates, {
+            nearRadius: 0.5,
+            farRadius: 0.5,
+            color: "orange",
+          });
+        } else {
+          console.error("No directions found.");
+        }
+      } catch (error) {
+        console.error("Error fetching directions:", error);
       }
     } else {
       console.error("Please select both start and end locations.");
     }
   });
+  
 
 // Button Accessibility
 const accessibilityButton = document.createElement("button");
