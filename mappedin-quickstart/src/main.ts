@@ -93,23 +93,26 @@ async function init() {
 
     const clickedSpace = event.spaces[0];
 
-    // Always clear paths and markers if a path is currently drawn
-    if (navigationState.isPathDrawn) {
-        mapView.Paths.removeAll();
-        mapView.Markers.removeAll();
-        navigationState.isPathDrawn = false;
-    }
-
-    // Handle click logic based on current state
+    // Check if it's the first click for the start space
     if (!navigationState.startSpace) {
-        // Set the start space on the first click
         navigationState.startSpace = clickedSpace;
-    } else if (!navigationState.endSpace && clickedSpace !== navigationState.startSpace) {
-        // Set the end space on the second click
+    }
+    // Check if it's the second click for the end space
+    else if (!navigationState.endSpace && clickedSpace !== navigationState.startSpace) {
         navigationState.endSpace = clickedSpace;
 
-        // Draw the path if both start and end spaces are defined
+        // Check and draw path if both start and end are set
         if (navigationState.startSpace && navigationState.endSpace) {
+            // Clear any previous paths if any
+            if (navigationState.isPathDrawn) {
+                mapView.Paths.removeAll();
+                mapView.Markers.removeAll();
+                navigationState.endSpace = clickedSpace;
+                navigationState.startSpace = clickedSpace;
+                
+                navigationState.isPathDrawn = false;
+            }
+
             // Determine if the start and end spaces are on the same floor
             const endSpace = navigationState.endSpace;
             const areOnSameFloor = navigationState.startSpace.floor === endSpace.floor;
@@ -128,17 +131,22 @@ async function init() {
                         farRadius: 0.5,
                     }
                 });
-                navigationState.isPathDrawn = true; // Indicate that a path is currently drawn
+                navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
             }
         }
     } else {
-        // Reset for a new route if a path is already drawn
+        // Reset everything for a new route if a path is already drawn
+        if (navigationState.isPathDrawn) {
+            mapView.Paths.removeAll();
+            mapView.Markers.removeAll();
+            navigationState.isPathDrawn = false;
+        }
+        // Start a new path with the current click as the new start space
         navigationState.startSpace = clickedSpace;
-     navigationState.endSpace = event.spaces[0];
-       
-        mapView.Paths.removeAll()// Clear the previous end space
+        navigationState.endSpace = null; // Clear previous end space
     }
 });
+
 
   
 
