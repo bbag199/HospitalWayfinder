@@ -89,30 +89,38 @@ async function init() {
   };
   
   mapView.on("click", async (event) => {
-    if (!event) return;
-  
-    // Check if it's the first click for the start space
-    if (!navigationState.startSpace) {
-        navigationState.startSpace = event.spaces[0];
+    if (!event || !event.spaces[0]) return;
+
+    const clickedSpace = event.spaces[0];
+
+    // Always clear paths and markers if a path is currently drawn
+    if (navigationState.isPathDrawn) {
+        mapView.Paths.removeAll();
+        mapView.Markers.removeAll();
+        navigationState.isPathDrawn = false;
     }
-    // Check if it's the second click for the end space
-    else if (!navigationState.endSpace && event.spaces[0] !== navigationState.startSpace) {
-        navigationState.endSpace = event.spaces[0];
-  
-        // Check and draw path if both start and end are set
+
+    // Handle click logic based on current state
+    if (!navigationState.startSpace) {
+        // Set the start space on the first click
+        navigationState.startSpace = clickedSpace;
+    } else if (!navigationState.endSpace && clickedSpace !== navigationState.startSpace) {
+        // Set the end space on the second click
+        navigationState.endSpace = clickedSpace;
+
+        // Draw the path if both start and end spaces are defined
         if (navigationState.startSpace && navigationState.endSpace) {
-            // Clear any previous paths if any
-            if (navigationState.isPathDrawn) {
-                mapView.Paths.removeAll();
-                mapView.Markers.removeAll();
-                navigationState.endSpace = event.spaces[0];
-                navigationState.startSpace = event.spaces[0];
-                
-                navigationState.isPathDrawn = false;
-            }
-  
-            // Draw the path
-            const directions = await mapView.getDirections(navigationState.startSpace, navigationState.endSpace);
+            // Determine if the start and end spaces are on the same floor
+            const endSpace = navigationState.endSpace;
+            const areOnSameFloor = navigationState.startSpace.floor === endSpace.floor;
+
+            // Set accessibility option based on whether the spaces are on the same floor
+            const directions = await mapView.getDirections(
+                navigationState.startSpace,
+                endSpace,
+                { accessible: areOnSameFloor || accessibilityEnabled }
+            );
+
             if (directions) {
                 mapView.Navigation.draw(directions, {
                     pathOptions: {
@@ -120,22 +128,17 @@ async function init() {
                         farRadius: 0.5,
                     }
                 });
-                navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
+                navigationState.isPathDrawn = true; // Indicate that a path is currently drawn
             }
         }
     } else {
-        // Reset everything for a new route if a path is already drawn
-        if (navigationState.isPathDrawn) {
-            mapView.Paths.removeAll();
-            mapView.Markers.removeAll();
-            navigationState.isPathDrawn = false;
-        }
-        // Start a new path with the current click as the new start space
-        navigationState.startSpace = event.spaces[0];
-        navigationState.endSpace = null; // Clear previous end space
+        // Reset for a new route if a path is already drawn
+        navigationState.startSpace = clickedSpace;
+     navigationState.endSpace = event.spaces[0];
+       
+        mapView.Paths.removeAll()// Clear the previous end space
     }
-  });
-
+});
 
   
 
