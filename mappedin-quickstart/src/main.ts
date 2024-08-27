@@ -108,24 +108,37 @@ async function init() {
 
   mapView.on("click", async (event) => {
     if (!event) return;
+  
     if (!startSpace) {
       startSpace = event.spaces[0];
     } else if (!path && event.spaces[0]) {
-      const directions = await mapView.getDirections(startSpace, event.spaces[0], { accessible: accessibilityEnabled });
+      // Determine if the start and end spaces are on the same floor
+      const endSpace = event.spaces[0];
+      const areOnSameFloor = startSpace.floor === endSpace.floor;
+  
+      // Set accessibility option based on whether the spaces are on the same floor
+      const directions = await mapView.getDirections(
+        startSpace,
+        endSpace,
+        { accessible: areOnSameFloor || accessibilityEnabled }
+      );
+  
       if (!directions) return;
-
+  
       // Add the main path
       path = mapView.Paths.add(directions.coordinates, {
         nearRadius: 0.5,
         farRadius: 0.5,
-        color: "orange"
+        color: "orange",
       });
     } else if (path) {
+      // Remove the existing path and reset variables
       mapView.Paths.remove(path);
-      //startSpace = null;
       path = null;
+      // startSpace = null;
     }
   });
+  
 
   const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
     'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
