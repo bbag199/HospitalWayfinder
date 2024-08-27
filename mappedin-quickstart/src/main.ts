@@ -19,12 +19,7 @@ const options = {
   secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
   mapId: "66b179460dad9e000b5ee951",
 };
-const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
-  'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-  'm_649c1af3056991cb': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
-  'm_48ded7311ca820bd': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
-  'm_4574347856f74034': { bearing: 178.5, coordinate: new Coordinate(-37.008164, 174.888221) },
-};
+
 async function init() {
   //set the language to English on initialization
   i18n.changeLanguage("en");
@@ -127,28 +122,6 @@ async function init() {
         color: "orange",
       });
 
-      // Check if we need to add the connection path
-      const startFloorId = startSpace?.floor.id;
-      const endFloorId = event.spaces[0]?.floor.id;
-
-      if (startFloorId && endFloorId && startFloorId !== endFloorId) {
-        const startCoordinate = new Coordinate(-37.008212, 174.887679);
-        const endCoordinate = new Coordinate(-37.008202, 174.88719);
-
-        if (connectionPath) {
-          mapView.Paths.remove(connectionPath);
-        }
-        //add the connection path
-        connectionPath = mapView.Paths.add([startCoordinate, endCoordinate], {
-          nearRadius: 0.5,
-          farRadius: 0.5,
-          color: "#3178C6", // Set connection path color to blue
-        });
-      }
-    } else if (path) {
-      mapView.Paths.remove(path);
-      //startSpace = null;
-      path = null;
     }
   });
 
