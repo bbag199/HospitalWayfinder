@@ -477,15 +477,6 @@ accessibilityButton.addEventListener("click", () => {
   ) as HTMLButtonElement;
   let toiletActive = false;
 
-  liftsHighlighted = !liftsHighlighted;
-  if (liftsHighlighted) {
-    accessibilityButton.style.backgroundColor = "#0f2240";
-    accessibilityButton.style.color = "#fff";
-  } else {
-    accessibilityButton.style.backgroundColor = "#fff";
-    accessibilityButton.style.color = "#000";
-  }
-
   toiletButton.addEventListener("click", () => {
     const toilets = mapData
       .getByType("space")
