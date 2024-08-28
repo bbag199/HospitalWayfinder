@@ -105,25 +105,37 @@ async function init() {
 
   mapView.on("click", async (event) => {
     if (!event) return;
+  
     if (!startSpace) {
       startSpace = event.spaces[0];
     } else if (!path && event.spaces[0]) {
+      // Determine if the start and end spaces are on the same floor
+      const endSpace = event.spaces[0];
+      const areOnSameFloor = startSpace.floor === endSpace.floor;
+  
+      // Set accessibility option based on whether the spaces are on the same floor
       const directions = await mapView.getDirections(
         startSpace,
-        event.spaces[0],
-        { accessible: accessibilityEnabled }
+        endSpace,
+        { accessible: areOnSameFloor || accessibilityEnabled }
       );
+  
       if (!directions) return;
-
+  
       // Add the main path
       path = mapView.Paths.add(directions.coordinates, {
         nearRadius: 0.5,
         farRadius: 0.5,
         color: "orange",
       });
-
+    } else if (path) {
+      // Remove the existing path and reset variables
+      mapView.Paths.remove(path);
+      path = null;
+      startSpace = null;
     }
   });
+  
 
   const floorSettings: { [key: string]: { bearing: number, coordinate: Coordinate } } = {
     'm_9f758af082f72a25': { bearing: 200, coordinate: new Coordinate(-37.008200, 174.887104) },
@@ -443,23 +455,35 @@ async function init() {
   const getDirectionsButton = document.getElementById(
     "get-directions"
   ) as HTMLButtonElement;
-  getDirectionsButton.addEventListener("click", function () {
+  
+  getDirectionsButton.addEventListener("click", async function () {
     if (startSpace && endSpace) {
       if (path) {
         mapView.Paths.remove(path);
       }
-      const directions = mapView.getDirections(startSpace, endSpace, { accessible: accessibilityEnabled });
-      if (directions) {
-        path = mapView.Paths.add(directions.coordinates, {
-          nearRadius: 0.5,
-          farRadius: 0.5,
-          color: "orange",
-        });
+  
+      try {
+        const sameFloor = startSpace.floor.id === endSpace.floor.id;
+        const accessibleOption = sameFloor ? false : accessibilityEnabled;
+        const directions = await mapView.getDirections(startSpace, endSpace, { accessible: accessibleOption });
+  
+        if (directions) {
+          path = mapView.Paths.add(directions.coordinates, {
+            nearRadius: 0.5,
+            farRadius: 0.5,
+            color: "orange",
+          });
+        } else {
+          console.error("No directions found.");
+        }
+      } catch (error) {
+        console.error("Error fetching directions:", error);
       }
     } else {
       console.error("Please select both start and end locations.");
     }
   });
+  
 
   // Button Accessibility
   const accessibilityButton = document.createElement("button");
@@ -628,6 +652,19 @@ accessibilityButton.addEventListener("click", () => {
       receptionButton.style.color = "#000";
     }
   });
-}
+
+  receptionActive = !receptionActive;
+  if (receptionActive) {
+    receptionButton.style.backgroundColor = "#0f2240";
+    receptionButton.style.color = "#fff";
+  } else {
+    receptionButton.style.backgroundColor = "#fff";
+    receptionButton.style.color = "#000";
+  }
+};
+
+
+
+
 
 init();
