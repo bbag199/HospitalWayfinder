@@ -462,27 +462,27 @@ async function init() {
         mapView.Paths.remove(path);
       }
   
-      try {
-        const sameFloor = startSpace.floor.id === endSpace.floor.id;
-        const accessibleOption = sameFloor ? false : accessibilityEnabled;
-        const directions = await mapView.getDirections(startSpace, endSpace, { accessible: accessibleOption });
+      // Check if start and end spaces are on the same floor
+      const areOnSameFloor = startSpace.floor === endSpace.floor;
+      
+      // Force accessibility if on the same floor
+      const directions = mapView.getDirections(startSpace, endSpace, { 
+        accessible: areOnSameFloor || accessibilityEnabled 
+      });
   
-        if (directions) {
-          path = mapView.Paths.add(directions.coordinates, {
-            nearRadius: 0.5,
-            farRadius: 0.5,
-            color: "orange",
-          });
-        } else {
-          console.error("No directions found.");
-        }
-      } catch (error) {
-        console.error("Error fetching directions:", error);
+      if (directions) {
+        path = mapView.Paths.add(directions.coordinates, {
+          nearRadius: 0.5,
+          farRadius: 0.5,
+          color: "orange",
+        });
       }
     } else {
       console.error("Please select both start and end locations.");
     }
   });
+  
+  
   
 
   // Button Accessibility
