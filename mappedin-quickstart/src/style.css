@@ -233,3 +233,12 @@ nav {
 .icons-container > button:hover {
   border: 1px dotted #1d1d1d;
 }
+
+.search-list-container {
+  display: none;  /*set the default is not display, need to change to display in Typescript */
+  background-color: rgb(255, 103, 103);
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 300px;
+}
