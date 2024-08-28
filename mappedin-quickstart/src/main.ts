@@ -535,16 +535,6 @@ async function init() {
       navigationState.isPathDrawn = false; // Reset the path drawn state
     }
 
-    // Clears the search bar
-    const startSearchBar = document.getElementById(
-      "start-search"
-    ) as HTMLInputElement;
-    const endSearchBar = document.getElementById(
-      "end-search"
-    ) as HTMLInputElement;
-    if (startSearchBar) startSearchBar.value = "";
-    if (endSearchBar) endSearchBar.value = "";
-
     // Reset start and end spaces regardless of path state
     navigationState.startSpace = null;
     navigationState.endSpace = null;
