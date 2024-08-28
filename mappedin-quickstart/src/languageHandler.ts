@@ -41,6 +41,17 @@ export function applySettings() {
       toiletBtn.innerText = i18n.t("Toilets");
     }
 
+    const stackMapButton = document.querySelector(
+      ".reset-button.mi-button"
+    ) as HTMLButtonElement;
+    if (stackMapButton) {
+      stackMapButton.textContent = stackMapButton.textContent?.includes(
+        i18n.t("EnableStackMap")
+      )
+        ? i18n.t("DisableStackMap")
+        : i18n.t("EnableStackMap");
+    }
+
     const modeLabel = document.querySelector(
       'label[for="mode"]'
     ) as HTMLElement;
