@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@mappedin/mappedin-js": "^6.0.1-alpha.31",
-    "i18next": "^23.12.2",
+    "i18next": "^23.14.0",
     "react-i18next": "^15.0.0"
   }
 }
