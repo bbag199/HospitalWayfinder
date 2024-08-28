@@ -16,9 +16,29 @@ export function applySettings() {
       contactLink.innerText = i18n.t("Contact");
     }
 
+    const homepageLink = document.getElementById("homepage-link");
+    if (homepageLink) {
+      homepageLink.innerText = i18n.t("Home");
+    }
+
     const settingsBtn = document.getElementById("setting-btn");
     if (settingsBtn) {
       settingsBtn.innerText = i18n.t("Settings");
+    }
+
+    const receptionBtn = document.getElementById("reception-btn");
+    if (receptionBtn) {
+      receptionBtn.innerText = i18n.t("Reception");
+    }
+
+    const cafeBtn = document.getElementById("cafe-btn");
+    if (cafeBtn) {
+      cafeBtn.innerText = i18n.t("Cafe");
+    }
+
+    const toiletBtn = document.getElementById("toilet-btn");
+    if (toiletBtn) {
+      toiletBtn.innerText = i18n.t("Toilets");
     }
 
     const modeLabel = document.querySelector(

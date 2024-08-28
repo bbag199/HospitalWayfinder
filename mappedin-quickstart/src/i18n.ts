@@ -6,6 +6,7 @@ const resources = {
   en: {
     translation: {
       Contact: "Contact",
+      Home: "Home",
       Setting: "Setting",
       Mode: "Mode",
       Language: "Language",
@@ -18,6 +19,9 @@ const resources = {
       GetDirections: "Get Directions",
       EmergencyExit: "Emergency Exit",
       "Main Reception":"Main Reception",
+      "Reception":"Reception",
+      "EnableStackMap": "Enable Stack Map",
+      "DisableStackMap": "Disable Stack Map",
       "Module 2a": "Module 2a",
       "Module 2": "Module 2",
       "Module 3": "Module 3",
@@ -58,6 +62,7 @@ const resources = {
   mi: {
     translation: {
       Contact: "Whakapā",
+      Home: "Kāinga",
       Settings: "Tautuhinga",
       Mode: "Aratau",
       Language: "Reo",
@@ -70,6 +75,9 @@ const resources = {
       GetDirections: "Tikina nga Tohutohu",
       EmergencyExit: "Putanga Whawhati Tata",
       "Main Reception": "Whakatau Matua",
+      "Reception": "Tari",
+      "EnableStackMap": "Whakahohe Mapi Papa",
+      "DisableStackMap": "Mono Mapi Papa",
       "Module 2a": "Mōtū 2a",
       "Module 2": "Wāhanga 2",
       "Module 3": "Wāhanga 3",
@@ -112,6 +120,7 @@ const resources = {
   cn: {
     translation: {
       Contact: "联系方式",
+      Home: "主页",
       Settings: "设置",
       Mode: "模式",
       Language: "语言",
@@ -124,6 +133,9 @@ const resources = {
       GetDirections: "获取方向",
       EmergencyExit: "紧急出口",
       "Main Reception": "主接待处",
+      "Reception": "接待处",
+      "EnableStackMap": "启用叠加地图",
+      "DisableStackMap": "禁用叠加地图",
       "Module 2a": "模块 2a",
       "Module 2": "模块 2",
       "Module 3": "模块 3",
@@ -165,6 +177,7 @@ const resources = {
   tw: {
     translation: {
       Contact: "聯絡方式",
+      Home: "主頁",
       Settings: "設置",
       Mode: "模式",
       Language: "語言",
@@ -177,6 +190,9 @@ const resources = {
       GetDirections: "獲取方向",
       EmergencyExit: "緊急出口",
       "Main Reception": "主接待處",
+      "Reception": "接待處",
+      "EnableStackMap": "啟用疊加地圖",
+      "DisableStackMap": "禁用疊加地圖",
       "Module 2a": "模組 2a",
       "Module 2": "模組 2",
       "Module 3": "模組 3",
@@ -217,6 +233,7 @@ const resources = {
   vi: {
     translation: {
       Contact: "Liên hệ",
+      Home: "Trang chủ",
       Settings: "Cài đặt",
       Mode: "Chế độ",
       Language: "Ngôn ngữ",
@@ -229,6 +246,9 @@ const resources = {
       GetDirections: "Nhận chỉ đường",
       EmergencyExit: "Lối Thoát Hiểm",
       "Main Reception": "Lễ tân chính",
+      "Reception": "Tiếp Tân",
+      "EnableStackMap": "Bật Bản Đồ Xếp Chồng",
+      "DisableStackMap": "Tắt Bản Đồ Xếp Chồng",
       "Module 2a": "Mô-đun 2a",
       "Module 2": "Mô-đun 2",
       "Module 3": "Mô-đun 3",
@@ -269,6 +289,7 @@ const resources = {
   sm: {
     translation: {
       Contact: "Fa'afeso'ota'i",
+      Home: "Aiga",
       Settings: "Seti",
       Mode: "Faiga",
       Language: "Gagana",
@@ -281,6 +302,9 @@ const resources = {
       GetDirections: "Maua Faatonuga",
       EmergencyExit: "Ala Faafuasei",
       "Main Reception": "Talifala Autu",
+      "Reception": "Talia'iga",
+      "EnableStackMap": "Faʻaola Mapi Faʻaopoopo",
+      "DisableStackMap": "Faʻamuta Mapi Faʻaopoopo",
       "Module 2a": "Module 2a",
       "Module 2": "Module 2",
       "Module 3": "Module 3",
@@ -322,6 +346,7 @@ const resources = {
   to: {
     translation: {
       Contact: "Fetu'utaki",
+      Home: "ʻApi",
       Settings: "Ngaahi Seti",
       Mode: "Taimi",
       Language: "Lea",
@@ -334,6 +359,9 @@ const resources = {
       GetDirections: "Ma'u e ngaahi Fokotu'utu'u",
       EmergencyExit: "Hala Fa'atu'utu'unga",
       "Main Reception": "Talifala Puleʻanga",
+      "Reception": "Talitali",
+      "EnableStackMap": "Fakamamā Mapu fakaʻaonga",
+      "DisableStackMap": "Taʻeʻasi Mapu fakaʻaonga",
       "Module 2a": "Module 2a",
       "Module 2": "Module 2",
       "Module 3": "Module 3",
@@ -374,6 +402,7 @@ const resources = {
   pa: {
     translation: {
       Contact: "ਸੰਪਰਕ ਕਰੋ",
+      Home: "ਘਰ",
       Settings: "ਸੈਟਿੰਗਜ਼",
       Mode: "ਮੋਡ",
       Language: "ਭਾਸ਼ਾ",
@@ -386,6 +415,9 @@ const resources = {
       GetDirections: "ਦਿਸ਼ਾਵਾਂ ਪ੍ਰਾਪਤ ਕਰੋ",
       EmergencyExit: "ਐਮਰਜੈਂਸੀ ਐਗਜ਼ਿਟ",
       "Main Reception": "ਮੁੱਖ ਸਵਾਗਤ",
+      "Reception": "ਰਿਸੈਪਸ਼ਨ",
+      "EnableStackMap": "ਸਟੈਕ ਮੈਪ ਨੂੰ ਐਨਬਲ ਕਰੋ",
+      "DisableStackMap": "ਸਟੈਕ ਮੈਪ ਨੂੰ ਅਯੋਗ ਕਰੋ",
       "Module 2a": "ਮੋਡਿਊਲ 2a",
       "Module 2": "ਮੋਡਿਊਲ 2",
       "Module 3": "ਮੋਡਿਊਲ 3",

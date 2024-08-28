@@ -204,7 +204,7 @@ async function init() {
   const stackMapButton = document.createElement("button");
   // Add any classes, text, or other properties (these two code can be linked to the css file):
   stackMapButton.className = "reset-button mi-button";
-  stackMapButton.textContent = "Enable Stack Map";
+  stackMapButton.textContent = i18n.t("EnableStackMap");
 
   // Append the button to the desired parent element:
   mappedinDiv.appendChild(stackMapButton);
