@@ -93,7 +93,7 @@ async function init() {
     setCameraPosition(id); // Update the camera position when the floor changes
   });
 
-  let startSpace: Space;
+  let startSpace: Space | null = null;
   let endSpace: Space | null = null;
   let path: Path | null = null;
   let accessibilityEnabled = false;
@@ -135,7 +135,7 @@ async function init() {
       // Remove the existing path and reset variables
       mapView.Paths.remove(path);
       path = null;
-      // startSpace = null;
+      startSpace = null;
     }
   });
   
@@ -594,6 +594,7 @@ receptionButton.addEventListener("click", () => {
     receptionButton.style.color = "#000";
   }
 });
+
 
 
 }
