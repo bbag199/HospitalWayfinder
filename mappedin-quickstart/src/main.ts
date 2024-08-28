@@ -652,15 +652,6 @@ accessibilityButton.addEventListener("click", () => {
       receptionButton.style.color = "#000";
     }
   });
-
-  receptionActive = !receptionActive;
-  if (receptionActive) {
-    receptionButton.style.backgroundColor = "#0f2240";
-    receptionButton.style.color = "#fff";
-  } else {
-    receptionButton.style.backgroundColor = "#fff";
-    receptionButton.style.color = "#000";
-  }
 };
 
 
