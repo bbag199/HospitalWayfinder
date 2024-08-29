@@ -85,51 +85,6 @@ async function init() {
     isPathDrawn: false,
   };
 
-  // mapView.on("click", async (event) => {
-  //   if (!event) return;
-
-  //   // Check if it's the first click for the start space
-  //   if (!navigationState.startSpace) {
-  //       navigationState.startSpace = event.spaces[0];
-  //   }
-  //   // Check if it's the second click for the end space
-  //   else if (!navigationState.endSpace && event.spaces[0] !== navigationState.startSpace) {
-  //       navigationState.endSpace = event.spaces[0];
-
-  //       // Check and draw path if both start and end are set
-  //       if (navigationState.startSpace && navigationState.endSpace) {
-  //           // Clear any previous paths if any
-  //           if (navigationState.isPathDrawn) {
-  //               mapView.Paths.removeAll();
-  //               mapView.Markers.removeAll();
-  //               navigationState.isPathDrawn = false;
-  //           }
-
-  //           // Draw the path
-  //           const directions = await mapView.getDirections(navigationState.startSpace, navigationState.endSpace);
-  //           if (directions) {
-  //               mapView.Navigation.draw(directions, {
-  //                   pathOptions: {
-  //                       nearRadius: 0.5,
-  //                       farRadius: 0.5,
-  //                   }
-  //               });
-  //               navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
-  //           }
-  //       }
-  //   } else {
-  //       // Reset everything for a new route if a path is already drawn
-  //       if (navigationState.isPathDrawn) {
-  //           mapView.Paths.removeAll();
-  //           mapView.Markers.removeAll();
-  //           navigationState.isPathDrawn = false;
-  //       }
-  //       // Start a new path with the current click as the new start space
-  //       navigationState.startSpace = event.spaces[0];
-  //       navigationState.endSpace = null; // Clear previous end space
-  //   }
-  // });
-
   mapView.on("click", async (event) => {
     if (!event) return;
 
