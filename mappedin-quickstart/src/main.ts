@@ -439,19 +439,6 @@ async function init() {
     }
   }
 
-  //////////////////////////////////////////
-  //////////////////////////////////////////
-  //////////////////////////////////////////
-  //Testing the searching bar list: will
-  //Will add two list here: 1)Module list 2) Entrence List
-  
-
-
-
-  //////////////////////////////////////////
-  //////////////////////////////////////////
-  //////////////////////////////////////////
-
   // Search bar functionality
   const endSearchBar = document.getElementById(
     "end-search"
@@ -598,6 +585,92 @@ async function init() {
       console.error("Please select both start and end locations.");
     }
   });
+
+  //////////////////////////////////////////
+  //////////////////////////////////////////
+  //////////////////////////////////////////
+  //Testing the search list container: 
+  // Will add two list here: 1)Module (button) 2) Entrence (button)
+  // Function to show the dropdown
+  const searchList = document.getElementById('search-list') as HTMLDivElement;
+  
+  // Function to show the room list 
+  const showDropdown = () => {      
+    searchList.style.display = 'block';
+  };
+
+  // Function to hide the room list
+  const hideDropdown = () => {
+    searchList.style.display = 'none';
+  };
+
+  // Show the dropdown when the user clicks on the search bar
+  startSearchBar.addEventListener('focus', () => {    
+      showDropdown();
+  });
+
+  // Prevent immediate hiding of the dropdown on click
+  startSearchBar.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showDropdown();
+  });
+
+  searchList.addEventListener('click', (event) => {
+      event.stopPropagation();
+  });
+
+  // Hide the dropdown when clicking outside of it, after a short delay
+  document.addEventListener('click', function (event: MouseEvent) {
+      if (!searchList.contains(event.target as Node) && event.target !== startSearchBar) {
+          setTimeout(() => {
+              hideDropdown();
+          }, 100); // Adjust delay as needed
+      }
+  });
+
+  const moduleItemsContainer = document.getElementById('module-items-container') as HTMLDivElement;
+  const moduleButton = document.getElementById('module-button') as HTMLButtonElement;
+  
+  // Function to populate module rooms
+  const populateModuleRooms = () => {
+    const spaces: Space[] = mapData.getByType("space");
+    moduleItemsContainer.innerHTML = ''; // Clear existing items
+
+    spaces.forEach(space => {
+      if (space.name.includes('Module')) {
+        const spaceOption = document.createElement('button');
+        spaceOption.className = 'button-13';
+        spaceOption.textContent = space.name; // The property containing the space name
+        moduleItemsContainer.appendChild(spaceOption);
+      }
+    });
+  };
+
+  // Flag to track the visibility of the module items container
+  let isModuleItemsVisible = false;
+
+  // Toggle module rooms visibility when the Module button is clicked
+  moduleButton.addEventListener('click', () => {
+    if (isModuleItemsVisible) {
+      moduleItemsContainer.style.display = 'none'; // Hide if already visible
+    } else {
+      populateModuleRooms(); // Populate the module rooms
+      moduleItemsContainer.style.display = 'block'; // Show the module rooms
+    }
+    isModuleItemsVisible = !isModuleItemsVisible; // Toggle the flag
+  });
+
+
+
+  //////////////////////////////////////////
+  //////////////////////////////////////////
+  //////////////////////////////////////////
+
+
+
+
+
+
 
   // Button Accessibility
   const accessibilityButton = document.createElement("button");

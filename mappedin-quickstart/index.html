@@ -19,11 +19,16 @@
   </nav>
   <div class="search-container">
     <input type="text" id="start-search" class="search-bar" placeholder="From: Search starting point..." />
-    <div class="search-list-container">
-      <div class="room-list-container">
-        <div class="detail-list">
+    <div class="search-list-container" id="search-list">
+      <div class="button-container">
           <!--here will have the module or entrence list button-->
-        </div>
+          <!-- Module and Entrance buttons -->
+          <button class="button-13" id= "module-button" role="button">Module List</button>
+          <!--pupulate with the Module list here-->
+          <div id="module-items-container"></div>
+
+          <!--pupulate with the Entrance list here-->
+          <button class="button-13" id="entrance-button" role="button">Entrance List</button>
       </div>
     </div>
     <input type="text" id="end-search" class="search-bar" placeholder="To: Search destination..." />

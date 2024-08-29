@@ -234,11 +234,87 @@ nav {
   border: 1px dotted #1d1d1d;
 }
 
+/* Testing the search-list-container style here:*/
 .search-list-container {
   display: none;  /*set the default is not display, need to change to display in Typescript */
-  background-color: rgb(255, 103, 103);
+  background-color: rgb(255, 255, 255);
   border: 1px solid #ccc;
   max-height: 200px;
   overflow-y: auto;
   width: 300px;
+}
+
+/*style button for module and entrance button button 13:*/
+
+.button-13 {
+  background-color: #f1f2ff;
+  border: 1px solid #f1f2ff;
+  border-radius: 4px;
+  box-shadow:none; /*rgba(213, 217, 217, .5) 0 2px 5px 0;*/
+  box-sizing: border-box;
+  color: #383838;
+  cursor: pointer;
+  display: inline-block;
+  /*font-family: "Amazon Ember",sans-serif;*/
+  font-size: 16px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: calc(100% - 10px);
+
+  margin: 4px;
+  
+}
+
+.button-13:hover {
+  background-color: #f7fafa;
+}
+
+.button-13:focus {
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  outline: 0;
+}
+
+/* Specific button style for #module-items-container */
+#module-items-container button {
+  background-color: #f1f2ff; /* Same background color as .button-13 */
+  border: none; /* No border */
+  box-shadow: none; /* No shadow */
+  border-radius: 1px;
+  box-sizing: border-box;
+  color: #383838;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: calc(100% - 36px); /* Adjust width to fit within container with 10px space on left */
+
+  margin: 2px; /* No margin */
+  margin-left: 30px; /* 10px space on the left-hand side */
+  margin-right: 6px;
+}
+
+#module-items-container button:hover {
+  background-color: #f7fafa; /* Same hover effect as .button-13 */
+}
+
+#module-items-container button:focus {
+  border-color: #008296; /* Same focus effect as .button-13 */
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
+  outline: 0;
 }
