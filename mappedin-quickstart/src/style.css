@@ -242,6 +242,9 @@ nav {
   max-height: 200px;
   overflow-y: auto;
   width: 300px;
+
+  border-radius: 5px;
+  padding: 5px;   /* Ensure the content, including buttons, is 8px away from the edge */
 }
 
 /*style button for module and entrance button button 13:*/
@@ -252,11 +255,11 @@ nav {
   border-radius: 4px;
   box-shadow:none; /*rgba(213, 217, 217, .5) 0 2px 5px 0;*/
   box-sizing: border-box;
-  color: #383838;
+  color: #464646;
   cursor: pointer;
   display: inline-block;
   /*font-family: "Amazon Ember",sans-serif;*/
-  font-size: 16px;
+  font-size: 14px;
   line-height: 29px;
   padding: 0 10px 0 11px;
   position: relative;
@@ -289,10 +292,10 @@ nav {
   box-shadow: none; /* No shadow */
   border-radius: 1px;
   box-sizing: border-box;
-  color: #383838;
+  color: #535353;
   cursor: pointer;
   display: inline-block;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 29px;
   padding: 0 10px 0 11px;
   position: relative;
@@ -326,10 +329,10 @@ nav {
   box-shadow: none; /* No shadow */
   border-radius: 1px;
   box-sizing: border-box;
-  color: #383838;
+  color: #535353;
   cursor: pointer;
   display: inline-block;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 29px;
   padding: 0 10px 0 11px;
   position: relative;

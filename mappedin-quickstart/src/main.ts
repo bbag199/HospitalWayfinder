@@ -593,7 +593,8 @@ async function init() {
   // Will add two list here: 1)Module (button) 2) Entrence (button)
   // Function to show the dropdown
   const searchList = document.getElementById('search-list') as HTMLDivElement;
-  
+  const searchListEndPoint = document.getElementById('search-list-endpoint') as HTMLDivElement;
+
   // Function to show the room list 
   const showDropdown = () => {      
     searchList.style.display = 'block';
@@ -610,8 +611,9 @@ async function init() {
       isModuleItemsVisible = false;  // Reset the visibility flag when focusing on the search bar
       moduleItemsContainer.style.display = 'none'; // Ensure Module item list is hidden
       isEntranceItemsVisible = false;
-      entranceItemsContainer.style.display = 'none';
+      entranceItemsContainer.style.display = 'none';  
   });
+
 
   // Prevent immediate hiding of the dropdown on click
   startSearchBar.addEventListener('click', (event) => {
@@ -619,9 +621,11 @@ async function init() {
       showDropdown();
   });
 
+
   searchList.addEventListener('click', (event) => {
       event.stopPropagation();
   });
+
 
   // Hide the dropdown when clicking outside of it, after a short delay
   document.addEventListener('click', function (event: MouseEvent) {
