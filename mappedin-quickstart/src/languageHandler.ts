@@ -1,13 +1,18 @@
 import i18n from "./i18n";
 import { applyMode } from "./modeHandler";
+import { MapView } from "@mappedin/mappedin-js";
 
-export function applySettings() {
+export function applySettings(mapView: MapView) {
   const mode = (document.getElementById("mode") as HTMLSelectElement).value;
   const language = (document.getElementById("language") as HTMLSelectElement)
     .value;
 
   // Apply mode (light/dark)
-  applyMode(mode);
+  if(mapView){
+    applyMode(mode, mapView);
+  }else{
+    console.error("mapView is not available in applySettings");// for testing
+  }
 
   // Apply language setting
   i18n.changeLanguage(language, () => {

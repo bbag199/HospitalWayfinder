@@ -11,7 +11,7 @@ import {
 } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
-import { applyMode } from "./modeHandler"; //testing mode feature
+import { modeSwitcher } from "./modeHandler"; //testing mode feature
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -22,11 +22,6 @@ const options = {
 };
 //testing mode feature
 let mapView: MapView;
-
-const modes: { [key: string]: string } = {
-  light: "https://tiles-cdn.mappedin.com/styles/mappedin/style.json",
-  dark: "https://tiles-cdn.mappedin.com/styles/starlight/style.json",
-}; //testing mode feature
 
 async function init() {
   //set the language to English on initialization
@@ -57,18 +52,12 @@ async function init() {
     mapData,
     {
       outdoorView: {
-        style: modes.light,
+        style: "https://tiles-cdn.mappedin.com/styles/mappedin/style.json",
       },
-    } //testing mode feature
+    } 
   );
 
-  //testing mode feature
-  // Set up event listener for map style changes
-  const modeSelector = document.getElementById("mode") as HTMLSelectElement;
-  modeSelector.addEventListener("change", (e) => {
-    const selectedMode = (e.target as HTMLSelectElement).value;
-    mapView.Outdoor.setStyle(modes[selectedMode]);
-  }); //testing mode feature
+  modeSwitcher(mapView);
 
   // Function to translate and label locations
   function translateAndLabelLocations() {
