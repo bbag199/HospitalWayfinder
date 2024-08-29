@@ -607,6 +607,10 @@ async function init() {
   // Show the dropdown when the user clicks on the search bar
   startSearchBar.addEventListener('focus', () => {    
       showDropdown();
+      isModuleItemsVisible = false;  // Reset the visibility flag when focusing on the search bar
+      moduleItemsContainer.style.display = 'none'; // Ensure Module item list is hidden
+      isEntranceItemsVisible = false;
+      entranceItemsContainer.style.display = 'none';
   });
 
   // Prevent immediate hiding of the dropdown on click
@@ -628,6 +632,15 @@ async function init() {
       }
   });
 
+  //create function according to the input string to find the Space from database:
+  function getSpaceByName(name: string): Space | undefined {
+    // Retrieve the Space instance
+    const spaceCollection: Space[] = mapData.getByType("space"); // get the space array from the mapData
+    return spaceCollection.find(space => space.name === name);
+  }
+
+
+  // Make the variable for the Module list button function:
   const moduleItemsContainer = document.getElementById('module-items-container') as HTMLDivElement;
   const moduleButton = document.getElementById('module-button') as HTMLButtonElement;
   
@@ -642,9 +655,31 @@ async function init() {
         spaceOption.className = 'button-13';
         spaceOption.textContent = space.name; // The property containing the space name
         moduleItemsContainer.appendChild(spaceOption);
+        
+        // Add click event listener to capture the button text
+        spaceOption.addEventListener('click', () => {
+          const selectedSpaceName = spaceOption.textContent;
+
+          if (selectedSpaceName) {
+          const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
+            
+          if (spaceInstance) {
+              // Update startSpace with the Space instance
+              startSpace = spaceInstance; 
+              //fill the starting point input bar
+              startSearchBar.value = spaceOption.textContent!;
+              console.log('startSpace updated:', startSpace);
+            } else {
+              console.error('Space not found for:', selectedSpaceName);
+            }
+          }
+
+        });
       }
     });
   };
+
+
 
   // Flag to track the visibility of the module items container
   let isModuleItemsVisible = false;
@@ -660,6 +695,61 @@ async function init() {
     isModuleItemsVisible = !isModuleItemsVisible; // Toggle the flag
   });
 
+
+  // Make the variable for the Entrance list button function:
+  const entranceItemsContainer = document.getElementById('entrance-items-container') as HTMLDivElement;
+  const entranceButton = document.getElementById('entrance-button') as HTMLButtonElement;
+  
+  // Function to populate module rooms
+  const populateEntranceItem = () => {
+    const spaces: Space[] = mapData.getByType("space");
+    entranceItemsContainer.innerHTML = ''; // Clear existing items
+
+    spaces.forEach(space => {
+      if (space.name.includes('Entrance')) {
+        const spaceOption = document.createElement('button');
+        spaceOption.className = 'button-13';
+        spaceOption.textContent = space.name; // The property containing the space name
+        entranceItemsContainer.appendChild(spaceOption);
+        
+        
+        // Add click event listener to capture the button text
+        spaceOption.addEventListener('click', () => {
+          const selectedSpaceName = spaceOption.textContent;
+  
+          if (selectedSpaceName) {
+          const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
+            
+          if (spaceInstance) {
+              // Update startSpace with the Space instance
+              startSpace = spaceInstance; 
+              //fill the starting point input bar
+              startSearchBar.value = spaceOption.textContent!;
+              console.log('startSpace updated:', startSpace);
+            } else {
+              console.error('Space not found for:', selectedSpaceName);
+            }
+          }
+        });
+      }
+
+      
+    });
+  };
+
+  // Flag to track the visibility of the module items container
+  let isEntranceItemsVisible = false;
+
+  // Toggle module rooms visibility when the Module button is clicked
+  entranceButton.addEventListener('click', () => {
+    if (isEntranceItemsVisible) {
+      entranceItemsContainer.style.display = 'none'; // Hide if already visible
+    } else {
+      populateEntranceItem(); // Populate the module rooms
+      entranceItemsContainer.style.display = 'block'; // Show the module rooms
+    }
+    isEntranceItemsVisible = !isEntranceItemsVisible; // Toggle the flag
+  });
 
 
   //////////////////////////////////////////

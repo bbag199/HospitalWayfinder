@@ -318,3 +318,40 @@ nav {
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
   outline: 0;
 }
+
+/* Specific button style for #entrance-items-container */
+#entrance-items-container button {
+  background-color: #f1f2ff; /* Same background color as .button-13 */
+  border: none; /* No border */
+  box-shadow: none; /* No shadow */
+  border-radius: 1px;
+  box-sizing: border-box;
+  color: #383838;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: calc(100% - 36px); /* Adjust width to fit within container with 10px space on left */
+
+  margin: 2px; /* No margin */
+  margin-left: 30px; /* 10px space on the left-hand side */
+  margin-right: 6px;
+}
+
+#entrance-items-container button:hover {
+  background-color: #f7fafa; /* Same hover effect as .button-13 */
+}
+
+#entrance-items-container button:focus {
+  border-color: #008296; /* Same focus effect as .button-13 */
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
+  outline: 0;
+}
