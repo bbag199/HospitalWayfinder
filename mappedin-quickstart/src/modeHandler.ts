@@ -3,7 +3,7 @@ import { MapView } from "@mappedin/mappedin-js";
 const modes: { [key: string]: string } = {
   light: "https://tiles-cdn.mappedin.com/styles/honeycrisp/style.json",
   dark: "https://tiles-cdn.mappedin.com/styles/midnightblue/style.json",
-}; //testing mode feature
+}; 
 
 export function applyMode(mode: string, mapView: MapView) {
   if (!mapView || !mapView.Outdoor) {

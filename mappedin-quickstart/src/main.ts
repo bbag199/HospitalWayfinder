@@ -3,6 +3,7 @@ import {
   show3dMap,
   MapView,
   Space,
+  MapData,
   Path,
   Coordinate,
   Directions,
@@ -12,6 +13,8 @@ import {
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
 import { modeSwitcher } from "./modeHandler"; //testing mode feature
+import { fontSizesSwitcher } from "./fontsizeHandler";
+import { applySettings } from "./languageHandler";
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -22,6 +25,7 @@ const options = {
 };
 //testing mode feature
 let mapView: MapView;
+let mapData: MapData;
 
 async function init() {
   //set the language to English on initialization
@@ -29,7 +33,7 @@ async function init() {
   const language = i18n.language || "en";
   i18n.changeLanguage(language);
 
-  const mapData = await getMapData(options);
+  mapData = await getMapData(options);//testing for font size
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
 
@@ -58,6 +62,7 @@ async function init() {
   );
 
   modeSwitcher(mapView);
+  fontSizesSwitcher(mapView);
 
   // Function to translate and label locations
   function translateAndLabelLocations() {
