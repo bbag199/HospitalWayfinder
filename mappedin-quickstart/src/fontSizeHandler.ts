@@ -19,7 +19,7 @@ export function applyFontSize(size:string, mapView: MapView) {
             mapView.Labels.add(space,space.name,{
                 appearance: {
                     text:{
-                        size:fontSizes[size]||fontSizes.normal,
+                        size:fontSizes[size as keyof typeof fontSizes]||fontSizes.normal,
                     },
                 },
             });
