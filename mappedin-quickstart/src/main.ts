@@ -11,6 +11,7 @@ import {
 } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
+import { applyMode } from "./modeHandler"; //testing mode feature
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -19,6 +20,13 @@ const options = {
   secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
   mapId: "66b179460dad9e000b5ee951",
 };
+//testing mode feature
+let mapView: MapView;
+
+const modes: { [key: string]: string } = {
+  light: "https://tiles-cdn.mappedin.com/styles/mappedin/style.json",
+  dark: "https://tiles-cdn.mappedin.com/styles/starlight/style.json",
+}; //testing mode feature
 
 async function init() {
   //set the language to English on initialization
@@ -43,11 +51,24 @@ async function init() {
     option.value = floor.id;
     floorSelector.appendChild(option);
   });
-
-  const mapView: MapView = await show3dMap(
+  //testing mode feature
+  mapView = await show3dMap(
     document.getElementById("mappedin-map") as HTMLDivElement,
-    mapData
+    mapData,
+    {
+      outdoorView: {
+        style: modes.light,
+      },
+    } //testing mode feature
   );
+
+  //testing mode feature
+  // Set up event listener for map style changes
+  const modeSelector = document.getElementById("mode") as HTMLSelectElement;
+  modeSelector.addEventListener("change", (e) => {
+    const selectedMode = (e.target as HTMLSelectElement).value;
+    mapView.Outdoor.setStyle(modes[selectedMode]);
+  }); //testing mode feature
 
   // Function to translate and label locations
   function translateAndLabelLocations() {
