@@ -35,7 +35,6 @@ export function applyFontSize(size: string, mapView: MapView, spaces: Space[]) {
 export function fontSizesSwitcher(
   mapView: MapView,
   spaces: Space[],
-  applySettings: (mapView: MapView, spaces: Space[]) => void
 ) {
   const fontSizeSelector = document.getElementById(
     "font-size"
@@ -47,8 +46,8 @@ export function fontSizesSwitcher(
     // initialise currently font size
     applyFontSize(selectedSize, mapView, spaces);
 
-    applySettings(mapView, spaces);
   });
+  applyFontSize(fontSizeSelector.value,mapView,spaces);
 }
 export function getCurrentFontSize() {
   return currentFontSize;

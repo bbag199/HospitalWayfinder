@@ -12,9 +12,10 @@ import {
 } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
-import { modeSwitcher } from "./modeController"; //testing mode feature
-import { fontSizesSwitcher, getCurrentFontSize } from "./fontSizeController";
 import { applySettings } from "./languageController";
+import { modeSwitcher } from "./modeController"; 
+import { fontSizesSwitcher } from "./fontSizeController";
+import { languageSwitcher } from "./languageController";
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -65,9 +66,9 @@ async function init() {
   );
 
   modeSwitcher(mapView);
-  fontSizesSwitcher(mapView, cachedSpaces, (mapView, spaces) => {
-    applySettings(mapView, spaces);
-  });
+
+  fontSizesSwitcher(mapView, cachedSpaces);
+  languageSwitcher(mapView, cachedSpaces);
 
   // Initial labeling and translation
   applySettings(mapView, cachedSpaces);
@@ -75,7 +76,7 @@ async function init() {
   const applySettingsButton = document.getElementById("applySettings");
   if (applySettingsButton) {
     applySettingsButton.onclick = function () {
-      applySettings(mapView, mapData.getByType("space") as Space[]);
+      applySettings(mapView, cachedSpaces);
     };
   } else {
     console.error("Apply Settings button not found in the document.");
@@ -174,21 +175,6 @@ async function init() {
       mapView.Labels.add(poi.coordinate, poi.name);
     }
   }
-
-  // Add labels for each map
-  // mapData.getByType("space").forEach((space) => {
-  //   if (space.name) {
-  //     //get translated location name
-  //     let translatedName = space.name;
-
-  //     //use translated name to re-label
-  //     mapView.Labels.add(space, translatedName, {
-  //       appearance: {
-  //         text: { foregroundColor: "orange" },
-  //       },
-  //     });
-  //   }
-  // });
 
   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
