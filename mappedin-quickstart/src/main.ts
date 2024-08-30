@@ -597,12 +597,14 @@ async function init() {
 
   // Function to show the dropdown
   const showDropdown = (dropdown: HTMLDivElement) => {   // Modified this function
+    
     dropdown.style.display = 'block';
   };
 
   // Function to hide the dropdown
   const hideDropdown = (dropdown: HTMLDivElement) => {   // Modified this function
-    dropdown.style.display = 'none';
+    
+    dropdown.style.display = 'none'; 
   };
 
   // Show the dropdown when the user clicks on the search bar
@@ -632,9 +634,9 @@ async function init() {
     showDropdown(searchListEndPoint);
   });
 
-
+  
   searchList.addEventListener('click', (event) => {
-      event.stopPropagation();
+    event.stopPropagation();
   });
   searchListEndPoint.addEventListener('click', (event) => { // Added this block**
     event.stopPropagation();
@@ -655,8 +657,45 @@ async function init() {
             hideDropdown(searchListEndPoint);
         }, 100);
       }
+        /*const target = event.target as Node;
+
+        // Hide dropdowns based on which search bar is focused
+        if (startSearchBar.contains(target)) {
+            setTimeout(() => {
+                hideDropdown(searchListEndPoint);
+            }, 100);
+            // Ensure dropdown for the start search bar is shown
+            showDropdown(searchList);
+        } else if (endSearchBar.contains(target)) {
+            setTimeout(() => {
+                hideDropdown(searchList);
+            }, 100);
+            // Ensure dropdown for the end search bar is shown
+            showDropdown(searchListEndPoint);
+        } else {
+            // Hide dropdowns if clicking outside of search bars and dropdowns
+            if (!searchList.contains(target) && !searchListEndPoint.contains(target)) {
+                setTimeout(() => {
+                    hideDropdown(searchList);
+                    hideDropdown(searchListEndPoint);
+                }, 100);
+            }
+        } */
 
   });
+
+  //testing: the user click on the start input bar then end point drop down will hide,
+  //same for the end point search bar:
+  startSearchBar.addEventListener('click', () => {
+    hideDropdown(searchListEndPoint);
+  })
+
+  endSearchBar.addEventListener('click', () => {
+    hideDropdown(searchList);
+  })
+
+
+
 
   //create function according to the input string to find the Space from database:
   function getSpaceByName(name: string): Space | undefined {
@@ -739,6 +778,7 @@ async function init() {
   });
 
   moduleButtonEndPoint.addEventListener('click', () => { // Added this block**
+    
     if (isModuleItemsVisibleEndPoint) {
       moduleItemsContainerEndPoint.style.display = 'none';
     } else {
