@@ -12,9 +12,9 @@ import {
 } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
-import { modeSwitcher } from "./modeHandler"; //testing mode feature
-import { fontSizesSwitcher } from "./fontsizeHandler";
-import { applySettings } from "./languageHandler";
+import { modeSwitcher } from "./modeController"; //testing mode feature
+import { fontSizesSwitcher, getCurrentFontSize } from "./fontSizeController";
+import { applySettings } from "./languageController";
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -26,6 +26,7 @@ const options = {
 //testing mode feature
 let mapView: MapView;
 let mapData: MapData;
+let cachedSpaces: Space[];
 
 async function init() {
   //set the language to English on initialization
@@ -33,7 +34,9 @@ async function init() {
   const language = i18n.language || "en";
   i18n.changeLanguage(language);
 
-  mapData = await getMapData(options);//testing for font size
+  mapData = await getMapData(options); //testing for font size
+  cachedSpaces = mapData.getByType("space") as Space[]; // testing for font size
+
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
 
@@ -58,30 +61,30 @@ async function init() {
       outdoorView: {
         style: "https://tiles-cdn.mappedin.com/styles/mappedin/style.json",
       },
-    } 
+    }
   );
 
   modeSwitcher(mapView);
-  fontSizesSwitcher(mapView);
+  fontSizesSwitcher(mapView, cachedSpaces, translateAndLabelLocations);
+
+  // Initial labeling
+  translateAndLabelLocations();
 
   // Function to translate and label locations
   function translateAndLabelLocations() {
     mapView.Labels.removeAll();
 
-    mapData.getByType("space").forEach((space) => {
-      const originalName = space.name;
-      const translatedName = i18n.t(originalName);
-
-      mapView.Labels.add(space, translatedName, {
-        appearance: {
-          text: { foregroundColor: "orange" },
-        },
-      });
+    cachedSpaces.forEach((space) => {
+      if (space.name) {
+        const translatedName = i18n.t(space.name);
+        mapView.Labels.add(space, translatedName, {
+          appearance: {
+            text: { foregroundColor: "orange", size: getCurrentFontSize() },
+          },
+        });
+      }
     });
   }
-
-  // Initial labeling
-  translateAndLabelLocations();
 
   // Handle language change
   document.getElementById("language")?.addEventListener("change", () => {
@@ -374,8 +377,8 @@ async function init() {
   });
 
   function performSearch(query: string, type: "start" | "end") {
-    const spaces: Space[] = mapData.getByType("space");
-    const results: Space[] = spaces.filter((space) =>
+    //const spaces: Space[] = mapData.getByType("space");//testing for font size
+    const results: Space[] = cachedSpaces.filter((space) =>
       space.name.toLowerCase().includes(query)
     );
     displayResults(results, type);

@@ -1,5 +1,5 @@
 import i18n from "./i18n";
-import { applyMode } from "./modeHandler";
+import { applyMode } from "./modeController";
 import { MapView } from "@mappedin/mappedin-js";
 
 export function applySettings(mapView: MapView) {
@@ -8,10 +8,10 @@ export function applySettings(mapView: MapView) {
     .value;
 
   // Apply mode (light/dark)
-  if(mapView){
+  if (mapView) {
     applyMode(mode, mapView);
-  }else{
-    console.error("mapView is not available in applySettings");// for testing
+  } else {
+    console.error("mapView is not available in applySettings"); // for testing
   }
 
   // Apply language setting
