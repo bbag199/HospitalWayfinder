@@ -65,34 +65,21 @@ async function init() {
   );
 
   modeSwitcher(mapView);
-  fontSizesSwitcher(mapView, cachedSpaces, translateAndLabelLocations);
-
-  // Initial labeling
-  translateAndLabelLocations();
-
-  // Function to translate and label locations
-  function translateAndLabelLocations() {
-    mapView.Labels.removeAll();
-
-    cachedSpaces.forEach((space) => {
-      if (space.name) {
-        const translatedName = i18n.t(space.name);
-        mapView.Labels.add(space, translatedName, {
-          appearance: {
-            text: { foregroundColor: "orange", size: getCurrentFontSize() },
-          },
-        });
-      }
-    });
-  }
-
-  // Handle language change
-  document.getElementById("language")?.addEventListener("change", () => {
-    i18n.changeLanguage(
-      (document.getElementById("language") as HTMLSelectElement).value,
-      translateAndLabelLocations
-    );
+  fontSizesSwitcher(mapView, cachedSpaces, (mapView, spaces) => {
+    applySettings(mapView, spaces);
   });
+
+  // Initial labeling and translation
+  applySettings(mapView, cachedSpaces);
+
+  const applySettingsButton = document.getElementById("applySettings");
+  if (applySettingsButton) {
+    applySettingsButton.onclick = function () {
+      applySettings(mapView, mapData.getByType("space") as Space[]);
+    };
+  } else {
+    console.error("Apply Settings button not found in the document.");
+  }
 
   floorSelector.value = mapView.currentFloor.id;
 
@@ -189,19 +176,19 @@ async function init() {
   }
 
   // Add labels for each map
-  mapData.getByType("space").forEach((space) => {
-    if (space.name) {
-      //get translated location name
-      let translatedName = space.name;
+  // mapData.getByType("space").forEach((space) => {
+  //   if (space.name) {
+  //     //get translated location name
+  //     let translatedName = space.name;
 
-      //use translated name to re-label
-      mapView.Labels.add(space, translatedName, {
-        appearance: {
-          text: { foregroundColor: "orange" },
-        },
-      });
-    }
-  });
+  //     //use translated name to re-label
+  //     mapView.Labels.add(space, translatedName, {
+  //       appearance: {
+  //         text: { foregroundColor: "orange" },
+  //       },
+  //     });
+  //   }
+  // });
 
   //Add the Stack Map and testing:
   //1)Add the stack "enable button":

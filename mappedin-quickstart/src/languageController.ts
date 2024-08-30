@@ -1,8 +1,28 @@
 import i18n from "./i18n";
 import { applyMode } from "./modeController";
-import { MapView } from "@mappedin/mappedin-js";
+import { MapView, Space } from "@mappedin/mappedin-js";
+import { getCurrentFontSize } from "./fontSizeController";
 
-export function applySettings(mapView: MapView) {
+// Function to translate and label locations
+function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
+  mapView.Labels.removeAll();
+
+  spaces.forEach((space) => {
+    if (space.name) {
+      const translatedName = i18n.t(space.name);
+      mapView.Labels.add(space, translatedName, {
+        appearance: {
+          text: {
+            foregroundColor: "orange",
+            size: getCurrentFontSize(),
+          },
+        },
+      });
+    }
+  });
+}
+
+export function applySettings(mapView: MapView, spaces: Space[]) {
   const mode = (document.getElementById("mode") as HTMLSelectElement).value;
   const language = (document.getElementById("language") as HTMLSelectElement)
     .value;
@@ -16,6 +36,10 @@ export function applySettings(mapView: MapView) {
 
   // Apply language setting
   i18n.changeLanguage(language, () => {
+    //map locations translation
+    translateAndLabelLocations(mapView, spaces);
+
+    //web element translation
     const contactLink = document.getElementById("contact-link");
     if (contactLink) {
       contactLink.innerText = i18n.t("Contact");

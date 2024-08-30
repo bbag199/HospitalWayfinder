@@ -8,27 +8,34 @@ const fontSizes = {
 
 let currentFontSize = fontSizes.normal;
 
-export function applyFontSize(
-  size: string,
-  mapView: MapView,
-  spaces: Space[],
-  translateAndLabelLocations: () => void
-) {
+export function applyFontSize(size: string, mapView: MapView, spaces: Space[]) {
   if (!mapView || !mapView.Labels) {
     console.error("mapView is not initialized or mapView.Labels undefined");
     return; //testing
   }
 
-  currentFontSize =
+  const fontSize =
     fontSizes[size as keyof typeof fontSizes] || fontSizes.normal;
 
-  translateAndLabelLocations();
+  currentFontSize = fontSize;
+
+  mapView.Labels.removeAll();
+
+  spaces.forEach((space) => {
+    if (space.name) {
+      mapView.Labels.add(space, space.name, {
+        appearance: {
+          text: { foregroundColor: "orange", size: fontSize },
+        },
+      });
+    }
+  });
 }
 
 export function fontSizesSwitcher(
   mapView: MapView,
   spaces: Space[],
-  translateAndLabelLocations: () => void
+  applySettings: (mapView: MapView, spaces: Space[]) => void
 ) {
   const fontSizeSelector = document.getElementById(
     "font-size"
@@ -36,18 +43,13 @@ export function fontSizesSwitcher(
 
   fontSizeSelector.addEventListener("change", (e) => {
     const selectedSize = (e.target as HTMLSelectElement).value;
-    applyFontSize(selectedSize, mapView, spaces, translateAndLabelLocations);
+
+    // initialise currently font size
+    applyFontSize(selectedSize, mapView, spaces);
+
+    applySettings(mapView, spaces);
   });
-
-  // initialise currently font size
-  applyFontSize(
-    fontSizeSelector.value,
-    mapView,
-    spaces,
-    translateAndLabelLocations
-  );
 }
-
 export function getCurrentFontSize() {
   return currentFontSize;
 }
