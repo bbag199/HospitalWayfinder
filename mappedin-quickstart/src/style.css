@@ -286,6 +286,7 @@ nav {
 }
 
 /* Specific button style for #module-items-container */
+#module-items-container-endpoint button,
 #module-items-container button {
   background-color: #f1f2ff; /* Same background color as .button-13 */
   border: none; /* No border */
@@ -312,10 +313,12 @@ nav {
   margin-right: 6px;
 }
 
+#module-items-container-endpoint button:hover,
 #module-items-container button:hover {
   background-color: #f7fafa; /* Same hover effect as .button-13 */
 }
 
+#module-items-container-endpoint button:focus,
 #module-items-container button:focus {
   border-color: #008296; /* Same focus effect as .button-13 */
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
@@ -323,6 +326,7 @@ nav {
 }
 
 /* Specific button style for #entrance-items-container */
+#entrance-items-container-endpoint button,
 #entrance-items-container button {
   background-color: #f1f2ff; /* Same background color as .button-13 */
   border: none; /* No border */
@@ -349,10 +353,12 @@ nav {
   margin-right: 6px;
 }
 
+#entrance-items-container-endpoint button:hover,
 #entrance-items-container button:hover {
   background-color: #f7fafa; /* Same hover effect as .button-13 */
 }
 
+#entrance-items-container-endpoint button:focus,
 #entrance-items-container button:focus {
   border-color: #008296; /* Same focus effect as .button-13 */
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
