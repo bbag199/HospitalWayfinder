@@ -13,7 +13,7 @@ import {
 import "@mappedin/mappedin-js/lib/index.css";
 import i18n from "./i18n";
 import { applySettings } from "./languageController";
-import { modeSwitcher } from "./modeController"; 
+import { modeSwitcher } from "./modeController";
 import { fontSizesSwitcher } from "./fontSizeController";
 import { languageSwitcher } from "./languageController";
 

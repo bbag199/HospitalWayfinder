@@ -4,8 +4,7 @@ import { MapView, Space } from "@mappedin/mappedin-js";
 import { getCurrentFontSize } from "./fontSizeController";
 
 //Function to update the labels in the settings modal based on the selected language
-export function updateSettingsLabels()
-{
+export function updateSettingsLabels() {
   //web element translation
   const contactLink = document.getElementById("contact-link");
   if (contactLink) {
@@ -44,16 +43,21 @@ export function updateSettingsLabels()
     const isEnabled = stackMapButton.textContent?.includes(
       i18n.t("DisableStackMap")
     );
-    stackMapButton.textContent =isEnabled
+    stackMapButton.textContent = isEnabled
       ? i18n.t("DisableStackMap")
       : i18n.t("EnableStackMap");
   }
 
-  const modeLabel = document.querySelector(
-    'label[for="mode"]'
-  ) as HTMLElement;
+  const modeLabel = document.querySelector('label[for="mode"]') as HTMLElement;
   if (modeLabel) {
     modeLabel.innerText = i18n.t("Mode");
+  }
+
+  const fontSizeLabel = document.querySelector(
+    'label[for="font-size"]'
+  ) as HTMLElement;
+  if (fontSizeLabel) {
+    fontSizeLabel.innerText = i18n.t("FontSize");
   }
 
   const languageLabel = document.querySelector(
@@ -73,9 +77,7 @@ export function updateSettingsLabels()
     toField.placeholder = i18n.t("To");
   }
 
-  const fromField = document.getElementById(
-    "start-search"
-  ) as HTMLInputElement;
+  const fromField = document.getElementById("start-search") as HTMLInputElement;
   if (fromField) {
     fromField.placeholder = i18n.t("From");
   }
@@ -111,6 +113,27 @@ export function updateSettingsLabels()
       darkOption.innerText = i18n.t("Dark");
     }
 
+    const fontDefaultOption = modeSelect.querySelector(
+      'option[value="normal"]'
+    ) as HTMLOptionElement;
+    if (fontDefaultOption) {
+      fontDefaultOption.innerText = i18n.t("Default");
+    }
+
+    const fontMediumOption = modeSelect.querySelector(
+      'option[value="medium"]'
+    ) as HTMLOptionElement;
+    if (fontMediumOption) {
+      fontMediumOption.innerText = i18n.t("Medium");
+    }
+
+    const fontLargeOption = modeSelect.querySelector(
+      'option[value="large"]'
+    ) as HTMLOptionElement;
+    if (fontLargeOption) {
+      fontLargeOption.innerText = i18n.t("Large");
+    }
+
     const settingsTitle = document.getElementById(
       "settings-title"
     ) as HTMLElement;
@@ -140,17 +163,17 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
 }
 
 //handle language switching
-export function languageSwitcher(mapView: MapView, spaces: Space[]){
+export function languageSwitcher(mapView: MapView, spaces: Space[]) {
   const languageSelector = document.getElementById(
     "language"
   ) as HTMLSelectElement;
 
-  languageSelector.addEventListener("change",(e) => {
+  languageSelector.addEventListener("change", (e) => {
     const selectedLanguage = (e.target as HTMLSelectElement).value;
 
-    i18n.changeLanguage(selectedLanguage,() => {
+    i18n.changeLanguage(selectedLanguage, () => {
       // labels translaton
-      translateAndLabelLocations(mapView,spaces);
+      translateAndLabelLocations(mapView, spaces);
       // setting modal labels
       updateSettingsLabels();
     });
@@ -158,9 +181,9 @@ export function languageSwitcher(mapView: MapView, spaces: Space[]){
 }
 
 export function applySettings(mapView: MapView, spaces: Space[]) {
-  if(!mapView){
+  if (!mapView) {
     console.error("mapView is not available in applySettings");
-    return;//testing
+    return; //testing
   }
 
   const mode = (document.getElementById("mode") as HTMLSelectElement).value;
@@ -168,7 +191,7 @@ export function applySettings(mapView: MapView, spaces: Space[]) {
     .value;
 
   applyMode(mode, mapView);
-  
+
   // Apply language setting
   i18n.changeLanguage(language, () => {
     //map locations translation
@@ -186,4 +209,3 @@ export function applySettings(mapView: MapView, spaces: Space[]) {
 // Attach to window object to make it accessible in index.html
 (window as any).applySettings = applySettings;
 (window as any).languageSwitcher = languageSwitcher;
-
