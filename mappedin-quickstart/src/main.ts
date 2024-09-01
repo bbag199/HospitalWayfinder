@@ -31,7 +31,6 @@ let cachedSpaces: Space[];
 
 async function init() {
   //set the language to English on initialization
-  i18n.changeLanguage("en");
   const language = i18n.language || "en";
   i18n.changeLanguage(language);
 

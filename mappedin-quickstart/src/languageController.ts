@@ -112,35 +112,40 @@ export function updateSettingsLabels() {
     if (darkOption) {
       darkOption.innerText = i18n.t("Dark");
     }
-
-    const fontDefaultOption = modeSelect.querySelector(
-      'option[value="normal"]'
-    ) as HTMLOptionElement;
-    if (fontDefaultOption) {
-      fontDefaultOption.innerText = i18n.t("Default");
-    }
-
-    const fontMediumOption = modeSelect.querySelector(
-      'option[value="medium"]'
-    ) as HTMLOptionElement;
-    if (fontMediumOption) {
-      fontMediumOption.innerText = i18n.t("Medium");
-    }
-
-    const fontLargeOption = modeSelect.querySelector(
-      'option[value="large"]'
-    ) as HTMLOptionElement;
-    if (fontLargeOption) {
-      fontLargeOption.innerText = i18n.t("Large");
-    }
-
-    const settingsTitle = document.getElementById(
-      "settings-title"
-    ) as HTMLElement;
-    if (settingsTitle) {
-      settingsTitle.innerText = i18n.t("SettingsTitle");
-    }
   }
+
+  const fontSizeSelect = document.getElementById("font-size") as HTMLSelectElement;
+
+  if(fontSizeSelect){
+  const fontDefaultOption = fontSizeSelect.querySelector(
+    'option[value="normal"]'
+  ) as HTMLOptionElement;
+  if (fontDefaultOption) {
+    fontDefaultOption.innerText = i18n.t("Default");
+  }
+
+  const fontMediumOption = fontSizeSelect.querySelector(
+    'option[value="medium"]'
+  ) as HTMLOptionElement;
+  if (fontMediumOption) {
+    fontMediumOption.innerText = i18n.t("Medium");
+  }
+
+  const fontLargeOption = fontSizeSelect.querySelector(
+    'option[value="large"]'
+  ) as HTMLOptionElement;
+  if (fontLargeOption) {
+    fontLargeOption.innerText = i18n.t("Large");
+  }
+  }
+  
+  const settingsTitle = document.getElementById(
+    "settings-title"
+  ) as HTMLElement;
+  if (settingsTitle) {
+    settingsTitle.innerText = i18n.t("SettingsTitle");
+  }
+
 }
 
 // Function to translate and label locations
@@ -187,8 +192,7 @@ export function applySettings(mapView: MapView, spaces: Space[]) {
   }
 
   const mode = (document.getElementById("mode") as HTMLSelectElement).value;
-  const language = (document.getElementById("language") as HTMLSelectElement)
-    .value;
+  const language = (document.getElementById("language") as HTMLSelectElement).value;
 
   applyMode(mode, mapView);
 

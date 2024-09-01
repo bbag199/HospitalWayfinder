@@ -1,4 +1,5 @@
 import { MapView, Space } from "@mappedin/mappedin-js";
+import i18n from "./i18n";
 
 const fontSizes = {
   normal: 12,
@@ -23,7 +24,8 @@ export function applyFontSize(size: string, mapView: MapView, spaces: Space[]) {
 
   spaces.forEach((space) => {
     if (space.name) {
-      mapView.Labels.add(space, space.name, {
+      const translatedName = i18n.t(space.name);
+      mapView.Labels.add(space, translatedName, {
         appearance: {
           text: { foregroundColor: "orange", size: fontSize },
         },
@@ -42,13 +44,16 @@ export function fontSizesSwitcher(
 
   fontSizeSelector.addEventListener("change", (e) => {
     const selectedSize = (e.target as HTMLSelectElement).value;
+    const currentLanguage = i18n.language;
 
-    // initialise currently font size
-    applyFontSize(selectedSize, mapView, spaces);
-
+    i18n.changeLanguage(currentLanguage,()=>{
+      applyFontSize(selectedSize, mapView, spaces);
+    });
   });
+
   applyFontSize(fontSizeSelector.value,mapView,spaces);
 }
+
 export function getCurrentFontSize() {
   return currentFontSize;
 }
