@@ -286,6 +286,7 @@ nav {
 }
 
 /* Specific button style for #module-items-container */
+
 #module-items-container-endpoint button,
 #module-items-container button {
   background-color: #f1f2ff; /* Same background color as .button-13 */
@@ -313,10 +314,12 @@ nav {
   margin-right: 6px;
 }
 
+
 #module-items-container-endpoint button:hover,
 #module-items-container button:hover {
   background-color: #f7fafa; /* Same hover effect as .button-13 */
 }
+
 
 #module-items-container-endpoint button:focus,
 #module-items-container button:focus {
@@ -360,6 +363,48 @@ nav {
 
 #entrance-items-container-endpoint button:focus,
 #entrance-items-container button:focus {
+  border-color: #008296; /* Same focus effect as .button-13 */
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
+  outline: 0;
+}
+
+
+/**/
+/* Specific button style for #reception-items-container */
+#reception-items-container-endpoint button,
+#reception-items-container button {
+  background-color: #f1f2ff; /* Same background color as .button-13 */
+  border: none; /* No border */
+  box-shadow: none; /* No shadow */
+  border-radius: 1px;
+  box-sizing: border-box;
+  color: #535353;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: calc(100% - 36px); /* Adjust width to fit within container with 10px space on left */
+
+  margin: 2px; /* No margin */
+  margin-left: 30px; /* 10px space on the left-hand side */
+  margin-right: 6px;
+}
+
+#reception-items-container-endpoint button:hover,
+#reception-items-container button:hover {
+  background-color: #f7fafa; /* Same hover effect as .button-13 */
+}
+
+#reception-items-container-endpoint button:focus,
+#reception-items-container button:focus {
   border-color: #008296; /* Same focus effect as .button-13 */
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
   outline: 0;

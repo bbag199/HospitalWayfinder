@@ -596,14 +596,12 @@ async function init() {
   const searchListEndPoint = document.getElementById('search-list-endpoint') as HTMLDivElement;
 
   // Function to show the dropdown
-  const showDropdown = (dropdown: HTMLDivElement) => {   // Modified this function
-    
+  const showDropdown = (dropdown: HTMLDivElement) => {   // Modified this function 
     dropdown.style.display = 'block';
   };
 
   // Function to hide the dropdown
   const hideDropdown = (dropdown: HTMLDivElement) => {   // Modified this function
-    
     dropdown.style.display = 'none'; 
   };
 
@@ -613,14 +611,24 @@ async function init() {
       isModuleItemsVisible = false;  // Reset the visibility flag when focusing on the search bar
       moduleItemsContainer.style.display = 'none'; // Ensure Module item list is hidden
       isEntranceItemsVisible = false;
-      entranceItemsContainer.style.display = 'none';  
+      entranceItemsContainer.style.display = 'none';
+
+      //setting for the reception and cafe:
+      isReceptionDropdownItemsVisible = false;  // Reset the visibility flag when focusing on the search bar
+      receptionDropdownItemsContainer.style.display = 'none'; // Ensure Module item list is hidden
+      
+
   });
   endSearchBar.addEventListener('focus', () => { // Added this block**
-        showDropdown(searchListEndPoint);
-        isModuleItemsVisibleEndPoint = false;
-        moduleItemsContainerEndPoint.style.display = 'none';
-        isEntranceItemsVisibleEndPoint = false;
-        entranceItemsContainerEndPoint.style.display = 'none';
+      showDropdown(searchListEndPoint);
+      isModuleItemsVisibleEndPoint = false;
+      moduleItemsContainerEndPoint.style.display = 'none';
+      isEntranceItemsVisibleEndPoint = false;
+      entranceItemsContainerEndPoint.style.display = 'none';
+
+      //setting for the reception and cafe:
+      isReceptionDropdownItemsVisibleEndPoint = false;  // Reset the visibility flag when focusing on the search bar
+      receptionDropdownItemsContainerEndPoint.style.display = 'none'; // Ensure Module item list is hidden
   });
 
 
@@ -657,30 +665,7 @@ async function init() {
             hideDropdown(searchListEndPoint);
         }, 100);
       }
-        /*const target = event.target as Node;
 
-        // Hide dropdowns based on which search bar is focused
-        if (startSearchBar.contains(target)) {
-            setTimeout(() => {
-                hideDropdown(searchListEndPoint);
-            }, 100);
-            // Ensure dropdown for the start search bar is shown
-            showDropdown(searchList);
-        } else if (endSearchBar.contains(target)) {
-            setTimeout(() => {
-                hideDropdown(searchList);
-            }, 100);
-            // Ensure dropdown for the end search bar is shown
-            showDropdown(searchListEndPoint);
-        } else {
-            // Hide dropdowns if clicking outside of search bars and dropdowns
-            if (!searchList.contains(target) && !searchListEndPoint.contains(target)) {
-                setTimeout(() => {
-                    hideDropdown(searchList);
-                    hideDropdown(searchListEndPoint);
-                }, 100);
-            }
-        } */
 
   });
 
@@ -760,6 +745,54 @@ async function init() {
     });
   };
 
+  // Make the variable for the Reception list button function:
+  const receptionDropdownItemsContainer = document.getElementById('reception-items-container') as HTMLDivElement;
+  const receptionDropdownButton = document.getElementById('reception-button') as HTMLButtonElement;
+
+  const receptionDropdownItemsContainerEndPoint = document.getElementById('reception-items-container-endpoint') as HTMLDivElement; // Added this line
+  const receptionDropdownButtonEndPoint = document.getElementById('reception-button-endpoint') as HTMLButtonElement; // Added this line
+
+  // Function to populate module rooms
+  const populateReceptionDropdownRooms = (container: HTMLDivElement) => {
+    const spaces: Space[] = mapData.getByType("space");
+    container.innerHTML = ''; // Clear existing items
+
+    spaces.forEach(space => {
+      if (space.name.includes('Reception')) {
+        const spaceOption = document.createElement('button');
+        spaceOption.className = 'button-13';
+        spaceOption.textContent = space.name; // The property containing the space name
+        container.appendChild(spaceOption);
+        
+        // Add click event listener to capture the button text
+        spaceOption.addEventListener('click', () => {
+          const selectedSpaceName = spaceOption.textContent;
+
+          if (selectedSpaceName) {
+          const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
+            
+          if (spaceInstance) {
+              if (container === receptionDropdownItemsContainer) {
+                // Update startSpace with the Space instance
+                startSpace = spaceInstance; 
+                startSearchBar.value = spaceOption.textContent!;
+                console.log('startSpace updated:', startSpace);
+              } else if (container === receptionDropdownItemsContainerEndPoint) {
+                // Update endSpace with the Space instance
+                endSpace = spaceInstance;
+                endSearchBar.value = spaceOption.textContent!;
+                console.log('endSpace updated:', endSpace);
+              }
+            } else {
+              console.error('Space not found for:', selectedSpaceName);
+            }
+          }
+
+        });
+      }
+    });
+  };
+
 
 
   // Flag to track the visibility of the module items container
@@ -786,6 +819,31 @@ async function init() {
       moduleItemsContainerEndPoint.style.display = 'block';
     }
     isModuleItemsVisibleEndPoint = !isModuleItemsVisibleEndPoint;
+  });
+
+  // Flag to track the visibility of the reception items container
+  let isReceptionDropdownItemsVisible = false;
+  let isReceptionDropdownItemsVisibleEndPoint = false;
+
+  // Toggle module rooms visibility when the Module button is clicked
+  receptionDropdownButton.addEventListener('click', () => {
+    if (isReceptionDropdownItemsVisible) {
+      receptionDropdownItemsContainer.style.display = 'none'; // Hide if already visible
+    } else {
+      populateReceptionDropdownRooms(receptionDropdownItemsContainer); // Populate the module rooms
+      receptionDropdownItemsContainer.style.display = 'block'; // Show the module rooms
+    }
+    isReceptionDropdownItemsVisible = !isReceptionDropdownItemsVisible; // Toggle the flag
+  });
+
+  receptionDropdownButtonEndPoint.addEventListener('click', () => { // Added this block** 
+    if (isReceptionDropdownItemsVisibleEndPoint) {
+      receptionDropdownItemsContainerEndPoint.style.display = 'none';
+    } else {
+      populateReceptionDropdownRooms(receptionDropdownItemsContainerEndPoint); // Modified this line**
+      receptionDropdownItemsContainerEndPoint.style.display = 'block';
+    }
+    isReceptionDropdownItemsVisibleEndPoint = !isReceptionDropdownItemsVisibleEndPoint;
   });
 
 
@@ -870,6 +928,29 @@ async function init() {
     }
     isEntranceItemsVisibleEndPoint = !isEntranceItemsVisibleEndPoint;
   });
+
+  //making hte cafe dropdown button works:
+  const cafeDropdownButton = document.getElementById('cafe-button') as HTMLDivElement;
+  const cafeDropdownButtonEndPoint = document.getElementById('cafe-button-endpoint') as HTMLDivElement;
+
+  cafeDropdownButton.addEventListener('click', () => {
+    console.log("Cafe button at start point clicked.");
+    const cafeSpace = mapData.getByType('space').find((space) => space.name.includes("Cafe"));
+
+    startSpace = cafeSpace!; 
+    startSearchBar.value = "Cafe";
+    console.log('startSpace updated as Cafe:', startSpace);
+  })
+
+  cafeDropdownButtonEndPoint.addEventListener('click', () => {
+    console.log("Cafe button at end point clicked.");
+    const cafeSpace = mapData.getByType('space').find((space) => space.name.includes("Cafe"));
+
+    endSpace = cafeSpace!; 
+    endSearchBar.value = "Cafe";
+    console.log('endSpace updated as Cafe:', endSpace);
+  })
+
 
 
 
