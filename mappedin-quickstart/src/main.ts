@@ -207,44 +207,14 @@ async function init() {
       { duration: 2000 }
     );
   };
-
+  
   setCameraPosition(mapView.currentFloor.id);
-  function addPOILabels() {
-    mapData.getByType("point-of-interest").forEach((poi) => {
+  for (const poi of mapData.getByType('point-of-interest')) {
+      // Label the point of interest if it's on the map floor currently shown.
       if (poi.floor.id === mapView.currentFloor.id) {
-        mapView.Labels.add(poi.coordinate, poi.name);
+          mapView.Labels.add(poi.coordinate, poi.name);
       }
-    });
   }
-
-  // Call function to add labels initially
-  addPOILabels();
-
-  const allElements = [
-    ...mapData.getByType("object"),
-    ...mapData.getByType("space"),
-    ...mapData.getByType("point-of-interest"),
-    ...mapData.getByType("door"),
-  ];
-  // Function to add labels to all map elements
-  /* const addAllLabels = () => {
-    allElements.forEach((element) => {
-      if (element.name) {
-        mapView.Labels.add(element, element.name);
-      }
-    });
-  };
-
-  // Add initial labels to all elements
-  addAllLabels(); */
-
-  // Update labels when the floor changes
-  mapView.on("floor-change", (event) => {
-    const floorId = event?.floor.id;
-    if (floorId) {
-      addPOILabels(); // Re-add labels for the new floor
-    }
-  });
 
   // Add labels for each map
   mapData.getByType("space").forEach((space) => {
@@ -275,12 +245,13 @@ async function init() {
   mappedinDiv.appendChild(stackMapButton);
 
   //Testing: no show floors:
-  //Find the floor that need to do the Stack Map, at this case, we testing
+  //Find the floor that need to do the Stack Map, at this case, we testing the Ground floor and Level 1
   const noShowFloor2: Floor[] = mapData
     .getByType("floor")
     .filter(
       (floor: Floor) =>
-        floor.name !== "Level 1" && floor.name !== "Ground floor"
+        floor.name !== "SuperClinic Level 1" &&
+        floor.name !== "SuperClinic & Surgical Centre Ground Lvl"
     );
 
   // The enable Button is used to enable and disable Stacked Maps.
@@ -294,19 +265,24 @@ async function init() {
       // Show the stack map and hide the unused floor
       mapView.expand({ excludeFloors: noShowFloor2 });
       stackMapButton.textContent = "Disable Stack Map";
+
+      // Set the camera to zoomLevel 17 and pitch 0
+      mapView.Camera.animateTo({
+        bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
+        zoomLevel: 18.7, // set the zoom level, better in 17-22
+        pitch: 85,      // the angle from the top-down (0: Top-down, 90: Eye-level)   
+      });
+
     } else {
       // Collapse the stack map
       mapView.collapse();
       stackMapButton.textContent = "Enable Stack Map";
+      setCameraPosition(mapView.currentFloor.id);
+      
     }
-
-    //mapView.Camera.animateTo({ zoomLevel: 100 }, { duration: 1000 });
-    mapView.Camera.set({
-      zoomLevel: 19, // set the zoom level, better in 17-22
-      pitch: 78, // the angle from the top-down (0: Top-down, 90: Eye-level)
-      //bearing: 0    // set the angle, e.g. North or South facing
-    });
+    
   };
+
 
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
@@ -316,6 +292,12 @@ async function init() {
   const exitSpace2 = mapData
     .getByType("object")
     .find((object) => object.name.includes("exit02"));
+  const exitSpace3 = mapData
+    .getByType('object')
+    .find(object => object.name.includes("exit03"));  //this one should be the other building door 
+  const exitSpace4 = mapData
+    .getByType('object')
+    .find(object => object.name.includes("exit04"));
 
   //add an emergency square button here:
   const emergencyButton = document.createElement("button");
@@ -325,8 +307,8 @@ async function init() {
   emergencyButton.style.right = "10px";
   emergencyButton.style.zIndex = "1000";
   emergencyButton.style.padding = "10px";
-  emergencyButton.style.backgroundColor = "#FF0000";
-  emergencyButton.style.color = "#FFFFFF";
+  emergencyButton.style.backgroundColor = "#FF0000";   //red bg color
+  emergencyButton.style.color = "#FFFFFF";  //white font color
   emergencyButton.style.border = "none";
   emergencyButton.style.borderRadius = "5px";
   emergencyButton.style.cursor = "pointer";
@@ -335,52 +317,92 @@ async function init() {
   // Append the button to the map container
   mappedinDiv.appendChild(emergencyButton);
 
+  let emergencyExitOn = false;
+
   emergencyButton.addEventListener("click", function () {
-    console.log("chekcing startSpace input:", startSpace);
-    console.log("exit01 space information:", exitSpace);
-
-    if (startSpace) {
+    if (emergencyExitOn) {
+      // If the emergency exit is already on, turn it off
       if (path) {
-        mapView.Paths.remove(path);
+          mapView.Paths.remove(path);
+          path = null;
       }
-      const directions = mapView.getDirections(startSpace, exitSpace!);
-      const directions2 = mapView.getDirections(startSpace, exitSpace2!);
-      //check the distance here:
-      console.log("checking direcitions: ", directions?.distance);
-      console.log("checking direcitions2: ", directions2?.distance);
+      emergencyButton.textContent = "Emergency Exit";
+      emergencyButton.style.backgroundColor = "#FF0000";   //red bg color
+      emergencyExitOn = false;
+  } else {
+      console.log("chekcing startSpace input:", startSpace);
+      console.log("exit01 space information:", exitSpace);
 
-      //checking the shortest wayout here:
-      let shortestWayout;
+      if (startSpace) {
+        if (path) {
+          mapView.Paths.remove(path);
+        }
+        //create two distance for exit01 and exit02, will check the shortest way out later:
+        const directions = mapView.getDirections(startSpace, exitSpace!);
+        const directions2 = mapView.getDirections(startSpace, exitSpace2!);
+        const directions3 = mapView.getDirections(startSpace, exitSpace3!);
+        const directions4 = mapView.getDirections(startSpace, exitSpace4!);
 
-      if (directions && directions2) {
-        shortestWayout =
-          directions.distance <= directions2.distance
-            ? directions
-            : directions2;
-      } else if (directions) {
-        shortestWayout = directions;
-      } else if (directions2) {
-        shortestWayout = directions2;
+        //debug the distance here:
+        console.log("checking direcitions: ", directions?.distance);
+        console.log("checking direcitions2: ", directions2?.distance);
+        console.log("checking direcitions3: ", directions3?.distance);
+        console.log("checking direcitions4: ", directions4?.distance);
+
+        //checking the shortest wayout here:
+        let shortestWayout;
+        if (directions && directions2) {
+            shortestWayout = directions.distance <= directions2.distance ? directions : directions2;
+        } else if (directions) {
+            shortestWayout = directions;
+        } else if (directions2) {
+            shortestWayout = directions2;
+        } else {
+            throw new Error("Both directions are undefined");
+        }
+
+        //checing the shortesWayout to the exit03 way:
+        //checking the second shortest wayout with exit03 here:
+        let shortestWayout2;
+        if (shortestWayout && directions3) {
+            shortestWayout2 = shortestWayout.distance <= directions3.distance ? shortestWayout : directions3;
+        } else if (shortestWayout) {
+            shortestWayout2 = shortestWayout;
+        } else if (directions3) {
+            shortestWayout2 = directions3;
+        } else {
+            throw new Error("exit way is undefined");
+        }
+
+        //checing the shortesWayout2 to the exit04 way:
+        //checking the third shortest wayout with exit04 here:
+        let shortestWayout3;
+        if (shortestWayout2 && directions4) {
+            shortestWayout3 = shortestWayout2.distance <= directions4.distance ? shortestWayout2 : directions4;
+        } else if (shortestWayout2) {
+            shortestWayout3 = shortestWayout2;
+        } else if (directions4) {
+            shortestWayout3 = directions4;
+        } else {
+            throw new Error("exit way is undefined");
+        }
+
+        //build the shortest wayout here:
+        if (shortestWayout3) {   
+          path = mapView.Paths.add(shortestWayout3.coordinates, {
+            nearRadius: 0.5,
+            farRadius: 0.5,
+            color: "red",
+          });
+          emergencyButton.textContent = "Emergency Off";
+          emergencyButton.style.backgroundColor = "#28a745";
+          emergencyExitOn = true;
+        }
       } else {
-        throw new Error("Both directions are undefined");
+        // Show popup if startSpace is false
+        alert("Please select starting point.");
+        console.error("Please select start space locations.");
       }
-
-      //build the shortest wayout here:
-      if (shortestWayout) {
-        path = mapView.Paths.add(shortestWayout.coordinates, {
-          nearRadius: 0.5,
-          farRadius: 0.5,
-          color: "red",
-          animateDrawing: true,
-          drawDuration: 500,
-          animateArrowsOnPath: true,
-          displayArrowsOnPath: true,
-        });
-        // Draw the directions on the map.
-        mapView.Navigation.draw(shortestWayout);
-      }
-    } else {
-      console.error("Please select start space locations.");
     }
   });
 
@@ -425,6 +447,8 @@ async function init() {
       startResultsContainer.style.display = "block";
     } else {
       startResultsContainer.style.display = "none";
+      //try to testing the start point set as null by default when there is no query
+      startSpace = null;
     }
   });
 
@@ -508,7 +532,8 @@ async function init() {
   const getDirectionsButton = document.getElementById(
     "get-directions"
   ) as HTMLButtonElement;
-  getDirectionsButton.addEventListener("click", function () {
+  
+  getDirectionsButton.addEventListener("click", async function () {
     if (startSpace && endSpace) {
       if (navigationState.isPathDrawn) {
         mapView.Paths.removeAll();
@@ -516,7 +541,15 @@ async function init() {
         navigationState.isPathDrawn = false;
         setSpaceInteractivity(true); // Make spaces interactive again
       }
-      const directions = mapView.getDirections(startSpace, endSpace);
+  
+      // Check if start and end spaces are on the same floor
+      const areOnSameFloor = startSpace.floor === endSpace.floor;
+      
+      // Force accessibility if on the same floor
+      const directions = mapView.getDirections(startSpace, endSpace, { 
+        accessible: areOnSameFloor || accessibilityEnabled 
+      });
+  
       if (directions) {
         mapView.Navigation.draw(directions, {
           pathOptions: {
@@ -540,6 +573,9 @@ async function init() {
       console.error("Please select both start and end locations.");
     }
   });
+  
+  
+  
 
   // Button Accessibility
   const accessibilityButton = document.createElement("button");
@@ -565,11 +601,12 @@ async function init() {
   let liftsHighlighted = false;
   accessibilityEnabled = false;
 
-  accessibilityButton.addEventListener("click", () => {
-    accessibilityEnabled = !accessibilityEnabled;
-    const lifts = mapData
-      .getByType("space")
-      .filter((space) => space.name.toLowerCase().includes("lift"));
+accessibilityButton.addEventListener("click", () => {
+  accessibilityEnabled = !accessibilityEnabled;
+  const lifts = mapData.getByType("space").filter((space) => 
+    space.name.toLowerCase().includes("elevator") || 
+    space.name.toLowerCase().includes("lifts") 
+  );
 
     lifts.forEach((lift) => {
       if (!liftsHighlighted) {
@@ -707,6 +744,10 @@ async function init() {
       receptionButton.style.color = "#000";
     }
   });
-}
+};
+
+
+
+
 
 init();

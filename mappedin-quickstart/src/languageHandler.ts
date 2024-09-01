@@ -1,4 +1,5 @@
 import i18n from "./i18n";
+import { applyMode } from "./modeHandler";
 
 export function applySettings() {
   const mode = (document.getElementById("mode") as HTMLSelectElement).value;
@@ -6,13 +7,7 @@ export function applySettings() {
     .value;
 
   // Apply mode (light/dark)
-  if (mode === "dark") {
-    document.body.style.backgroundColor = "#333";
-    document.body.style.color = "#fff";
-  } else {
-    document.body.style.backgroundColor = "#fff";
-    document.body.style.color = "#000";
-  }
+  applyMode(mode);
 
   // Apply language setting
   i18n.changeLanguage(language, () => {
