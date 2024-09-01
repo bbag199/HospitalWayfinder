@@ -576,6 +576,377 @@ async function init() {
     }
   });
   
+
+  // SearchingBar Dropdown list function: 
+  // Testing the search list container: 
+  // Will add four lists here: 1)Module (button) 2) Entrence (button) 3)Reception 4)Cafe
+  // Function to show the dropdown
+  const searchList = document.getElementById('search-list') as HTMLDivElement;
+  const searchListEndPoint = document.getElementById('search-list-endpoint') as HTMLDivElement;
+
+  // Function to show the dropdown
+  const showDropdown = (dropdown: HTMLDivElement) => {   // Modified this function 
+    dropdown.style.display = 'block';
+  };
+
+  // Function to hide the dropdown
+  const hideDropdown = (dropdown: HTMLDivElement) => {   // Modified this function
+    dropdown.style.display = 'none'; 
+  };
+
+  // Show the dropdown when the user clicks on the search bar
+  startSearchBar.addEventListener('focus', () => {    
+      showDropdown(searchList);
+      isModuleItemsVisible = false;  // Reset the visibility flag when focusing on the search bar
+      moduleItemsContainer.style.display = 'none'; // Ensure Module item list is hidden
+      isEntranceItemsVisible = false;
+      entranceItemsContainer.style.display = 'none';
+
+      //setting for the reception and cafe:
+      isReceptionDropdownItemsVisible = false;  // Reset the visibility flag when focusing on the search bar
+      receptionDropdownItemsContainer.style.display = 'none'; // Ensure Module item list is hidden
+      
+
+  });
+  endSearchBar.addEventListener('focus', () => { // Added this block**
+      showDropdown(searchListEndPoint);
+      isModuleItemsVisibleEndPoint = false;
+      moduleItemsContainerEndPoint.style.display = 'none';
+      isEntranceItemsVisibleEndPoint = false;
+      entranceItemsContainerEndPoint.style.display = 'none';
+
+      //setting for the reception and cafe:
+      isReceptionDropdownItemsVisibleEndPoint = false;  // Reset the visibility flag when focusing on the search bar
+      receptionDropdownItemsContainerEndPoint.style.display = 'none'; // Ensure Module item list is hidden
+  });
+
+
+  // Prevent immediate hiding of the dropdown on click
+  startSearchBar.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showDropdown(searchList);
+  });
+  endSearchBar.addEventListener('click', (event) => { // Added this block**
+    event.stopPropagation();
+    showDropdown(searchListEndPoint);
+  });
+
+  
+  searchList.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+  searchListEndPoint.addEventListener('click', (event) => { // Added this block**
+    event.stopPropagation();
+  });
+
+
+
+  // Hide the dropdown when clicking outside of it, after a short delay
+  document.addEventListener('click', function (event: MouseEvent) {
+      if (!searchList.contains(event.target as Node) && event.target !== startSearchBar) {
+          setTimeout(() => {
+              hideDropdown(searchList);
+          }, 100); // Adjust delay as needed
+      }
+
+      if (!searchListEndPoint.contains(event.target as Node) && event.target !== endSearchBar) { // Added this block**
+        setTimeout(() => {
+            hideDropdown(searchListEndPoint);
+        }, 100);
+      }
+
+
+  });
+
+  //testing: the user click on the start input bar then end point drop down will hide,
+  //same for the end point search bar:
+  startSearchBar.addEventListener('click', () => {
+    setTimeout(() => {
+      hideDropdown(searchListEndPoint);
+    }, 20);
+  })
+
+  endSearchBar.addEventListener('click', () => {
+    setTimeout(() => {
+      hideDropdown(searchList);
+    }, 20);
+  })
+
+
+
+
+  //create function according to the input string to find the Space from database:
+  function getSpaceByName(name: string): Space | undefined {
+    // Retrieve the Space instance
+    const spaceCollection: Space[] = mapData.getByType("space"); // get the space array from the mapData
+    return spaceCollection.find(space => space.name === name);
+  }
+
+
+  // Make the variable for the Module list button function:
+  const moduleItemsContainer = document.getElementById('module-items-container') as HTMLDivElement;
+  const moduleButton = document.getElementById('module-button') as HTMLButtonElement;
+
+  const moduleItemsContainerEndPoint = document.getElementById('module-items-container-endpoint') as HTMLDivElement; // Added this line
+  const moduleButtonEndPoint = document.getElementById('module-button-endpoint') as HTMLButtonElement; // Added this line
+
+
+  
+  // Function to populate module rooms
+  const populateModuleRooms = (container: HTMLDivElement) => {
+    const spaces: Space[] = mapData.getByType("space");
+    container.innerHTML = ''; // Clear existing items
+
+    spaces.forEach(space => {
+      if (space.name.includes('Module')) {
+        const spaceOption = document.createElement('button');
+        spaceOption.className = 'button-13';
+        spaceOption.textContent = space.name; // The property containing the space name
+        container.appendChild(spaceOption);
+        
+        // Add click event listener to capture the button text
+        spaceOption.addEventListener('click', () => {
+          const selectedSpaceName = spaceOption.textContent;
+
+          if (selectedSpaceName) {
+          const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
+            
+          if (spaceInstance) {
+              // Update startSpace with the Space instance
+              //startSpace = spaceInstance; 
+              //fill the starting point input bar
+              //startSearchBar.value = spaceOption.textContent!;
+              //console.log('startSpace updated:', startSpace);
+              if (container === moduleItemsContainer) {
+                // Update startSpace with the Space instance
+                startSpace = spaceInstance; 
+                startSearchBar.value = spaceOption.textContent!;
+                console.log('startSpace updated:', startSpace);
+              } else if (container === moduleItemsContainerEndPoint) {
+                // Update endSpace with the Space instance
+                endSpace = spaceInstance;
+                endSearchBar.value = spaceOption.textContent!;
+                console.log('endSpace updated:', endSpace);
+              }
+            } else {
+              console.error('Space not found for:', selectedSpaceName);
+            }
+          }
+
+        });
+      }
+    });
+  };
+
+  // Make the variable for the Reception list button function:
+  const receptionDropdownItemsContainer = document.getElementById('reception-items-container') as HTMLDivElement;
+  const receptionDropdownButton = document.getElementById('reception-button') as HTMLButtonElement;
+
+  const receptionDropdownItemsContainerEndPoint = document.getElementById('reception-items-container-endpoint') as HTMLDivElement; // Added this line
+  const receptionDropdownButtonEndPoint = document.getElementById('reception-button-endpoint') as HTMLButtonElement; // Added this line
+
+  // Function to populate module rooms
+  const populateReceptionDropdownRooms = (container: HTMLDivElement) => {
+    const spaces: Space[] = mapData.getByType("space");
+    container.innerHTML = ''; // Clear existing items
+
+    spaces.forEach(space => {
+      if (space.name.includes('Reception')) {
+        const spaceOption = document.createElement('button');
+        spaceOption.className = 'button-13';
+        spaceOption.textContent = space.name; // The property containing the space name
+        container.appendChild(spaceOption);
+        
+        // Add click event listener to capture the button text
+        spaceOption.addEventListener('click', () => {
+          const selectedSpaceName = spaceOption.textContent;
+
+          if (selectedSpaceName) {
+          const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
+            
+          if (spaceInstance) {
+              if (container === receptionDropdownItemsContainer) {
+                // Update startSpace with the Space instance
+                startSpace = spaceInstance; 
+                startSearchBar.value = spaceOption.textContent!;
+                console.log('startSpace updated:', startSpace);
+              } else if (container === receptionDropdownItemsContainerEndPoint) {
+                // Update endSpace with the Space instance
+                endSpace = spaceInstance;
+                endSearchBar.value = spaceOption.textContent!;
+                console.log('endSpace updated:', endSpace);
+              }
+            } else {
+              console.error('Space not found for:', selectedSpaceName);
+            }
+          }
+
+        });
+      }
+    });
+  };
+
+
+
+  // Flag to track the visibility of the module items container
+  let isModuleItemsVisible = false;
+  let isModuleItemsVisibleEndPoint = false;
+
+  // Toggle module rooms visibility when the Module button is clicked
+  moduleButton.addEventListener('click', () => {
+    if (isModuleItemsVisible) {
+      moduleItemsContainer.style.display = 'none'; // Hide if already visible
+    } else {
+      populateModuleRooms(moduleItemsContainer); // Populate the module rooms
+      moduleItemsContainer.style.display = 'block'; // Show the module rooms
+    }
+    isModuleItemsVisible = !isModuleItemsVisible; // Toggle the flag
+  });
+
+  moduleButtonEndPoint.addEventListener('click', () => { // Added this block**
+    
+    if (isModuleItemsVisibleEndPoint) {
+      moduleItemsContainerEndPoint.style.display = 'none';
+    } else {
+      populateModuleRooms(moduleItemsContainerEndPoint); // Modified this line**
+      moduleItemsContainerEndPoint.style.display = 'block';
+    }
+    isModuleItemsVisibleEndPoint = !isModuleItemsVisibleEndPoint;
+  });
+
+  // Flag to track the visibility of the reception items container
+  let isReceptionDropdownItemsVisible = false;
+  let isReceptionDropdownItemsVisibleEndPoint = false;
+
+  // Toggle module rooms visibility when the Module button is clicked
+  receptionDropdownButton.addEventListener('click', () => {
+    if (isReceptionDropdownItemsVisible) {
+      receptionDropdownItemsContainer.style.display = 'none'; // Hide if already visible
+    } else {
+      populateReceptionDropdownRooms(receptionDropdownItemsContainer); // Populate the module rooms
+      receptionDropdownItemsContainer.style.display = 'block'; // Show the module rooms
+    }
+    isReceptionDropdownItemsVisible = !isReceptionDropdownItemsVisible; // Toggle the flag
+  });
+
+  receptionDropdownButtonEndPoint.addEventListener('click', () => { // Added this block** 
+    if (isReceptionDropdownItemsVisibleEndPoint) {
+      receptionDropdownItemsContainerEndPoint.style.display = 'none';
+    } else {
+      populateReceptionDropdownRooms(receptionDropdownItemsContainerEndPoint); // Modified this line**
+      receptionDropdownItemsContainerEndPoint.style.display = 'block';
+    }
+    isReceptionDropdownItemsVisibleEndPoint = !isReceptionDropdownItemsVisibleEndPoint;
+  });
+
+
+  // Make the variable for the Entrance list button function:
+  const entranceItemsContainer = document.getElementById('entrance-items-container') as HTMLDivElement;
+  const entranceButton = document.getElementById('entrance-button') as HTMLButtonElement;
+
+  const entranceItemsContainerEndPoint = document.getElementById('entrance-items-container-endpoint') as HTMLDivElement; // Added this line
+  const entranceButtonEndPoint = document.getElementById('entrance-button-endpoint') as HTMLButtonElement; // Added this line
+
+  
+  // Function to populate module rooms
+  const populateEntranceItem = (container: HTMLDivElement) => {
+    const spaces: Space[] = mapData.getByType("space");
+    container.innerHTML = ''; // Clear existing items
+
+    spaces.forEach(space => {
+      if (space.name.includes('Entrance')) {
+        const spaceOption = document.createElement('button');
+        spaceOption.className = 'button-13';
+        spaceOption.textContent = space.name; // The property containing the space name
+        container.appendChild(spaceOption);
+        
+        
+        // Add click event listener to capture the button text
+        spaceOption.addEventListener('click', () => {
+          const selectedSpaceName = spaceOption.textContent;
+  
+          if (selectedSpaceName) {
+          const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
+            
+          if (spaceInstance) {
+              // Update startSpace with the Space instance
+              //startSpace = spaceInstance; 
+              //fill the starting point input bar
+              //startSearchBar.value = spaceOption.textContent!;
+              //console.log('startSpace updated:', startSpace);
+              if (container === entranceItemsContainer) {
+                // Update startSpace with the Space instance
+                startSpace = spaceInstance; 
+                startSearchBar.value = spaceOption.textContent!;
+                console.log('startSpace updated:', startSpace);
+              } else if (container === entranceItemsContainerEndPoint) {
+                // Update endSpace with the Space instance
+                endSpace = spaceInstance;
+                endSearchBar.value = spaceOption.textContent!;
+                console.log('endSpace updated:', endSpace);
+              }
+
+            } else {
+              console.error('Space not found for:', selectedSpaceName);
+            }
+          }
+        });
+      }
+
+      
+    });
+  };
+
+  // Flag to track the visibility of the module items container
+  let isEntranceItemsVisible = false;
+  let isEntranceItemsVisibleEndPoint = false; // Added this line**
+
+  // Toggle module rooms visibility when the Module button is clicked
+  entranceButton.addEventListener('click', () => {
+    if (isEntranceItemsVisible) {
+      entranceItemsContainer.style.display = 'none'; // Hide if already visible
+    } else {
+      populateEntranceItem(entranceItemsContainer); // Populate the module rooms
+      entranceItemsContainer.style.display = 'block'; // Show the module rooms
+    }
+    isEntranceItemsVisible = !isEntranceItemsVisible; // Toggle the flag
+  });
+
+  entranceButtonEndPoint.addEventListener('click', () => { // Added this block**
+    if (isEntranceItemsVisibleEndPoint) {
+      entranceItemsContainerEndPoint.style.display = 'none';
+    } else {
+      populateEntranceItem(entranceItemsContainerEndPoint); // Modified this line**
+      entranceItemsContainerEndPoint.style.display = 'block';
+    }
+    isEntranceItemsVisibleEndPoint = !isEntranceItemsVisibleEndPoint;
+  });
+
+  //making hte cafe dropdown button works:
+  const cafeDropdownButton = document.getElementById('cafe-button') as HTMLDivElement;
+  const cafeDropdownButtonEndPoint = document.getElementById('cafe-button-endpoint') as HTMLDivElement;
+
+  cafeDropdownButton.addEventListener('click', () => {
+    console.log("Cafe button at start point clicked.");
+    const cafeSpace = mapData.getByType('space').find((space) => space.name.includes("Cafe"));
+
+    startSpace = cafeSpace!; 
+    startSearchBar.value = "Cafe";
+    console.log('startSpace updated as Cafe:', startSpace);
+  })
+
+  cafeDropdownButtonEndPoint.addEventListener('click', () => {
+    console.log("Cafe button at end point clicked.");
+    const cafeSpace = mapData.getByType('space').find((space) => space.name.includes("Cafe"));
+
+    endSpace = cafeSpace!; 
+    endSearchBar.value = "Cafe";
+    console.log('endSpace updated as Cafe:', endSpace);
+  })
+
+
+  //////////////////////////////////////////
+  //searchingBar Dropdown list function above.
   
   
 
