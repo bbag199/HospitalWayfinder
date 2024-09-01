@@ -110,17 +110,19 @@ async function init() {
         }
 
         // Draw the path
-        const directions = await mapView.getDirections(
-          navigationState.startSpace,
-          navigationState.endSpace
-        );
-        if (directions) {
-          mapView.Navigation.draw(directions, {
-            pathOptions: {
-              nearRadius: 0.5,
-              farRadius: 0.5,
-            },
-          });
+      const directionsOptions = accessibilityEnabled ? { accessible: true } : {};
+      const directions = await mapView.getDirections(
+        navigationState.startSpace,
+        navigationState.endSpace,
+        directionsOptions
+      );
+      if (directions) {
+        mapView.Navigation.draw(directions, {
+          pathOptions: {
+            nearRadius: 0.5,
+            farRadius: 0.5,
+          },
+        });
           navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
           setSpaceInteractivity(false); // Disable interactivity while path is drawn
         }
@@ -448,7 +450,7 @@ async function init() {
     } else {
       startResultsContainer.style.display = "none";
       //try to testing the start point set as null by default when there is no query
-      startSpace = null;
+      //startSpace = null;
     }
   });
 
