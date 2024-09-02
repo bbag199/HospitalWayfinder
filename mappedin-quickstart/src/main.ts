@@ -303,16 +303,17 @@ async function init() {
 
   //add an emergency square button here:
   const emergencyButton = document.createElement("button");
+  emergencyButton.className = "reset-button mi-button";
   emergencyButton.textContent = "Emergency Exit";
-  emergencyButton.style.position = "absolute";
+  //emergencyButton.style.position = "absolute";
   emergencyButton.style.bottom = "15px";
-  emergencyButton.style.right = "10px";
+  //emergencyButton.style.right = "10px";
   emergencyButton.style.zIndex = "1000";
   emergencyButton.style.padding = "10px";
   emergencyButton.style.backgroundColor = "#FF0000";   //red bg color
   emergencyButton.style.color = "#FFFFFF";  //white font color
-  emergencyButton.style.border = "none";
-  emergencyButton.style.borderRadius = "5px";
+  //emergencyButton.style.border = "none";
+  //emergencyButton.style.borderRadius = "5px";
   emergencyButton.style.cursor = "pointer";
   emergencyButton.setAttribute("data-emergency-btn", "true");
 
