@@ -207,7 +207,7 @@ async function init() {
         zoomLevel: 18,
         center: settings.coordinate,
       },
-      { duration: 2000 }
+      { duration: 1000 }
     );
   };
 
