@@ -119,7 +119,7 @@ async function init() {
 
   mapView.on("click", async (event) => {
     if (!event) return;
-
+  
     // Check if it's the first click for the start space
     if (!navigationState.startSpace) {
       navigationState.startSpace = event.spaces[0];
@@ -130,7 +130,7 @@ async function init() {
       event.spaces[0] !== navigationState.startSpace
     ) {
       navigationState.endSpace = event.spaces[0];
-
+  
       // Check and draw path if both start and end are set
       if (navigationState.startSpace && navigationState.endSpace) {
         // Clear any previous paths if any
@@ -140,16 +140,24 @@ async function init() {
           setSpaceInteractivity(true); // Make spaces interactive again
           navigationState.isPathDrawn = false;
         }
-
+  
+        // Check if start and end spaces are on the same floor
+        const sameFloor =
+          navigationState.startSpace.floor === navigationState.endSpace.floor;
+  
+        // Force accessibility if on the same floor to avoid stairs
+        const directionsOptions =
+          accessibilityEnabled || sameFloor
+            ? { accessible: true }
+            : {};
+  
         // Draw the path
-        const directionsOptions = accessibilityEnabled
-          ? { accessible: true }
-          : {};
         const directions = await mapView.getDirections(
           navigationState.startSpace,
           navigationState.endSpace,
           directionsOptions
         );
+  
         if (directions) {
           mapView.Navigation.draw(directions, {
             pathOptions: {
@@ -163,6 +171,7 @@ async function init() {
       }
     }
   });
+  
 
   function setSpaceInteractivity(isInteractive: boolean): void {
     mapData.getByType("space").forEach((space) => {
@@ -207,7 +216,7 @@ async function init() {
         zoomLevel: 18,
         center: settings.coordinate,
       },
-      { duration: 2000 }
+      { duration: 1000 }
     );
   };
 
