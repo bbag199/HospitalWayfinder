@@ -89,6 +89,13 @@ export function updateSettingsLabels() {
     directionsBtn.innerText = i18n.t("GetDirections");
   }
 
+  const stopNavigationBtn = document.getElementById(
+    "stop-navigation"
+  ) as HTMLElement;
+  if (stopNavigationBtn) {
+    stopNavigationBtn.innerText = i18n.t("StopNavigation");
+  }
+
   const emergencyBtn = document.querySelector(
     "button[data-emergency-btn]"
   ) as HTMLButtonElement;
@@ -114,38 +121,39 @@ export function updateSettingsLabels() {
     }
   }
 
-  const fontSizeSelect = document.getElementById("font-size") as HTMLSelectElement;
+  const fontSizeSelect = document.getElementById(
+    "font-size"
+  ) as HTMLSelectElement;
 
-  if(fontSizeSelect){
-  const fontDefaultOption = fontSizeSelect.querySelector(
-    'option[value="normal"]'
-  ) as HTMLOptionElement;
-  if (fontDefaultOption) {
-    fontDefaultOption.innerText = i18n.t("Default");
+  if (fontSizeSelect) {
+    const fontDefaultOption = fontSizeSelect.querySelector(
+      'option[value="normal"]'
+    ) as HTMLOptionElement;
+    if (fontDefaultOption) {
+      fontDefaultOption.innerText = i18n.t("Default");
+    }
+
+    const fontMediumOption = fontSizeSelect.querySelector(
+      'option[value="medium"]'
+    ) as HTMLOptionElement;
+    if (fontMediumOption) {
+      fontMediumOption.innerText = i18n.t("Medium");
+    }
+
+    const fontLargeOption = fontSizeSelect.querySelector(
+      'option[value="large"]'
+    ) as HTMLOptionElement;
+    if (fontLargeOption) {
+      fontLargeOption.innerText = i18n.t("Large");
+    }
   }
 
-  const fontMediumOption = fontSizeSelect.querySelector(
-    'option[value="medium"]'
-  ) as HTMLOptionElement;
-  if (fontMediumOption) {
-    fontMediumOption.innerText = i18n.t("Medium");
-  }
-
-  const fontLargeOption = fontSizeSelect.querySelector(
-    'option[value="large"]'
-  ) as HTMLOptionElement;
-  if (fontLargeOption) {
-    fontLargeOption.innerText = i18n.t("Large");
-  }
-  }
-  
   const settingsTitle = document.getElementById(
     "settings-title"
   ) as HTMLElement;
   if (settingsTitle) {
     settingsTitle.innerText = i18n.t("SettingsTitle");
   }
-
 }
 
 // Function to translate and label locations
@@ -192,7 +200,8 @@ export function applySettings(mapView: MapView, spaces: Space[]) {
   }
 
   const mode = (document.getElementById("mode") as HTMLSelectElement).value;
-  const language = (document.getElementById("language") as HTMLSelectElement).value;
+  const language = (document.getElementById("language") as HTMLSelectElement)
+    .value;
 
   applyMode(mode, mapView);
 
