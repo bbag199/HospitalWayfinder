@@ -5,8 +5,6 @@ import {
   Space,
   Path,
   Coordinate,
-  Directions,
-  show3dMapGeojson,
   Floor,
 } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
@@ -69,7 +67,6 @@ async function init() {
   let endSpace: Space | null = null;
   let path: Path | null = null;
   let accessibilityEnabled = false;
-  let selectingStart = true; //
 
   mapData.getByType("space").forEach((space) => {
     mapView.updateState(space, {
@@ -110,19 +107,21 @@ async function init() {
         }
 
         // Draw the path
-      const directionsOptions = accessibilityEnabled ? { accessible: true } : {};
-      const directions = await mapView.getDirections(
-        navigationState.startSpace,
-        navigationState.endSpace,
-        directionsOptions
-      );
-      if (directions) {
-        mapView.Navigation.draw(directions, {
-          pathOptions: {
-            nearRadius: 0.5,
-            farRadius: 0.5,
-          },
-        });
+        const directionsOptions = accessibilityEnabled
+          ? { accessible: true }
+          : {};
+        const directions = await mapView.getDirections(
+          navigationState.startSpace,
+          navigationState.endSpace,
+          directionsOptions
+        );
+        if (directions) {
+          mapView.Navigation.draw(directions, {
+            pathOptions: {
+              nearRadius: 0.5,
+              farRadius: 0.5,
+            },
+          });
           navigationState.isPathDrawn = true; // Set flag indicating that a path is currently drawn
           setSpaceInteractivity(false); // Disable interactivity while path is drawn
         }
@@ -209,13 +208,13 @@ async function init() {
       { duration: 2000 }
     );
   };
-  
+
   setCameraPosition(mapView.currentFloor.id);
-  for (const poi of mapData.getByType('point-of-interest')) {
-      // Label the point of interest if it's on the map floor currently shown.
-      if (poi.floor.id === mapView.currentFloor.id) {
-          mapView.Labels.add(poi.coordinate, poi.name);
-      }
+  for (const poi of mapData.getByType("point-of-interest")) {
+    // Label the point of interest if it's on the map floor currently shown.
+    if (poi.floor.id === mapView.currentFloor.id) {
+      mapView.Labels.add(poi.coordinate, poi.name);
+    }
   }
 
   // Add labels for each map
@@ -272,19 +271,15 @@ async function init() {
       mapView.Camera.animateTo({
         bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
         zoomLevel: 18.7, // set the zoom level, better in 17-22
-        pitch: 85,      // the angle from the top-down (0: Top-down, 90: Eye-level)   
+        pitch: 85, // the angle from the top-down (0: Top-down, 90: Eye-level)
       });
-
     } else {
       // Collapse the stack map
       mapView.collapse();
       stackMapButton.textContent = "Enable Stack Map";
       setCameraPosition(mapView.currentFloor.id);
-      
     }
-    
   };
-
 
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
@@ -295,11 +290,11 @@ async function init() {
     .getByType("object")
     .find((object) => object.name.includes("exit02"));
   const exitSpace3 = mapData
-    .getByType('object')
-    .find(object => object.name.includes("exit03"));  //this one should be the other building door 
+    .getByType("object")
+    .find((object) => object.name.includes("exit03")); //this one should be the other building door
   const exitSpace4 = mapData
-    .getByType('object')
-    .find(object => object.name.includes("exit04"));
+    .getByType("object")
+    .find((object) => object.name.includes("exit04"));
 
   //add an emergency square button here:
   const emergencyButton = document.createElement("button");
@@ -309,8 +304,8 @@ async function init() {
   emergencyButton.style.right = "10px";
   emergencyButton.style.zIndex = "1000";
   emergencyButton.style.padding = "10px";
-  emergencyButton.style.backgroundColor = "#FF0000";   //red bg color
-  emergencyButton.style.color = "#FFFFFF";  //white font color
+  emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
+  emergencyButton.style.color = "#FFFFFF"; //white font color
   emergencyButton.style.border = "none";
   emergencyButton.style.borderRadius = "5px";
   emergencyButton.style.cursor = "pointer";
@@ -325,13 +320,13 @@ async function init() {
     if (emergencyExitOn) {
       // If the emergency exit is already on, turn it off
       if (path) {
-          mapView.Paths.remove(path);
-          path = null;
+        mapView.Paths.remove(path);
+        path = null;
       }
       emergencyButton.textContent = "Emergency Exit";
-      emergencyButton.style.backgroundColor = "#FF0000";   //red bg color
+      emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
       emergencyExitOn = false;
-  } else {
+    } else {
       console.log("chekcing startSpace input:", startSpace);
       console.log("exit01 space information:", exitSpace);
 
@@ -354,43 +349,52 @@ async function init() {
         //checking the shortest wayout here:
         let shortestWayout;
         if (directions && directions2) {
-            shortestWayout = directions.distance <= directions2.distance ? directions : directions2;
+          shortestWayout =
+            directions.distance <= directions2.distance
+              ? directions
+              : directions2;
         } else if (directions) {
-            shortestWayout = directions;
+          shortestWayout = directions;
         } else if (directions2) {
-            shortestWayout = directions2;
+          shortestWayout = directions2;
         } else {
-            throw new Error("Both directions are undefined");
+          throw new Error("Both directions are undefined");
         }
 
         //checing the shortesWayout to the exit03 way:
         //checking the second shortest wayout with exit03 here:
         let shortestWayout2;
         if (shortestWayout && directions3) {
-            shortestWayout2 = shortestWayout.distance <= directions3.distance ? shortestWayout : directions3;
+          shortestWayout2 =
+            shortestWayout.distance <= directions3.distance
+              ? shortestWayout
+              : directions3;
         } else if (shortestWayout) {
-            shortestWayout2 = shortestWayout;
+          shortestWayout2 = shortestWayout;
         } else if (directions3) {
-            shortestWayout2 = directions3;
+          shortestWayout2 = directions3;
         } else {
-            throw new Error("exit way is undefined");
+          throw new Error("exit way is undefined");
         }
 
         //checing the shortesWayout2 to the exit04 way:
         //checking the third shortest wayout with exit04 here:
         let shortestWayout3;
         if (shortestWayout2 && directions4) {
-            shortestWayout3 = shortestWayout2.distance <= directions4.distance ? shortestWayout2 : directions4;
+          shortestWayout3 =
+            shortestWayout2.distance <= directions4.distance
+              ? shortestWayout2
+              : directions4;
         } else if (shortestWayout2) {
-            shortestWayout3 = shortestWayout2;
+          shortestWayout3 = shortestWayout2;
         } else if (directions4) {
-            shortestWayout3 = directions4;
+          shortestWayout3 = directions4;
         } else {
-            throw new Error("exit way is undefined");
+          throw new Error("exit way is undefined");
         }
 
         //build the shortest wayout here:
-        if (shortestWayout3) {   
+        if (shortestWayout3) {
           path = mapView.Paths.add(shortestWayout3.coordinates, {
             nearRadius: 0.5,
             farRadius: 0.5,
@@ -534,7 +538,7 @@ async function init() {
   const getDirectionsButton = document.getElementById(
     "get-directions"
   ) as HTMLButtonElement;
-  
+
   getDirectionsButton.addEventListener("click", async function () {
     if (startSpace && endSpace) {
       if (navigationState.isPathDrawn) {
@@ -543,15 +547,15 @@ async function init() {
         navigationState.isPathDrawn = false;
         setSpaceInteractivity(true); // Make spaces interactive again
       }
-  
+
       // Check if start and end spaces are on the same floor
       const areOnSameFloor = startSpace.floor === endSpace.floor;
-      
+
       // Force accessibility if on the same floor
-      const directions = mapView.getDirections(startSpace, endSpace, { 
-        accessible: areOnSameFloor || accessibilityEnabled 
+      const directions = mapView.getDirections(startSpace, endSpace, {
+        accessible: areOnSameFloor || accessibilityEnabled,
       });
-  
+
       if (directions) {
         mapView.Navigation.draw(directions, {
           pathOptions: {
@@ -575,241 +579,257 @@ async function init() {
       console.error("Please select both start and end locations.");
     }
   });
-  
 
-  // SearchingBar Dropdown list function: 
-  // Testing the search list container: 
+  // SearchingBar Dropdown list function:
+  // Testing the search list container:
   // Will add four lists here: 1)Module (button) 2) Entrence (button) 3)Reception 4)Cafe
   // Function to show the dropdown
-  const searchList = document.getElementById('search-list') as HTMLDivElement;
-  const searchListEndPoint = document.getElementById('search-list-endpoint') as HTMLDivElement;
+  const searchList = document.getElementById("search-list") as HTMLDivElement;
+  const searchListEndPoint = document.getElementById(
+    "search-list-endpoint"
+  ) as HTMLDivElement;
 
   // Function to show the dropdown
-  const showDropdown = (dropdown: HTMLDivElement) => {   // Modified this function 
-    dropdown.style.display = 'block';
+  const showDropdown = (dropdown: HTMLDivElement) => {
+    // Modified this function
+    dropdown.style.display = "block";
   };
 
   // Function to hide the dropdown
-  const hideDropdown = (dropdown: HTMLDivElement) => {   // Modified this function
-    dropdown.style.display = 'none'; 
+  const hideDropdown = (dropdown: HTMLDivElement) => {
+    // Modified this function
+    dropdown.style.display = "none";
   };
 
   // Show the dropdown when the user clicks on the search bar
-  startSearchBar.addEventListener('focus', () => {    
-      showDropdown(searchList);
-      isModuleItemsVisible = false;  // Reset the visibility flag when focusing on the search bar
-      moduleItemsContainer.style.display = 'none'; // Ensure Module item list is hidden
-      isEntranceItemsVisible = false;
-      entranceItemsContainer.style.display = 'none';
+  startSearchBar.addEventListener("focus", () => {
+    showDropdown(searchList);
+    isModuleItemsVisible = false; // Reset the visibility flag when focusing on the search bar
+    moduleItemsContainer.style.display = "none"; // Ensure Module item list is hidden
+    isEntranceItemsVisible = false;
+    entranceItemsContainer.style.display = "none";
 
-      //setting for the reception and cafe:
-      isReceptionDropdownItemsVisible = false;  // Reset the visibility flag when focusing on the search bar
-      receptionDropdownItemsContainer.style.display = 'none'; // Ensure Module item list is hidden
-      
-
+    //setting for the reception and cafe:
+    isReceptionDropdownItemsVisible = false; // Reset the visibility flag when focusing on the search bar
+    receptionDropdownItemsContainer.style.display = "none"; // Ensure Module item list is hidden
   });
-  endSearchBar.addEventListener('focus', () => { // Added this block**
-      showDropdown(searchListEndPoint);
-      isModuleItemsVisibleEndPoint = false;
-      moduleItemsContainerEndPoint.style.display = 'none';
-      isEntranceItemsVisibleEndPoint = false;
-      entranceItemsContainerEndPoint.style.display = 'none';
+  endSearchBar.addEventListener("focus", () => {
+    // Added this block**
+    showDropdown(searchListEndPoint);
+    isModuleItemsVisibleEndPoint = false;
+    moduleItemsContainerEndPoint.style.display = "none";
+    isEntranceItemsVisibleEndPoint = false;
+    entranceItemsContainerEndPoint.style.display = "none";
 
-      //setting for the reception and cafe:
-      isReceptionDropdownItemsVisibleEndPoint = false;  // Reset the visibility flag when focusing on the search bar
-      receptionDropdownItemsContainerEndPoint.style.display = 'none'; // Ensure Module item list is hidden
+    //setting for the reception and cafe:
+    isReceptionDropdownItemsVisibleEndPoint = false; // Reset the visibility flag when focusing on the search bar
+    receptionDropdownItemsContainerEndPoint.style.display = "none"; // Ensure Module item list is hidden
   });
-
 
   // Prevent immediate hiding of the dropdown on click
-  startSearchBar.addEventListener('click', (event) => {
-      event.stopPropagation();
-      showDropdown(searchList);
+  startSearchBar.addEventListener("click", (event) => {
+    event.stopPropagation();
+    showDropdown(searchList);
   });
-  endSearchBar.addEventListener('click', (event) => { // Added this block**
+  endSearchBar.addEventListener("click", (event) => {
+    // Added this block**
     event.stopPropagation();
     showDropdown(searchListEndPoint);
   });
 
-  
-  searchList.addEventListener('click', (event) => {
+  searchList.addEventListener("click", (event) => {
     event.stopPropagation();
   });
-  searchListEndPoint.addEventListener('click', (event) => { // Added this block**
+  searchListEndPoint.addEventListener("click", (event) => {
+    // Added this block**
     event.stopPropagation();
   });
-
-
 
   // Hide the dropdown when clicking outside of it, after a short delay
-  document.addEventListener('click', function (event: MouseEvent) {
-      if (!searchList.contains(event.target as Node) && event.target !== startSearchBar) {
-          setTimeout(() => {
-              hideDropdown(searchList);
-          }, 100); // Adjust delay as needed
-      }
+  document.addEventListener("click", function (event: MouseEvent) {
+    if (
+      !searchList.contains(event.target as Node) &&
+      event.target !== startSearchBar
+    ) {
+      setTimeout(() => {
+        hideDropdown(searchList);
+      }, 100); // Adjust delay as needed
+    }
 
-      if (!searchListEndPoint.contains(event.target as Node) && event.target !== endSearchBar) { // Added this block**
-        setTimeout(() => {
-            hideDropdown(searchListEndPoint);
-        }, 100);
-      }
-
-
+    if (
+      !searchListEndPoint.contains(event.target as Node) &&
+      event.target !== endSearchBar
+    ) {
+      // Added this block**
+      setTimeout(() => {
+        hideDropdown(searchListEndPoint);
+      }, 100);
+    }
   });
 
   //testing: the user click on the start input bar then end point drop down will hide,
   //same for the end point search bar:
-  startSearchBar.addEventListener('click', () => {
+  startSearchBar.addEventListener("click", () => {
     setTimeout(() => {
       hideDropdown(searchListEndPoint);
     }, 20);
-  })
+  });
 
-  endSearchBar.addEventListener('click', () => {
+  endSearchBar.addEventListener("click", () => {
     setTimeout(() => {
       hideDropdown(searchList);
     }, 20);
-  })
-
-
-
+  });
 
   //create function according to the input string to find the Space from database:
   function getSpaceByName(name: string): Space | undefined {
     // Retrieve the Space instance
     const spaceCollection: Space[] = mapData.getByType("space"); // get the space array from the mapData
-    return spaceCollection.find(space => space.name === name);
+    return spaceCollection.find((space) => space.name === name);
   }
 
-
   // Make the variable for the Module list button function:
-  const moduleItemsContainer = document.getElementById('module-items-container') as HTMLDivElement;
-  const moduleButton = document.getElementById('module-button') as HTMLButtonElement;
+  const moduleItemsContainer = document.getElementById(
+    "module-items-container"
+  ) as HTMLDivElement;
+  const moduleButton = document.getElementById(
+    "module-button"
+  ) as HTMLButtonElement;
 
-  const moduleItemsContainerEndPoint = document.getElementById('module-items-container-endpoint') as HTMLDivElement; // Added this line
-  const moduleButtonEndPoint = document.getElementById('module-button-endpoint') as HTMLButtonElement; // Added this line
+  const moduleItemsContainerEndPoint = document.getElementById(
+    "module-items-container-endpoint"
+  ) as HTMLDivElement; // Added this line
+  const moduleButtonEndPoint = document.getElementById(
+    "module-button-endpoint"
+  ) as HTMLButtonElement; // Added this line
 
-
-  
   // Function to populate module rooms
   const populateModuleRooms = (container: HTMLDivElement) => {
     const spaces: Space[] = mapData.getByType("space");
-    container.innerHTML = ''; // Clear existing items
+    container.innerHTML = ""; // Clear existing items
 
-    spaces.forEach(space => {
-      if (space.name.includes('Module')) {
-        const spaceOption = document.createElement('button');
-        spaceOption.className = 'button-13';
+    spaces.forEach((space) => {
+      if (space.name.includes("Module")) {
+        const spaceOption = document.createElement("button");
+        spaceOption.className = "button-13";
         spaceOption.textContent = space.name; // The property containing the space name
         container.appendChild(spaceOption);
-        
+
         // Add click event listener to capture the button text
-        spaceOption.addEventListener('click', () => {
+        spaceOption.addEventListener("click", () => {
           const selectedSpaceName = spaceOption.textContent;
 
           if (selectedSpaceName) {
-          const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
-            
-          if (spaceInstance) {
+            const spaceInstance: Space | undefined =
+              getSpaceByName(selectedSpaceName); // Convert text to Space type
+
+            if (spaceInstance) {
               // Update startSpace with the Space instance
-              //startSpace = spaceInstance; 
+              //startSpace = spaceInstance;
               //fill the starting point input bar
               //startSearchBar.value = spaceOption.textContent!;
               //console.log('startSpace updated:', startSpace);
               if (container === moduleItemsContainer) {
                 // Update startSpace with the Space instance
-                startSpace = spaceInstance; 
+                startSpace = spaceInstance;
                 startSearchBar.value = spaceOption.textContent!;
-                console.log('startSpace updated:', startSpace);
+                console.log("startSpace updated:", startSpace);
               } else if (container === moduleItemsContainerEndPoint) {
                 // Update endSpace with the Space instance
                 endSpace = spaceInstance;
                 endSearchBar.value = spaceOption.textContent!;
-                console.log('endSpace updated:', endSpace);
+                console.log("endSpace updated:", endSpace);
               }
             } else {
-              console.error('Space not found for:', selectedSpaceName);
+              console.error("Space not found for:", selectedSpaceName);
             }
           }
-
         });
       }
     });
   };
 
   // Make the variable for the Reception list button function:
-  const receptionDropdownItemsContainer = document.getElementById('reception-items-container') as HTMLDivElement;
-  const receptionDropdownButton = document.getElementById('reception-button') as HTMLButtonElement;
+  const receptionDropdownItemsContainer = document.getElementById(
+    "reception-items-container"
+  ) as HTMLDivElement;
+  const receptionDropdownButton = document.getElementById(
+    "reception-button"
+  ) as HTMLButtonElement;
 
-  const receptionDropdownItemsContainerEndPoint = document.getElementById('reception-items-container-endpoint') as HTMLDivElement; // Added this line
-  const receptionDropdownButtonEndPoint = document.getElementById('reception-button-endpoint') as HTMLButtonElement; // Added this line
+  const receptionDropdownItemsContainerEndPoint = document.getElementById(
+    "reception-items-container-endpoint"
+  ) as HTMLDivElement; // Added this line
+  const receptionDropdownButtonEndPoint = document.getElementById(
+    "reception-button-endpoint"
+  ) as HTMLButtonElement; // Added this line
 
   // Function to populate module rooms
   const populateReceptionDropdownRooms = (container: HTMLDivElement) => {
     const spaces: Space[] = mapData.getByType("space");
-    container.innerHTML = ''; // Clear existing items
+    container.innerHTML = ""; // Clear existing items
 
-    spaces.forEach(space => {
-      if (space.name.includes('Reception')) {
-        const spaceOption = document.createElement('button');
-        spaceOption.className = 'button-13';
+    spaces.forEach((space) => {
+      if (space.name.includes("Reception")) {
+        const spaceOption = document.createElement("button");
+        spaceOption.className = "button-13";
         spaceOption.textContent = space.name; // The property containing the space name
         container.appendChild(spaceOption);
-        
+
         // Add click event listener to capture the button text
-        spaceOption.addEventListener('click', () => {
+        spaceOption.addEventListener("click", () => {
           const selectedSpaceName = spaceOption.textContent;
 
           if (selectedSpaceName) {
-          const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
-            
-          if (spaceInstance) {
+            const spaceInstance: Space | undefined =
+              getSpaceByName(selectedSpaceName); // Convert text to Space type
+
+            if (spaceInstance) {
               if (container === receptionDropdownItemsContainer) {
                 // Update startSpace with the Space instance
-                startSpace = spaceInstance; 
+                startSpace = spaceInstance;
                 startSearchBar.value = spaceOption.textContent!;
-                console.log('startSpace updated:', startSpace);
-              } else if (container === receptionDropdownItemsContainerEndPoint) {
+                console.log("startSpace updated:", startSpace);
+              } else if (
+                container === receptionDropdownItemsContainerEndPoint
+              ) {
                 // Update endSpace with the Space instance
                 endSpace = spaceInstance;
                 endSearchBar.value = spaceOption.textContent!;
-                console.log('endSpace updated:', endSpace);
+                console.log("endSpace updated:", endSpace);
               }
             } else {
-              console.error('Space not found for:', selectedSpaceName);
+              console.error("Space not found for:", selectedSpaceName);
             }
           }
-
         });
       }
     });
   };
-
-
 
   // Flag to track the visibility of the module items container
   let isModuleItemsVisible = false;
   let isModuleItemsVisibleEndPoint = false;
 
   // Toggle module rooms visibility when the Module button is clicked
-  moduleButton.addEventListener('click', () => {
+  moduleButton.addEventListener("click", () => {
     if (isModuleItemsVisible) {
-      moduleItemsContainer.style.display = 'none'; // Hide if already visible
+      moduleItemsContainer.style.display = "none"; // Hide if already visible
     } else {
       populateModuleRooms(moduleItemsContainer); // Populate the module rooms
-      moduleItemsContainer.style.display = 'block'; // Show the module rooms
+      moduleItemsContainer.style.display = "block"; // Show the module rooms
     }
     isModuleItemsVisible = !isModuleItemsVisible; // Toggle the flag
   });
 
-  moduleButtonEndPoint.addEventListener('click', () => { // Added this block**
-    
+  moduleButtonEndPoint.addEventListener("click", () => {
+    // Added this block**
+
     if (isModuleItemsVisibleEndPoint) {
-      moduleItemsContainerEndPoint.style.display = 'none';
+      moduleItemsContainerEndPoint.style.display = "none";
     } else {
       populateModuleRooms(moduleItemsContainerEndPoint); // Modified this line**
-      moduleItemsContainerEndPoint.style.display = 'block';
+      moduleItemsContainerEndPoint.style.display = "block";
     }
     isModuleItemsVisibleEndPoint = !isModuleItemsVisibleEndPoint;
   });
@@ -819,81 +839,86 @@ async function init() {
   let isReceptionDropdownItemsVisibleEndPoint = false;
 
   // Toggle module rooms visibility when the Module button is clicked
-  receptionDropdownButton.addEventListener('click', () => {
+  receptionDropdownButton.addEventListener("click", () => {
     if (isReceptionDropdownItemsVisible) {
-      receptionDropdownItemsContainer.style.display = 'none'; // Hide if already visible
+      receptionDropdownItemsContainer.style.display = "none"; // Hide if already visible
     } else {
       populateReceptionDropdownRooms(receptionDropdownItemsContainer); // Populate the module rooms
-      receptionDropdownItemsContainer.style.display = 'block'; // Show the module rooms
+      receptionDropdownItemsContainer.style.display = "block"; // Show the module rooms
     }
     isReceptionDropdownItemsVisible = !isReceptionDropdownItemsVisible; // Toggle the flag
   });
 
-  receptionDropdownButtonEndPoint.addEventListener('click', () => { // Added this block** 
+  receptionDropdownButtonEndPoint.addEventListener("click", () => {
+    // Added this block**
     if (isReceptionDropdownItemsVisibleEndPoint) {
-      receptionDropdownItemsContainerEndPoint.style.display = 'none';
+      receptionDropdownItemsContainerEndPoint.style.display = "none";
     } else {
       populateReceptionDropdownRooms(receptionDropdownItemsContainerEndPoint); // Modified this line**
-      receptionDropdownItemsContainerEndPoint.style.display = 'block';
+      receptionDropdownItemsContainerEndPoint.style.display = "block";
     }
-    isReceptionDropdownItemsVisibleEndPoint = !isReceptionDropdownItemsVisibleEndPoint;
+    isReceptionDropdownItemsVisibleEndPoint =
+      !isReceptionDropdownItemsVisibleEndPoint;
   });
 
-
   // Make the variable for the Entrance list button function:
-  const entranceItemsContainer = document.getElementById('entrance-items-container') as HTMLDivElement;
-  const entranceButton = document.getElementById('entrance-button') as HTMLButtonElement;
+  const entranceItemsContainer = document.getElementById(
+    "entrance-items-container"
+  ) as HTMLDivElement;
+  const entranceButton = document.getElementById(
+    "entrance-button"
+  ) as HTMLButtonElement;
 
-  const entranceItemsContainerEndPoint = document.getElementById('entrance-items-container-endpoint') as HTMLDivElement; // Added this line
-  const entranceButtonEndPoint = document.getElementById('entrance-button-endpoint') as HTMLButtonElement; // Added this line
+  const entranceItemsContainerEndPoint = document.getElementById(
+    "entrance-items-container-endpoint"
+  ) as HTMLDivElement; // Added this line
+  const entranceButtonEndPoint = document.getElementById(
+    "entrance-button-endpoint"
+  ) as HTMLButtonElement; // Added this line
 
-  
   // Function to populate module rooms
   const populateEntranceItem = (container: HTMLDivElement) => {
     const spaces: Space[] = mapData.getByType("space");
-    container.innerHTML = ''; // Clear existing items
+    container.innerHTML = ""; // Clear existing items
 
-    spaces.forEach(space => {
-      if (space.name.includes('Entrance')) {
-        const spaceOption = document.createElement('button');
-        spaceOption.className = 'button-13';
+    spaces.forEach((space) => {
+      if (space.name.includes("Entrance")) {
+        const spaceOption = document.createElement("button");
+        spaceOption.className = "button-13";
         spaceOption.textContent = space.name; // The property containing the space name
         container.appendChild(spaceOption);
-        
-        
+
         // Add click event listener to capture the button text
-        spaceOption.addEventListener('click', () => {
+        spaceOption.addEventListener("click", () => {
           const selectedSpaceName = spaceOption.textContent;
-  
+
           if (selectedSpaceName) {
-          const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
-            
-          if (spaceInstance) {
+            const spaceInstance: Space | undefined =
+              getSpaceByName(selectedSpaceName); // Convert text to Space type
+
+            if (spaceInstance) {
               // Update startSpace with the Space instance
-              //startSpace = spaceInstance; 
+              //startSpace = spaceInstance;
               //fill the starting point input bar
               //startSearchBar.value = spaceOption.textContent!;
               //console.log('startSpace updated:', startSpace);
               if (container === entranceItemsContainer) {
                 // Update startSpace with the Space instance
-                startSpace = spaceInstance; 
+                startSpace = spaceInstance;
                 startSearchBar.value = spaceOption.textContent!;
-                console.log('startSpace updated:', startSpace);
+                console.log("startSpace updated:", startSpace);
               } else if (container === entranceItemsContainerEndPoint) {
                 // Update endSpace with the Space instance
                 endSpace = spaceInstance;
                 endSearchBar.value = spaceOption.textContent!;
-                console.log('endSpace updated:', endSpace);
+                console.log("endSpace updated:", endSpace);
               }
-
             } else {
-              console.error('Space not found for:', selectedSpaceName);
+              console.error("Space not found for:", selectedSpaceName);
             }
           }
         });
       }
-
-      
     });
   };
 
@@ -902,53 +927,59 @@ async function init() {
   let isEntranceItemsVisibleEndPoint = false; // Added this line**
 
   // Toggle module rooms visibility when the Module button is clicked
-  entranceButton.addEventListener('click', () => {
+  entranceButton.addEventListener("click", () => {
     if (isEntranceItemsVisible) {
-      entranceItemsContainer.style.display = 'none'; // Hide if already visible
+      entranceItemsContainer.style.display = "none"; // Hide if already visible
     } else {
       populateEntranceItem(entranceItemsContainer); // Populate the module rooms
-      entranceItemsContainer.style.display = 'block'; // Show the module rooms
+      entranceItemsContainer.style.display = "block"; // Show the module rooms
     }
     isEntranceItemsVisible = !isEntranceItemsVisible; // Toggle the flag
   });
 
-  entranceButtonEndPoint.addEventListener('click', () => { // Added this block**
+  entranceButtonEndPoint.addEventListener("click", () => {
+    // Added this block**
     if (isEntranceItemsVisibleEndPoint) {
-      entranceItemsContainerEndPoint.style.display = 'none';
+      entranceItemsContainerEndPoint.style.display = "none";
     } else {
       populateEntranceItem(entranceItemsContainerEndPoint); // Modified this line**
-      entranceItemsContainerEndPoint.style.display = 'block';
+      entranceItemsContainerEndPoint.style.display = "block";
     }
     isEntranceItemsVisibleEndPoint = !isEntranceItemsVisibleEndPoint;
   });
 
   //making hte cafe dropdown button works:
-  const cafeDropdownButton = document.getElementById('cafe-button') as HTMLDivElement;
-  const cafeDropdownButtonEndPoint = document.getElementById('cafe-button-endpoint') as HTMLDivElement;
+  const cafeDropdownButton = document.getElementById(
+    "cafe-button"
+  ) as HTMLDivElement;
+  const cafeDropdownButtonEndPoint = document.getElementById(
+    "cafe-button-endpoint"
+  ) as HTMLDivElement;
 
-  cafeDropdownButton.addEventListener('click', () => {
+  cafeDropdownButton.addEventListener("click", () => {
     console.log("Cafe button at start point clicked.");
-    const cafeSpace = mapData.getByType('space').find((space) => space.name.includes("Cafe"));
+    const cafeSpace = mapData
+      .getByType("space")
+      .find((space) => space.name.includes("Cafe"));
 
-    startSpace = cafeSpace!; 
+    startSpace = cafeSpace!;
     startSearchBar.value = "Cafe";
-    console.log('startSpace updated as Cafe:', startSpace);
-  })
+    console.log("startSpace updated as Cafe:", startSpace);
+  });
 
-  cafeDropdownButtonEndPoint.addEventListener('click', () => {
+  cafeDropdownButtonEndPoint.addEventListener("click", () => {
     console.log("Cafe button at end point clicked.");
-    const cafeSpace = mapData.getByType('space').find((space) => space.name.includes("Cafe"));
+    const cafeSpace = mapData
+      .getByType("space")
+      .find((space) => space.name.includes("Cafe"));
 
-    endSpace = cafeSpace!; 
+    endSpace = cafeSpace!;
     endSearchBar.value = "Cafe";
-    console.log('endSpace updated as Cafe:', endSpace);
-  })
-
+    console.log("endSpace updated as Cafe:", endSpace);
+  });
 
   //////////////////////////////////////////
   //searchingBar Dropdown list function above.
-  
-  
 
   // Button Accessibility
   const accessibilityButton = document.createElement("button");
@@ -974,12 +1005,15 @@ async function init() {
   let liftsHighlighted = false;
   accessibilityEnabled = false;
 
-accessibilityButton.addEventListener("click", () => {
-  accessibilityEnabled = !accessibilityEnabled;
-  const lifts = mapData.getByType("space").filter((space) => 
-    space.name.toLowerCase().includes("elevator") || 
-    space.name.toLowerCase().includes("lifts") 
-  );
+  accessibilityButton.addEventListener("click", () => {
+    accessibilityEnabled = !accessibilityEnabled;
+    const lifts = mapData
+      .getByType("space")
+      .filter(
+        (space) =>
+          space.name.toLowerCase().includes("elevator") ||
+          space.name.toLowerCase().includes("lifts")
+      );
 
     lifts.forEach((lift) => {
       if (!liftsHighlighted) {
@@ -1117,10 +1151,6 @@ accessibilityButton.addEventListener("click", () => {
       receptionButton.style.color = "#000";
     }
   });
-};
-
-
-
-
+}
 
 init();
