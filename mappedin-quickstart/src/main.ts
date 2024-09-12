@@ -6,8 +6,6 @@ import {
   MapData,
   Path,
   Coordinate,
-  Directions,
-  show3dMapGeojson,
   Floor,
 } from "@mappedin/mappedin-js";
 import "@mappedin/mappedin-js/lib/index.css";
@@ -101,7 +99,6 @@ async function init() {
   let endSpace: Space | null = null;
   let path: Path | null = null;
   let accessibilityEnabled = false;
-  let selectingStart = true; //
 
   mapData.getByType("space").forEach((space) => {
     mapView.updateState(space, {
@@ -130,7 +127,7 @@ async function init() {
       originalColors.set(clickedSpace.id, originalColor);
 
       mapView.updateState(clickedSpace, {
-        color: "#b87dcb",
+        color: "#d4b2df",
       });
     }
 
@@ -518,6 +515,23 @@ async function init() {
   ) as HTMLButtonElement;
 
   stopNavigationButton.addEventListener("click", function () {
+    if (navigationState.startSpace) {
+      // Revert to the original color
+      const originalColor = originalColors.get(navigationState.startSpace.id);
+      mapView.updateState(navigationState.startSpace, {
+        color: originalColor,
+      });
+      navigationState.startSpace = null;
+    }
+
+    if (navigationState.endSpace) {
+      const originalColor = originalColors.get(navigationState.endSpace.id);
+      mapView.updateState(navigationState.endSpace, {
+        color: originalColor,
+      });
+      navigationState.endSpace = null;
+    }
+
     if (navigationState.isPathDrawn) {
       mapView.Paths.removeAll();
       mapView.Markers.removeAll();
