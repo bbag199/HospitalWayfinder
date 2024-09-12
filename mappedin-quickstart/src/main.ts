@@ -530,39 +530,18 @@ async function init() {
   ) as HTMLButtonElement;
 
   stopNavigationButton.addEventListener("click", function () {
-    // unhighlights the spaces clicked
-    if (navigationState.startSpace) {
-      const originalColor = originalColors.get(navigationState.startSpace.id);
-      mapView.updateState(navigationState.startSpace, {
-        color: originalColor,
-      });
-      navigationState.startSpace = null;
-    }
+    // loops through all spaces in the map
+    mapData.getByType("space").forEach((space) => {
+      // retrieves the original color from the map
+      const originalColor = originalColors.get(space.id);
 
-    if (navigationState.endSpace) {
-      const originalColor = originalColors.get(navigationState.endSpace.id);
-      mapView.updateState(navigationState.endSpace, {
-        color: originalColor,
-      });
-      navigationState.endSpace = null;
-    }
-
-    // unhighlights the spaces from search bar
-    if (startSpace) {
-      const originalColor = originalColors.get(startSpace.id);
-      mapView.updateState(startSpace, {
-        color: originalColor,
-      });
-      navigationState.startSpace = null;
-    }
-
-    if (endSpace) {
-      const originalColor = originalColors.get(endSpace.id);
-      mapView.updateState(endSpace, {
-        color: originalColor,
-      });
-      navigationState.endSpace = null;
-    }
+      // checks if an original color exists, then reset to the original color
+      if (originalColor) {
+        mapView.updateState(space, {
+          color: originalColor,
+        });
+      }
+    });
 
     if (navigationState.isPathDrawn) {
       mapView.Paths.removeAll();
