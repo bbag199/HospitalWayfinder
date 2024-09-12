@@ -95,7 +95,7 @@ async function init() {
     floorSelector.appendChild(option);
   });
 
-  let startSpace: Space;
+  let startSpace: Space | null = null;
   let endSpace: Space | null = null;
   let path: Path | null = null;
   let accessibilityEnabled = false;
@@ -503,20 +503,35 @@ async function init() {
           startSpace = result;
           startSearchBar.value = result.name;
         }
+
+        highlightSpace(result);
         resultsContainer.style.display = "none"; // Hide results when a space is selected
       });
       resultsContainer.appendChild(resultItem);
     });
   }
 
+  function highlightSpace(space: Space) {
+    // Store the original color
+    const originalState = mapView.getState(space);
+    const originalColor = originalState ? originalState.color : "#FFFFFF";
+
+    // Store original color to revert back to it later if needed
+    originalColors.set(space.id, originalColor);
+
+    // Update the state of the space to highlight it
+    mapView.updateState(space, {
+      color: "#d4b2df", // Example highlight color
+    });
+  }
   // Stop Navigation Button
   const stopNavigationButton = document.getElementById(
     "stop-navigation"
   ) as HTMLButtonElement;
 
   stopNavigationButton.addEventListener("click", function () {
+    // unhighlights the spaces clicked
     if (navigationState.startSpace) {
-      // Revert to the original color
       const originalColor = originalColors.get(navigationState.startSpace.id);
       mapView.updateState(navigationState.startSpace, {
         color: originalColor,
@@ -527,6 +542,23 @@ async function init() {
     if (navigationState.endSpace) {
       const originalColor = originalColors.get(navigationState.endSpace.id);
       mapView.updateState(navigationState.endSpace, {
+        color: originalColor,
+      });
+      navigationState.endSpace = null;
+    }
+
+    // unhighlights the spaces from search bar
+    if (startSpace) {
+      const originalColor = originalColors.get(startSpace.id);
+      mapView.updateState(startSpace, {
+        color: originalColor,
+      });
+      navigationState.startSpace = null;
+    }
+
+    if (endSpace) {
+      const originalColor = originalColors.get(endSpace.id);
+      mapView.updateState(endSpace, {
         color: originalColor,
       });
       navigationState.endSpace = null;
@@ -552,6 +584,8 @@ async function init() {
     // Reset start and end spaces regardless of path state
     navigationState.startSpace = null;
     navigationState.endSpace = null;
+    startSpace = null;
+    endSpace = null;
   });
   // Get Directions Button
   const getDirectionsButton = document.getElementById(
@@ -559,43 +593,41 @@ async function init() {
   ) as HTMLButtonElement;
 
   getDirectionsButton.addEventListener("click", async function () {
+    console.log("Start Space:", startSpace);
+    console.log("End Space:", endSpace);
     if (startSpace && endSpace) {
+      console.log("Both spaces are selected");
       if (navigationState.isPathDrawn) {
         mapView.Paths.removeAll();
         mapView.Markers.removeAll();
         navigationState.isPathDrawn = false;
-        setSpaceInteractivity(true); // Make spaces interactive again
+        setSpaceInteractivity(true); // Reset interactivity
       }
 
-      // Check if start and end spaces are on the same floor
       const areOnSameFloor = startSpace.floor === endSpace.floor;
+      console.log("Are on same floor:", areOnSameFloor);
 
-      // Force accessibility if on the same floor
-      const directions = mapView.getDirections(startSpace, endSpace, {
-        accessible: areOnSameFloor || accessibilityEnabled,
-      });
-
-      if (directions) {
-        mapView.Navigation.draw(directions, {
-          pathOptions: {
-            nearRadius: 0.5,
-            farRadius: 0.5,
-          },
+      try {
+        const directions = await mapView.getDirections(startSpace, endSpace, {
+          accessible: areOnSameFloor || accessibilityEnabled,
         });
-        navigationState.isPathDrawn = true;
-        setSpaceInteractivity(false); // Disable interactivity of spaces
+        console.log("Directions:", directions);
+
+        if (directions) {
+          mapView.Navigation.draw(directions, {
+            pathOptions: {
+              nearRadius: 0.5,
+              farRadius: 0.5,
+            },
+          });
+          navigationState.isPathDrawn = true;
+          setSpaceInteractivity(false); // Disable further interaction
+        }
+      } catch (error) {
+        alert("Error fetching directions: " + error);
       }
     } else {
-      if (navigationState.isPathDrawn) {
-        mapView.Paths.removeAll();
-        mapView.Markers.removeAll();
-        setSpaceInteractivity(true); // Make spaces interactive again
-        navigationState.isPathDrawn = false;
-      }
-      // Start a new path with the current click as the new start space
-      navigationState.startSpace = startSpace;
-      navigationState.endSpace = null; // Clear previous end space
-      console.error("Please select both start and end locations.");
+      alert("Please select both start and end locations.");
     }
   });
 
@@ -753,11 +785,13 @@ async function init() {
                 startSpace = spaceInstance;
                 startSearchBar.value = spaceOption.textContent!;
                 console.log("startSpace updated:", startSpace);
+                highlightSpace(startSpace);
               } else if (container === moduleItemsContainerEndPoint) {
                 // Update endSpace with the Space instance
                 endSpace = spaceInstance;
                 endSearchBar.value = spaceOption.textContent!;
                 console.log("endSpace updated:", endSpace);
+                highlightSpace(endSpace);
               }
             } else {
               console.error("Space not found for:", selectedSpaceName);
