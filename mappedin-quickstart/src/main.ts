@@ -302,7 +302,7 @@ async function init() {
   emergencyButton.className = "reset-button mi-button";
   emergencyButton.textContent = "Emergency Exit";
   //emergencyButton.style.position = "absolute";
-  emergencyButton.style.bottom = "15px";
+  emergencyButton.style.bottom = "120px";
   //emergencyButton.style.right = "10px";
   emergencyButton.style.zIndex = "1000";
   emergencyButton.style.padding = "10px";

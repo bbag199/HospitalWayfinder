@@ -52,13 +52,62 @@ nav {
 }
 .search-container {
   position: absolute;
-  top: 70px; /* Adjusted to be below the navbar */
+  top: 10px; /* Adjusted to be below the navbar */
   left: 10px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
+/*Check the media for the phone size!!!!!*/
+@media (max-width: 768px) { /* Adjust for smaller screens, such as tablets and phones */
+  .search-container {
+    position: absolute;
+    top: 10px; /* Move closer to the top */
+    left: 50%;
+    transform: translateX(-50%); /* Center the search container horizontally */
+    width: 100%; /* Full width on small screens */
+    padding: 0 10px; /* Add padding to avoid touching the edges of the screen */
+    z-index: 1050; /* Make sure it stays on top */
+  }
+
+  .search-bar, .search-results,
+  .directions-btn, .stop-nav-btn {
+    width: 300px;; /* Full width of the search input and results */
+     /* Ensure results fit within the container */
+  }
+
+  /* Ensure the icons container follows after the search-container */
+  .icons-container {
+    position: relative; /* Remove absolute positioning */
+    margin-top: 20px; /* Add some space below the search container */
+    padding-left: 40px; /* Ensure it's always 20px from the left side */
+    display: block; /* Make sure it's visible */
+    width: calc(100% - 20px); /* Ensure full width while keeping 20px padding */
+  }
+}
+
+@media (max-width: 300px) { /* Further adjustments for very small screens like phones */
+  .search-container,.icons-container {
+    top: 0px; /* Stick to the very top on small screens */
+    padding: 5px; /* Reduce padding to fit more content */
+  }
+
+  .search-bar, .search-results,
+  .directions-btn, .stop-nav-btn, .icons-container {
+    width: 100%; /* Full width of the search input and buttons */
+    max-width: 100%; /* Ensure it stays within the container */
+  }
+
+  .icons-container {
+    position: absolute; /* Remove absolute positioning */
+    margin-top: 5px; /* Add some space below the search container */
+    padding-left: 5px; /* Ensure it's always 20px from the left side */
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+  }
+}
+
 .search-bar {
   padding: 0.5rem;
   font-size: 1rem;
@@ -180,7 +229,7 @@ nav {
   user-select: none;
   pointer-events: all;
   position: fixed; /* Use fixed to keep the button in the same place even when scrolling */
-  bottom: 70px; /* Distance from the bottom of the screen */
+  bottom: 78px; /* Distance from the bottom of the screen */
   right: 20px; /* Distance from the right side of the screen */
   height: 36px;
   width: fit-content;
@@ -209,14 +258,15 @@ nav {
 }
 
 .icons-container {
-  position: absolute;
-  top: 70px; 
-  left: 45%;
+  margin-top: 20px; /* Add some space below the search container */
+  padding-left: 40px; /* Ensure it's always 20px from the left side */
+  position: relative; /* Remove absolute positioning */
   z-index: 1000;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: row;
   gap: 10px;
+  margin-top: 1px; /* You can adjust this value as needed to add spacing */
 }
 
 .icons-container > button {
