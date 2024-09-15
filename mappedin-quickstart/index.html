@@ -1,228 +1,191 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Wayfinder</title>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="./src/style.css" />
-  </head>
 
-  <body>
-    
-    <div class="search-container">
-      <input
-        type="text"
-        id="start-search"
-        class="search-bar"
-        placeholder="From: Search starting point..."
-      />
-      <!--Adding the search bar dropdown here-->
-      <div class="search-list-container" id="search-list">
-        <div class="button-container">
-          <!--here will have the module or entrence list button-->
-          <!-- Module and Entrance buttons -->
-          <button class="button-13" id="module-button" role="button">
-            Module List
-          </button>
-          <!--pupulate with the Module list here-->
-          <div id="module-items-container"></div>
+<head>
+  <title>Wayfinder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
 
-          <!--pupulate with the Entrance list here-->
-          <button class="button-13" id="entrance-button" role="button">
-            Entrance List
-          </button>
-          <div id="entrance-items-container"></div>
+<body>
 
-          <!--Reception and Cafe-->
-          <!--pupulate with the Reception list here-->
-          <button class="button-13" id="reception-button" role="button">
-            Reception List
-          </button>
-          <div id="reception-items-container"></div>
-
-          <!--pupulate with the Cafe list here-->
-          <button class="button-13" id="cafe-button" role="button">Cafe</button>
-          <div id="cafe-items-container"></div>
-        </div>
-      </div>
-
-      <input
-        type="text"
-        id="end-search"
-        class="search-bar"
-        placeholder="To: Search destination..."
-      />
-      <!--Adding the end point search bar here-->
-      <div class="search-list-container" id="search-list-endpoint">
-        <div class="button-container">
-          <!--here will have the module or entrence list button-->
-          <!-- Module and Entrance buttons -->
-          <button class="button-13" id="module-button-endpoint" role="button">
-            Module List
-          </button>
-          <!--pupulate with the Module list here-->
-          <div id="module-items-container-endpoint"></div>
-
-          <!--pupulate with the Entrance list here-->
-          <button class="button-13" id="entrance-button-endpoint" role="button">
-            Entrance List
-          </button>
-          <div id="entrance-items-container-endpoint"></div>
-
-          <!--Reception and Cafe-->
-          <!--pupulate with the Reception list here-->
-          <button
-            class="button-13"
-            id="reception-button-endpoint"
-            role="button"
-          >
-            Reception List
-          </button>
-          <div id="reception-items-container-endpoint"></div>
-
-          <!--pupulate with the Cafe list here-->
-          <button class="button-13" id="cafe-button-endpoint" role="button">
-            Cafe
-          </button>
-          <div id="cafe-items-container-endpoint"></div>
-        </div>
-      </div>
-
-      <div class="search-results" id="end-results"></div>
-      <div class="search-results" id="start-results"></div>
-      <button class="directions-btn" id="get-directions">Get Directions</button>
-      <button class="stop-nav-btn" id="stop-navigation">Stop Navigation</button>
-      <!-- Stop Navigation Button -->
-      <div class="icons-container">
-        <button id="reception-btn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
-              d="M3 19h18M12 8V5m0 3h-2a5 5 0 0 0-5 5v3h14v-3a5 5 0 0 0-5-5zm0-3h-2m2 0h2"
-            />
-          </svg>
-          Reception
+  <div class="search-container">
+    <input type="text" id="start-search" class="search-bar" placeholder="From: Search starting point..." />
+    <!--Adding the search bar dropdown here-->
+    <div class="search-list-container" id="search-list">
+      <div class="button-container">
+        <!--here will have the module or entrence list button-->
+        <!-- Module and Entrance buttons -->
+        <button class="button-13" id="module-button" role="button">
+          Module List
         </button>
-        <button id="cafe-btn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="currentColor"
-              d="M5 20v-1h14v1zm3.135-3.77q-1.304 0-2.22-.886Q5 14.458 5 13.192V4h14.308q.698 0 1.195.472T21 5.634v2.231q0 .69-.497 1.163q-.497.472-1.195.472h-2v3.692q0 1.266-.916 2.152q-.915.887-2.219.887zm0-1h6.038q.88 0 1.508-.6q.627-.601.627-1.445V5H6v8.192q0 .845.627 1.442t1.508.597M17.307 8.5h2q.288 0 .49-.183T20 7.865v-2.23q0-.27-.202-.452Q19.596 5 19.308 5h-2zm-9.173 6.73H6h10.308z"
-            />
-          </svg>
+        <!--pupulate with the Module list here-->
+        <div id="module-items-container"></div>
+
+        <!--pupulate with the Entrance list here-->
+        <button class="button-13" id="entrance-button" role="button">
+          Entrance List
+        </button>
+        <div id="entrance-items-container"></div>
+
+        <!--Reception and Cafe-->
+        <!--pupulate with the Reception list here-->
+        <button class="button-13" id="reception-button" role="button">
+          Reception List
+        </button>
+        <div id="reception-items-container"></div>
+
+        <!--pupulate with the Cafe list here-->
+        <button class="button-13" id="cafe-button" role="button">Cafe</button>
+        <div id="cafe-items-container"></div>
+      </div>
+    </div>
+
+    <input type="text" id="end-search" class="search-bar" placeholder="To: Search destination..." />
+    <!--Adding the end point search bar here-->
+    <div class="search-list-container" id="search-list-endpoint">
+      <div class="button-container">
+        <!--here will have the module or entrence list button-->
+        <!-- Module and Entrance buttons -->
+        <button class="button-13" id="module-button-endpoint" role="button">
+          Module List
+        </button>
+        <!--pupulate with the Module list here-->
+        <div id="module-items-container-endpoint"></div>
+
+        <!--pupulate with the Entrance list here-->
+        <button class="button-13" id="entrance-button-endpoint" role="button">
+          Entrance List
+        </button>
+        <div id="entrance-items-container-endpoint"></div>
+
+        <!--Reception and Cafe-->
+        <!--pupulate with the Reception list here-->
+        <button class="button-13" id="reception-button-endpoint" role="button">
+          Reception List
+        </button>
+        <div id="reception-items-container-endpoint"></div>
+
+        <!--pupulate with the Cafe list here-->
+        <button class="button-13" id="cafe-button-endpoint" role="button">
           Cafe
         </button>
-        <button id="toilet-btn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 15 15"
-          >
-            <path
-              fill="currentColor"
-              d="M3 1.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 0 0-3 0M11.5 0a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3M3.29 4a1 1 0 0 0-.868.504L.566 7.752a.5.5 0 1 0 .868.496l1.412-2.472A345.048 345.048 0 0 0 1 11h2v2.5a.5.5 0 0 0 1 0V11h1v2.5a.5.5 0 0 0 1 0V11h2L6.103 5.687l1.463 2.561a.5.5 0 1 0 .868-.496L6.578 4.504A1 1 0 0 0 5.71 4zM9 4.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v4a.5.5 0 0 1-1 0v-4h-1v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1-1 0z"
-            />
-          </svg>
-          Toilets
-        </button>
-      </div>
-    </div>
-    <div id="mappedin-map"></div>
-    <nav>
-      
-      <div class="nav-links">
-        <a href="index.html" id="homepage-link">Home</a>
-        <a href="contact.html" id="contact-link">Contact</a>
-        <button class="settings-btn" id="setting-btn">Settings</button>
-      </div>
-    </nav>
-
-    <div id="settingsModal" class="modal">
-      <div class="modal-content">
-        <div>
-          <span class="close">&times;</span>
-          <h2 id="settings-title">Settings</h2>
-        </div>
-        <div>
-          <label for="mode">Mode:</label>
-          <select id="mode">
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </div>
-        <div>
-          <label for="font-size">Font Size:</label>
-          <select id="font-size">
-            <option value="normal">Default</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-          </select>
-        </div>
-        <div>
-          <label for="language">Language:</label>
-          <select id="language">
-            <!-- language options -->
-            <option value="en" selected>English</option>
-            <option value="mi">Māori</option>
-            <option value="sm">Gagana Samoa</option>
-            <option value="to">lea fakatonga</option>
-            <option value="cn">中文（简体）</option>
-            <option value="tw">中文（繁體）</option>
-            <option value="pa">ਪੰਜਾਬੀ</option>
-            <option value="vi">Tiếng Việt</option>
-          </select>
-        </div>
-        <button id="applySettings">Apply</button>
+        <div id="cafe-items-container-endpoint"></div>
       </div>
     </div>
 
-    <script type="module" src="src/main.ts"></script>
-    <script type="module" src="src/languageController.ts"></script>
-    <script type="module">
-      // Get the modal
-      var modal = document.getElementById("settingsModal");
+    <div class="search-results" id="end-results"></div>
+    <div class="search-results" id="start-results"></div>
+    <button class="directions-btn" id="get-directions">Get Directions</button>
+    <button class="stop-nav-btn" id="stop-navigation">Stop Navigation</button>
+    <!-- Stop Navigation Button -->
+    <div class="icons-container">
+      <button id="reception-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M3 19h18M12 8V5m0 3h-2a5 5 0 0 0-5 5v3h14v-3a5 5 0 0 0-5-5zm0-3h-2m2 0h2" />
+        </svg>
+        Reception
+      </button>
+      <button id="cafe-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+          <path fill="currentColor"
+            d="M5 20v-1h14v1zm3.135-3.77q-1.304 0-2.22-.886Q5 14.458 5 13.192V4h14.308q.698 0 1.195.472T21 5.634v2.231q0 .69-.497 1.163q-.497.472-1.195.472h-2v3.692q0 1.266-.916 2.152q-.915.887-2.219.887zm0-1h6.038q.88 0 1.508-.6q.627-.601.627-1.445V5H6v8.192q0 .845.627 1.442t1.508.597M17.307 8.5h2q.288 0 .49-.183T20 7.865v-2.23q0-.27-.202-.452Q19.596 5 19.308 5h-2zm-9.173 6.73H6h10.308z" />
+        </svg>
+        Cafe
+      </button>
+      <button id="toilet-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 15 15">
+          <path fill="currentColor"
+            d="M3 1.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 0 0-3 0M11.5 0a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3M3.29 4a1 1 0 0 0-.868.504L.566 7.752a.5.5 0 1 0 .868.496l1.412-2.472A345.048 345.048 0 0 0 1 11h2v2.5a.5.5 0 0 0 1 0V11h1v2.5a.5.5 0 0 0 1 0V11h2L6.103 5.687l1.463 2.561a.5.5 0 1 0 .868-.496L6.578 4.504A1 1 0 0 0 5.71 4zM9 4.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v4a.5.5 0 0 1-1 0v-4h-1v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1-1 0z" />
+        </svg>
+        Toilets
+      </button>
+    </div>
+  </div>
+  <div id="mappedin-map"></div>
+  <nav>
 
-      // Get the button that opens the modal
-      var btn = document.querySelector(".settings-btn");
+    <div class="nav-links">
+      <a href="index.html" id="homepage-link">Home</a>
+      <a href="contact.html" id="contact-link">Contact</a>
+      <button class="settings-btn" id="setting-btn">Settings</button>
+    </div>
+  </nav>
 
-      // Get the <span> element that closes the modal
-      var span = document.getElementsByClassName("close")[0];
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <div>
+        <span class="close">&times;</span>
+        <h2 id="settings-title">Settings</h2>
+      </div>
+      <div>
+        <label for="mode">Mode:</label>
+        <select id="mode">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+      <div>
+        <label for="font-size">Font Size:</label>
+        <select id="font-size">
+          <option value="normal">Default</option>
+          <option value="medium">Medium</option>
+          <option value="large">Large</option>
+        </select>
+      </div>
+      <div>
+        <label for="language">Language:</label>
+        <select id="language">
+          <!-- language options -->
+          <option value="en" selected>English</option>
+          <option value="mi">Māori</option>
+          <option value="sm">Gagana Samoa</option>
+          <option value="to">lea fakatonga</option>
+          <option value="cn">中文（简体）</option>
+          <option value="tw">中文（繁體）</option>
+          <option value="pa">ਪੰਜਾਬੀ</option>
+          <option value="vi">Tiếng Việt</option>
+        </select>
+      </div>
+      <button id="applySettings">Apply</button>
+    </div>
+  </div>
 
-      // When the user clicks the button, open the modal
-      btn.onclick = function () {
-        modal.style.display = "block";
-      };
+  <script type="module" src="src/main.ts"></script>
+  <script type="module" src="src/languageController.ts"></script>
+  <script type="module">
+    // Get the modal
+    var modal = document.getElementById("settingsModal");
 
-      // When the user clicks on <span> (x), close the modal
-      span.onclick = function () {
+    // Get the button that opens the modal
+    var btn = document.querySelector(".settings-btn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+      modal.style.display = "block";
+    };
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
         modal.style.display = "none";
-      };
+      }
+    };
 
-      // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function (event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-      };
+    // Apply settings
+    document.getElementById("applySettings").onclick = function () {
+      window.applySettings(mapView, cachedSpaces);
+    };
+  </script>
+</body>
 
-      // Apply settings
-      document.getElementById("applySettings").onclick = function () {
-        window.applySettings(mapView, cachedSpaces);
-      };
-    </script>
-  </body>
 </html>
