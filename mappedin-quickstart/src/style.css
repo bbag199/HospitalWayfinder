@@ -88,7 +88,7 @@ nav {
   }
 }
 
-@media (max-width: 300px) { /* Further adjustments for very small screens like phones */
+@media (max-width: 350px) { /* Further adjustments for very small screens like phones */
   .search-container {
     top: 0px; /* Stick to the very top on small screens */
     padding: 5px; /* Reduce padding to fit more content */
@@ -109,7 +109,7 @@ nav {
 }
 
 /*Change the get direction and stop navigation button into square shape in phone version*/
-@media (max-width: 300px) {
+@media (max-width: 350px) {
   .directions-btn {
     height: 36px;
     width: 45px;
@@ -117,7 +117,7 @@ nav {
     z-index: 1000; /* Ensure it's above other elements */
     padding: 0px; /* Reduce padding for small screens */
     font-size: 12px; /* Adjust font size for small buttons */
-    right: 10px; /* Reduce left margin to fit smaller screen */
+    left: 230px; /* Reduce left margin to fit smaller screen */
     top: 5px;
     display: flex;
     align-items: center; /* Center text vertically */
@@ -132,7 +132,7 @@ nav {
     z-index: 1000; /* Ensure it's above other elements */
     padding: 0px; /* Reduce padding for small screens */
     font-size: 12px; /* Adjust font size for small buttons */
-    right: 10px; /* Reduce left margin to fit smaller screen */
+    left: 230px; /* Reduce left margin to fit smaller screen */
     top: 50px;
     display: flex;
     align-items: center; /* Center text vertically */
@@ -140,6 +140,90 @@ nav {
     text-align: center; /* Ensure text is centered */
   }
 }
+
+/*floor selector set up */
+#floor-selector2 {
+  position: absolute;
+  bottom: 100px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  z-index: 1000; /* Ensure it is above other elements */
+  
+  height: 30px; /* Set width to 35px */
+  font-size: 12px; /* Set font size to 12px */
+  border: 1px solid #ccc; /* Light border for the frame */
+  border-radius: 4px; /* Rounded corners */
+  padding: 4px; /* Padding inside the select box */
+  background-color: #fff; /* Background color */
+  color: #1c1c1c; /* Text color */
+}
+
+/*accessibility button set up*/
+#accessibility-btn {
+  position: absolute;
+  bottom: 136px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  z-index: 10000;
+}
+
+/*Testing the hambergur drop up menu*/
+/* Dropup Button */
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropup content */
+.dropup {
+  position: absolute;
+  bottom: 250px;
+  right: 10px;
+  display: inline-block;
+  width:100px;
+  z-index: 1000;
+}
+
+/* Dropup content (Hidden by Default) */
+.dropup-content {
+  display: none;
+  position: absolute;
+  bottom: 50px;
+  background-color: #f1f1f1;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropup */
+.dropup-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropup links on hover */
+.dropup-content a:hover {background-color: #ddd}
+
+/* Show the dropup menu on hover */
+.dropup:hover .dropup-content {
+  display: block;
+}
+
+/* Change the background color of the dropup button when the dropup content is shown */
+.dropup:hover .dropbtn {
+  background-color: rgb(15, 34, 64);
+}
+/*Testing the hambergur drop up menu above*/
 
 .search-bar {
   padding: 0.5rem;
@@ -164,15 +248,21 @@ nav {
   background-color: #f0f0f0;
 }
 
+/*Setting button style*/
 .settings-btn {
-  margin-left: 1.5rem;
-  padding: 0.5rem 1rem;
+  
+  min-width: 100px;
   font-size: 1rem;
   cursor: pointer;
   background-color: rgb(15, 34, 64);
-  color: #ffffff;
   border: none;
-  border-radius: 4px;
+  border-radius: 1px;
+  color: rgb(255, 255, 255);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+
+  text-align: left; /* Aligns text to the left */
 }
 
 .directions-btn {
@@ -266,7 +356,7 @@ nav {
   right: 20px; /* Distance from the right side of the screen */
   height: 36px;
   width: fit-content;
-  border-radius: 37.5px;
+  border-radius: 5px;
   background: #0F2240;
   color: #ffffff; /*set font color to white*/
   box-shadow: 0 4px 0 0 var(--burnt-orange), 0 3px 8px 0 rgba(0, 0, 0, 0.3);
