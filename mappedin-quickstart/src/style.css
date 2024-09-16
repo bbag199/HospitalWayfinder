@@ -89,22 +89,55 @@ nav {
 }
 
 @media (max-width: 300px) { /* Further adjustments for very small screens like phones */
-  .search-container,.icons-container {
+  .search-container {
     top: 0px; /* Stick to the very top on small screens */
     padding: 5px; /* Reduce padding to fit more content */
   }
 
-  .search-bar, .search-results,
-  .directions-btn, .stop-nav-btn, .icons-container {
-    width: 100%; /* Full width of the search input and buttons */
-    max-width: 100%; /* Ensure it stays within the container */
+  .search-bar, .search-results,/*.directions-btn, .stop-nav-btn,*/
+   .search-list-container {
+    width: 220px; /* Full width of the search input and buttons */
+    max-width: 220px /* Ensure it stays within the container */
   }
 
   .icons-container {
     position: absolute; /* Remove absolute positioning */
-    margin-top: 5px; /* Add some space below the search container */
-    padding-left: 5px; /* Ensure it's always 20px from the left side */
-    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+    margin-top: 2px; /* Add some space below the search container */
+    padding-left: 2px; /* Ensure it's always 20px from the left side */
+    left: -35px;
+  }
+}
+
+/*Change the get direction and stop navigation button into square shape in phone version*/
+@media (max-width: 300px) {
+  .directions-btn {
+    height: 36px;
+    width: 45px;
+    position: fixed;
+    z-index: 1000; /* Ensure it's above other elements */
+    padding: 0px; /* Reduce padding for small screens */
+    font-size: 12px; /* Adjust font size for small buttons */
+    right: 10px; /* Reduce left margin to fit smaller screen */
+    top: 5px;
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    text-align: center; /* Ensure text is centered */
+  }
+
+  .stop-nav-btn {
+    height: 36px;
+    width: 45px;
+    position: fixed;
+    z-index: 1000; /* Ensure it's above other elements */
+    padding: 0px; /* Reduce padding for small screens */
+    font-size: 12px; /* Adjust font size for small buttons */
+    right: 10px; /* Reduce left margin to fit smaller screen */
+    top: 50px;
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    text-align: center; /* Ensure text is centered */
   }
 }
 

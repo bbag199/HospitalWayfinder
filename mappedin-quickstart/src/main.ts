@@ -14,6 +14,7 @@ import { applySettings } from "./languageController";
 import { modeSwitcher } from "./modeController";
 import { fontSizesSwitcher } from "./fontSizeController";
 import { languageSwitcher } from "./languageController";
+import { updateButtonText } from './buttonTextUpdater';
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -235,6 +236,8 @@ async function init() {
       mapView.Labels.add(poi.coordinate, poi.name);
     }
   }
+ 
+
 
   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
@@ -570,6 +573,9 @@ async function init() {
   const getDirectionsButton = document.getElementById(
     "get-directions"
   ) as HTMLButtonElement;
+
+  //Testing the direction button and stop navigation button text change function:
+  updateButtonText();
 
   getDirectionsButton.addEventListener("click", async function () {
     console.log("Start Space:", startSpace);
