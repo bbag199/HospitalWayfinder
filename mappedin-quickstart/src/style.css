@@ -402,10 +402,36 @@ nav {
   margin-right: 0;
 }
 
+.expandable-btn {
+  display: inline-block;
+  margin: 5px;
+  background-color: transparent;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.expandable-btn.hidden {
+  display: none;
+}
+
+.main-toggle-button {
+  background-color: #1c79a3;
+  color: white;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
 .icons-container {
-  margin-top: 20px; /* Add some space below the search container */
-  padding-left: 40px; /* Ensure it's always 20px from the left side */
-  position: relative; /* Remove absolute positioning */
   z-index: 1000;
   display: flex;
   justify-content: flex-start;
@@ -417,10 +443,10 @@ nav {
 .icons-container > button {
   border-radius: 20px;
   padding: 5px 10px;
+  position: relative;
   border: 1px solid transparent;
   outline: none;
   cursor: pointer;
-  background-color: #ffffff;
   display: flex;
   align-items: center;
 }
