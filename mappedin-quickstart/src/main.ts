@@ -14,7 +14,9 @@ import { applySettings } from "./languageController";
 import { modeSwitcher } from "./modeController";
 import { fontSizesSwitcher } from "./fontSizeController";
 import { languageSwitcher } from "./languageController";
-import { updateButtonText } from './buttonTextUpdater';
+import { updateButtonText } from './buttonTextUpdater';  //update the Get Direction and Stop Nav button according to screen size
+import './script';
+
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -248,11 +250,32 @@ async function init() {
   //1)Add the stack "enable button":
   const stackMapButton = document.createElement("button");
   // Add any classes, text, or other properties (these two code can be linked to the css file):
-  stackMapButton.className = "reset-button mi-button";
-  stackMapButton.textContent = i18n.t("EnableStackMap");
+  stackMapButton.className = "stackmap-btn";
+  //stackMapButton.textContent = i18n.t("StackMap");
+
+  // 2. Create the icon element
+  const icon = document.createElement("i");
+  icon.className = "fa fa-cube"; // Font Awesome class for the book icon
+  icon.style.fontSize = "20px"; // Set the font size
+
+  // Append the icon to the button
+  stackMapButton.appendChild(icon);
 
   // Append the button to the desired parent element:
-  mappedinDiv.appendChild(stackMapButton);
+  //mappedinDiv.appendChild(stackMapButton);
+
+  // 2. Find the `.drop-menu.dropup` container
+  const dropMenuContainer = document.querySelector(".drop-menu.dropup");
+
+  // 3. Find the settings button
+  const settingsButton = document.querySelector(".drop-menu.dropup .settings-btn");
+
+  // 4. Append the stackMapButton to the container
+  if (dropMenuContainer) {
+    dropMenuContainer.insertBefore(stackMapButton, settingsButton);
+  } else {
+    console.error("The .drop-menu.dropup container was not found.");
+  }
 
   //Testing: no show floors:
   //Find the floor that need to do the Stack Map, at this case, we testing the Ground floor and Level 1
@@ -265,7 +288,34 @@ async function init() {
     );
 
   // The enable Button is used to enable and disable Stacked Maps.
+  // The enable Button is used to enable and disable Stacked Maps.
+  // The enable Button is used to enable and disable Stacked Maps.
   stackMapButton.onclick = () => {
+    // Debug here:
+    console.log("Checking noShowFloor2", noShowFloor2);
+
+    // Toggle the 'active' class
+    if (stackMapButton.classList.contains("active")) {
+      // Collapse the stack map
+      mapView.collapse();
+      stackMapButton.classList.remove("active");
+      stackMapButton.style.backgroundColor = "#f9f9f9"; // Reset background color
+      setCameraPosition(mapView.currentFloor.id);
+    } else {
+      // Show the stack map and hide the unused floor
+      mapView.expand({ excludeFloors: noShowFloor2 });
+      stackMapButton.classList.add("active");
+      stackMapButton.style.backgroundColor = "#27b7ff"; // Set background color to yellow
+
+      // Set the camera to zoomLevel 17 and pitch 0
+      mapView.Camera.animateTo({
+        bearing: floorSettings[mapView.currentFloor.id].bearing, // Set the angle, e.g. North or South facing
+        zoomLevel: 18.7, // Set the zoom level, better in 17-22
+        pitch: 85, // The angle from the top-down (0: Top-down, 90: Eye-level)
+      });
+    }
+  };
+/*   stackMapButton.onclick = () => {
     //debug here:
     console.log("Chekcing noShowFloor2", noShowFloor2);
     //show the stack map here and hide the no used floor:
@@ -288,7 +338,7 @@ async function init() {
       stackMapButton.textContent = i18n.t("EnableStackMap");
       setCameraPosition(mapView.currentFloor.id);
     }
-  };
+  }; */
 
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
@@ -309,9 +359,9 @@ async function init() {
   const emergencyButton = document.createElement("button");
   emergencyButton.className = "reset-button mi-button";
   emergencyButton.textContent = "Emergency Exit";
-  //emergencyButton.style.position = "absolute";
-  emergencyButton.style.bottom = "120px";
-  //emergencyButton.style.right = "10px";
+  
+  emergencyButton.style.bottom = "55px";
+  
   emergencyButton.style.zIndex = "1000";
   emergencyButton.style.padding = "10px";
   emergencyButton.style.backgroundColor = "#FF0000"; //red bg color

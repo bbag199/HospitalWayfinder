@@ -5,6 +5,7 @@
   <title>Wayfinder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./src/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -105,28 +106,26 @@
   </div>
   <div id="mappedin-map"></div> 
 
-  <div class="dropup">
-    <button class="dropbtn">Menu</button>
-    <div class="dropup-content">
-      <a href="index.html" id="homepage-link">Home</a>
-      <a href="contact.html" id="contact-link">Contact</a>
-      <button class="settings-btn" id="setting-btn">Settings</button>
-    </div>
+  <div class="drop-wrapper">
+    <button class="btn" data-target="#dropup">
+      <i class="fa fa-navicon" style="font-size:20px"></i>
+    </button>
+      <div class="drop-menu dropup" id="dropup">
+        <a href="index.html"><i class="fa fa-home" style="font-size:20px"></i></a>
+        <a href="contact.html"><i class="fa fa-book" style="font-size:20px"></i></a>
+        <!--Add stackMapButton here-->
+        <button class="settings-btn" ><i class="fa fa-cogs" style="font-size:20px"></i></button>
+      </div>
   </div>
+  
 
-  <nav>
-    <div class="nav-links">
-      <a href="index.html" id="homepage-link">Home</a>
-      <a href="contact.html" id="contact-link">Contact</a>
-      <button class="settings-btn" id="setting-btn">Settings</button>
-    </div>
-  </nav>
+  
 
   <div id="settingsModal" class="modal">
     <div class="modal-content">
       <div>
         <span class="close">&times;</span>
-        <h2 id="settings-title">Settings</h2>
+        <h2 id="settings-title">Setting</h2>
       </div>
       <div>
         <label for="mode">Mode:</label>
