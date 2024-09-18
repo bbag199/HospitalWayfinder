@@ -14,9 +14,9 @@ import { applySettings } from "./languageController";
 import { modeSwitcher } from "./modeController";
 import { fontSizesSwitcher } from "./fontSizeController";
 import { languageSwitcher } from "./languageController";
-import { updateButtonText } from './buttonTextUpdater';  //update the Get Direction and Stop Nav button according to screen size
-import './script';
-
+import { initializeButtonListeners } from "./poiButtonController";
+import { updateButtonText } from "./buttonTextUpdater"; //update the Get Direction and Stop Nav button according to screen size
+import "./script";
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -69,7 +69,7 @@ async function init() {
 
   fontSizesSwitcher(mapView, cachedSpaces);
   languageSwitcher(mapView, cachedSpaces);
-
+  initializeButtonListeners();
   // Initial labeling and translation
   applySettings(mapView, cachedSpaces);
 
@@ -243,8 +243,6 @@ async function init() {
       mapView.Labels.add(poi.coordinate, poi.name);
     }
   }
- 
-
 
   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
@@ -268,7 +266,9 @@ async function init() {
   const dropMenuContainer = document.querySelector(".drop-menu.dropup");
 
   // 3. Find the settings button
-  const settingsButton = document.querySelector(".drop-menu.dropup .settings-btn");
+  const settingsButton = document.querySelector(
+    ".drop-menu.dropup .settings-btn"
+  );
 
   // 4. Append the stackMapButton to the container
   if (dropMenuContainer) {
@@ -315,7 +315,7 @@ async function init() {
       });
     }
   };
-/*   stackMapButton.onclick = () => {
+  /*   stackMapButton.onclick = () => {
     //debug here:
     console.log("Chekcing noShowFloor2", noShowFloor2);
     //show the stack map here and hide the no used floor:
@@ -359,9 +359,9 @@ async function init() {
   const emergencyButton = document.createElement("button");
   emergencyButton.className = "reset-button mi-button";
   emergencyButton.textContent = "Emergency Exit";
-  
+
   emergencyButton.style.bottom = "55px";
-  
+
   emergencyButton.style.zIndex = "1000";
   emergencyButton.style.padding = "10px";
   emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
@@ -1082,7 +1082,6 @@ async function init() {
   </svg>
 `;
   accessibilityButton.id = "accessibility-btn";
-  
 
   mappedinDiv.appendChild(accessibilityButton);
 
