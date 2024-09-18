@@ -407,7 +407,7 @@ nav {
   align-items: center;
   text-align: center;
   margin: 1px 0;
-  background-color: transparent;
+  background-color: white;
   color: black;
   border: none;
   border-radius: 5px;
@@ -436,13 +436,14 @@ nav {
 .icons-container {
   z-index: 1000;
   position:absolute;
-  top: 190px;
+  top: 195px;
   left: 10px;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   gap: 10px;
   margin-top: 1px; 
+  width:150px;
 }
 
 .icons-container > button {
@@ -458,6 +459,8 @@ nav {
 
 .icons-container > button:hover {
   border: 1px dotted #1d1d1d;
+  background-color: rgb(55, 161, 231);
+  transform: scale(1.05);
 }
 
 /* Testing the search-list-container style here:*/
