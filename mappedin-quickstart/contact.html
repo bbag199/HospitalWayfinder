@@ -1,205 +1,78 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Contact</title>
-  <meta charset="UTF-8" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-    }
-    nav {
-      background-color: #ffffff;
-      color: rgb(15, 34, 64);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 60px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      padding: 0 1rem;
-      font-weight: bold;
-    }
-    .logo {
-      height: 40px;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-    }
-    .nav-links a {
-      color: rgb(15, 23, 47);
-      text-decoration: none;
-      margin: 0 1.5rem;
-      font-size: 1rem;
-      transition: color 0.3s, transform 0.3s;
-    }
-    .nav-links a:hover {
-      color: #ffcc00;
-      transform: scale(1.05);
-    }
-    .search-bar {
-      margin-left: 1rem;
-      padding: 0.5rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .settings-btn {
-      margin-left: 1.5rem;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-      background-color: rgb(15, 34, 64);
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
-    }
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0, 0, 0);
-      background-color: rgba(0, 0, 0, 0.4);
-      padding-top: 60px;
-    }
-    .modal-content {
-      background-color: #fefefe;
-      margin: 5% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-    }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .contact-page {
-      padding: 10px;
-      justify-content: center;
-      align-items: center;
-    }
-    .contact-page > h1 {
-      color:rgb(15, 23, 47)
-    }
-
-    .contact-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      justify-items: center;
-      padding: 10px;
-    }
-
-    .contact-box {
-      background-color: #f4f4f4;
-      padding: 10px;
-      border-radius: 4px;
-    }
-
-    .contact-info {
-      max-width: 80vh;
-    }
-    .contact-info > img {
-      border-radius: 4px;
-    }
-  </style>
-</head>
-<body>
-  <nav>
-    <a href="/">
+  <head>
+    <title>Contact</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./src/styles/style.css" />
+    <link rel="stylesheet" href="./src/styles/contact.css" />
+  </head>
+  <body>
+    <nav>
       <img src="logo.png" alt="Logo" class="logo" />
-    </a>
-    <input type="text" class="search-bar" placeholder="Search..." />
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="contact.html">Contact</a>
-      <button class="settings-btn">Settings</button>
-    </div>
-  </nav>
-  <div class="contact-page">
-    <h1>Contact Page</h1>
-    <div class="contact-container">
-      <div class="contact-box contact-info">
-        <h2>Update Information</h2>
-        <img src="https://www.countiesmanukau.health.nz/assets/Uploads/ElementImage/20210809_MHP_North-Builidng_Ambulatory-Renal-Entrance-from-road__FillWzgwMCw1NTNd.jpg" alt="construction image" width="530" height="350">
-        <p>Construction work at Te Whatu Ora – Health New Zealand’s $316m Manukau Health Park redevelopment started this week.
+      <div class="nav-links">
+        <a href="index.html" id="homepage-link">Home</a>
+        <a href="contact.html" id="contact-link">Contact</a>
+        <button class="settings-btn" id="setting-btn">Settings</button>
+      </div>
+    </nav>
 
-          The new facilities will include a new ambulatory renal centre, four new operating theatres, an advanced radiology hub, a women’s and ophthalmology building and an integrated breast-care service. The site will also be future-proofed for further expansion.
-          
-          “This is an exciting milestone in the life of this project and it signifies a major step towards catering for future growth and offering our communities improved and more equitable access to healthcare,” said Dana Ralph-Smith, Director of Ambulatory and Community Care, Counties Manukau.
-          
-          More than 926,000 outpatient care appointments took place in Counties Manukau over the past two years, with nearly 65 per cent of these taking place at Manukau Health Park. This number is forecast to grow by more than 20 per cent over the next 10 years.
-          
-          “It is crucial that South Aucklanders can access the care they need from health services to support better health and wellbeing,” said Dana. “This redevelopment project will ensure that this access is maintained into the future, by improving the capacity, accessibility and quality of community care.”
-          
-          The new facility will enable almost 150,000 additional outpatient appointments to be scheduled each year, and more than 3,600 additional surgeries per year will be carried out on site from 2026. The completed development will also require up to 450 new full-time employees across a variety of health services.
-          
-          “The ability to increase staff and patient capacity at Manukau Health Park will enable our teams to deliver an improved patient experience while relieving pressure on Middlemore Hospital,” says Dr Andrew Connolly, Chief Medical Officer. “The enhanced super clinic will also provide a better staff experience through improved facilities and technology, encouraging talent from within the Counties Manukau community and beyond.”
-          
-          Equality, health equity and sustainability have been at the forefront of the planning for this project. This has included working closely with Mana Whenua i Tamaki Makaurau and Mana Whenua hapuu to ensure the local environment is protected and the physical appearance of the new building is designed in a way that represents the rich and deep history of the land.
-          
-           “Te Whare hou ki te hanga, he rereke mo te katoa; The redesign is to make a difference for all,” says Mana Whenua i Tamaki Makaurau.
-          
-          The project is scheduled for completion in 2025.</p>
-      </div>
-      <div class="contact-box">
-        <h2>Hours</h2>
-        <p>
-        Monday	Open 24 hours
-        </p>
-        <p>
-        Tuesday	Open 24 hours
-        </p>
-        <p>
-        Wednesday	Open 24 hours
-          </p>
-          <p>
-        Thursday	Open 24 hours
-            </p>
-            <p>
-        Friday	Open 24 hours
-              </p>
-              <p>
-                Saturday	Open 24 hours
-                </p>
-                <p>
-                  Sunday	Open 24 hours
-                  </p>
-      </div>
-      <div class="contact-box">
-        <h2>Contact Details</h2>
-        <p>  Phone: (09) 276 0044 or
-          FREEPHONE: 0800 266 513</p>
+    <div class="contact-container">
+      <section class="hospital-photo">
+        <div class="photo-gallery">
+          <!-- Wrap the image inside an anchor tag -->
+          <a href="#open-modal">
+            <img
+              src="https://www.countiesmanukau.health.nz/assets/Uploads/ElementImage/20210809_MHP_North-Builidng_Ambulatory-Renal-Entrance-from-road__FillWzgwMCw1NTNd.jpg"
+              alt="construction image"
+              width="530"
+              height="350"
+            />
+          </a>
+          <a href="#open-modal">
+            <img
+              src="https://www.bravegen.com/wp-content/uploads/2021/09/Counties-Manukau-Super-Clinic.jpg"
+              alt="construction image 2"
+              width="530"
+              height="350"
+            />
+          </a>
+          <a href="#open-modal">
+            <img
+              src="https://www.countiesmanukau.health.nz/assets/Home/ClinicImages/MSC_1__FillWzgwMCw0MDBd.jpg"
+              alt="construction image 3"
+              width="530"
+              height="350"
+            />
+          </a>
+        </div>
+      </section>
+      <div class="info-container">
+        <section class="opening-hours">
+          <h2>Opening & Closing Times</h2>
+          <p>Monday - Friday: 7:30 AM - 6:00 PM</p>
+          <p>Weekend: Closed</p>
+        </section>
+
+        <section class="contact-details">
+          <h2>Contact Us</h2>
+          <p>Phone: (09) 277 1660</p>
+          <p>Email: customerservice@superclinic.co.nz</p>
+        </section>
       </div>
     </div>
-  </div>
-</body>
+
+    <div id="open-modal" class="modal-window">
+      <div>
+        <a href="#" title="Close" class="modal-close">X</a>
+        <h1>Hospital Information!</h1>
+        <br>
+        <div>Will Change Later</div>
+        <br />
+      </div>
+    </div>
+  </body>
 </html>
+
 <script>
   // Get the modal
   var modal = document.getElementById("settingsModal");
@@ -211,40 +84,40 @@
   var span = document.getElementsByClassName("close")[0];
 
   // When the user clicks the button, open the modal
-  btn.onclick = function() {
+  btn.onclick = function () {
     modal.style.display = "block";
-  }
+  };
 
   // When the user clicks on <span> (x), close the modal
-  span.onclick = function() {
+  span.onclick = function () {
     modal.style.display = "none";
-  }
+  };
 
   // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
+  window.onclick = function (event) {
     if (event.target == modal) {
       modal.style.display = "none";
     }
-  }
+  };
 
   // Apply settings
-  document.getElementById('applySettings').onclick = function() {
-    var mode = document.getElementById('mode').value;
-    var language = document.getElementById('language').value;
+  document.getElementById("applySettings").onclick = function () {
+    var mode = document.getElementById("mode").value;
+    var language = document.getElementById("language").value;
 
     // Apply mode (light/dark)
-    if (mode === 'dark') {
-      document.body.style.backgroundColor = '#333';
-      document.body.style.color = '#fff';
+    if (mode === "dark") {
+      document.body.style.backgroundColor = "#333";
+      document.body.style.color = "#fff";
     } else {
-      document.body.style.backgroundColor = '#fff';
-      document.body.style.color = '#000';
+      document.body.style.backgroundColor = "#fff";
+      document.body.style.color = "#000";
     }
 
     // Apply language setting (This part would need to be expanded based on actual language implementation)
-    console.log('Language selected:', language);
+    console.log("Language selected:", language);
 
     // Close modal after applying settings
     modal.style.display = "none";
-  }
+  };
 </script>
