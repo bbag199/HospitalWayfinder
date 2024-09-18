@@ -2,7 +2,7 @@ export function updateButtonText() {
     const directionsBtn = document.querySelector('.directions-btn') as HTMLButtonElement;
     const stopNavBtn = document.querySelector('.stop-nav-btn') as HTMLButtonElement;
   
-    if (window.innerWidth <= 350) {
+    if (window.innerWidth <= 430) {
       if (directionsBtn) directionsBtn.textContent = 'Go';
       if (stopNavBtn) stopNavBtn.textContent = 'Stop';
     } else {

@@ -88,7 +88,7 @@ nav {
   }
 }
 
-@media (max-width: 350px) { /* Further adjustments for very small screens like phones */
+@media (max-width: 430px) { /* Further adjustments for very small screens like phones */
   .search-container {
     top: 0px; /* Stick to the very top on small screens */
     padding: 5px; /* Reduce padding to fit more content */
@@ -109,7 +109,7 @@ nav {
 }
 
 /*Change the get direction and stop navigation button into square shape in phone version*/
-@media (max-width: 350px) {
+@media (max-width: 430px) {
   .directions-btn {
     height: 36px;
     width: 45px;
@@ -133,7 +133,7 @@ nav {
     padding: 0px; /* Reduce padding for small screens */
     font-size: 12px; /* Adjust font size for small buttons */
     left: 230px; /* Reduce left margin to fit smaller screen */
-    top: 50px;
+    top: 51.5px;
     display: flex;
     align-items: center; /* Center text vertically */
     justify-content: center; /* Center text horizontally */
@@ -160,7 +160,9 @@ nav {
 /*accessibility button set up*/
 #accessibility-btn {
   position: absolute;
-  bottom: 96px;
+  height: 45px;
+  width: 45px;
+  bottom: 102px;
   right: 20px;
   z-index: 1000;
   background-color: #fff;
@@ -245,6 +247,22 @@ nav {
 
 .stackmap-btn.active {
   background-color: #27b7ff; /* Background color for the active state */
+}
+
+/*new emergency button style with icon*/
+.emergency-btn {
+  position: absolute;
+  width: 45px;
+  height: 43px;
+  bottom: 50px;
+  right: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 10px;
+  text-align: center; 
+  font-display: center;
+  z-index: 1000;
 }
 
 .search-bar {
