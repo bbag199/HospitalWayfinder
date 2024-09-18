@@ -47,7 +47,6 @@ nav {
   flex: 1;
   width: 100%;
   height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
-  height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
   position: relative;
 }
 .search-container {
@@ -101,7 +100,7 @@ nav {
   }
 
   .icons-container {
-    position: absolute; /* Remove absolute positioning */
+    position: relative; /* Remove absolute positioning */
     margin-top: 2px; /* Add some space below the search container */
     padding-left: 2px; /* Ensure it's always 20px from the left side */
     left: -35px;
@@ -403,8 +402,11 @@ nav {
 }
 
 .expandable-btn {
-  display: inline-block;
-  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 1px 0;
   background-color: transparent;
   color: black;
   border: none;
@@ -428,16 +430,19 @@ nav {
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 1px;
 }
 
 .icons-container {
   z-index: 1000;
+  position:absolute;
+  top: 190px;
+  left: 10px;
   display: flex;
   justify-content: flex-start;
-  flex-direction: row;
+  flex-direction: column;
   gap: 10px;
-  margin-top: 1px; /* You can adjust this value as needed to add spacing */
+  margin-top: 1px; 
 }
 
 .icons-container > button {
@@ -491,9 +496,7 @@ nav {
   touch-action: manipulation;
   vertical-align: middle;
   width: calc(100% - 10px);
-
   margin: 4px;
-  
 }
 
 .button-13:hover {
