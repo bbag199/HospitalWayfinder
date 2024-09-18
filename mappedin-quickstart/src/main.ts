@@ -315,30 +315,6 @@ async function init() {
       });
     }
   };
-/*   stackMapButton.onclick = () => {
-    //debug here:
-    console.log("Chekcing noShowFloor2", noShowFloor2);
-    //show the stack map here and hide the no used floor:
-    //at here noShowFloor2 is no need floor.
-    // Check the current state of the button text to determine the action
-    if (stackMapButton.textContent === i18n.t("EnableStackMap")) {
-      // Show the stack map and hide the unused floor
-      mapView.expand({ excludeFloors: noShowFloor2 });
-      stackMapButton.textContent = i18n.t("DisableStackMap");
-
-      // Set the camera to zoomLevel 17 and pitch 0
-      mapView.Camera.animateTo({
-        bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
-        zoomLevel: 18.7, // set the zoom level, better in 17-22
-        pitch: 85, // the angle from the top-down (0: Top-down, 90: Eye-level)
-      });
-    } else {
-      // Collapse the stack map
-      mapView.collapse();
-      stackMapButton.textContent = i18n.t("EnableStackMap");
-      setCameraPosition(mapView.currentFloor.id);
-    }
-  }; */
 
   //Emergency exit function:
   //get the exit object (already build a exit01 and exit02 object in the dashboard map):
@@ -359,11 +335,8 @@ async function init() {
   const emergencyButton = document.createElement("button");
   emergencyButton.className = "emergency-btn";
   //emergencyButton.textContent = "Emergency Exit";
+
   
-  emergencyButton.style.bottom = "55px";
-  
-  emergencyButton.style.zIndex = "1000";
-  emergencyButton.style.padding = "10px";
   emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
   emergencyButton.style.color = "#FFFFFF"; //white font color
   //emergencyButton.style.border = "none";

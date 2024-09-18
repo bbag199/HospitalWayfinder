@@ -253,15 +253,16 @@ nav {
 .emergency-btn {
   position: absolute;
   width: 45px;
-  height: 43px;
-  bottom: 50px;
+  height: 45px;
+  bottom: 54px;
   right: 20px;
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  padding: 10px 10px;
-  text-align: center; 
-  font-display: center;
+  padding: 0; /* Adjust padding to remove extra space */
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
   z-index: 1000;
 }
 
