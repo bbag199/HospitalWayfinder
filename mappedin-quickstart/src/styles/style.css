@@ -134,7 +134,7 @@ nav {
     padding: 0px; /* Reduce padding for small screens */
     font-size: 12px; /* Adjust font size for small buttons */
     left: 230px; /* Reduce left margin to fit smaller screen */
-    top: 51.5px;
+    top: 51px;
     display: flex;
     align-items: center; /* Center text vertically */
     justify-content: center; /* Center text horizontally */
