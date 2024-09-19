@@ -80,12 +80,17 @@ async function init() {
   // Initial labeling and translation
   applySettings(mapView, cachedSpaces);
 
-  // Get the toggle button element for real-time tracking
+  // get toggle button element for real-time tracking
   const locationToggle = document.getElementById(
     "location-toggle"
   ) as HTMLInputElement;
 
-  // Add event listener for enabling/disabling real-time tracking
+  // start tracking if toggle is checked
+  if (locationToggle.checked && locationTracker) {
+    locationTracker.startTracking();
+  }
+
+  // event listener for enabling/disabling real-time tracking
   locationToggle.addEventListener("change", function () {
     if (locationTracker) {
       if (this.checked) {

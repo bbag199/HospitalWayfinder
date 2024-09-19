@@ -4,6 +4,7 @@ export class RealTimeLocationTracker {
   watchId: number | null = null;
   map: any;
   marker: any;
+  istracking: boolean = false; //to control real time tracking
 
   constructor(map: google.maps.Map) {
     //testing
@@ -24,11 +25,12 @@ export class RealTimeLocationTracker {
       mapOptions
     );
 
-    return new RealTimeLocationTracker(googleMap); // Return an instance of RealTimeLocationTracker
+    return new RealTimeLocationTracker(googleMap);
   }
   // start tracking
   startTracking() {
-    if (navigator.geolocation) {
+    if (navigator.geolocation && !this.istracking) {
+      this.istracking = true;
       navigator.geolocation.getCurrentPosition(
         (position) => {
           // debug messages
@@ -45,7 +47,11 @@ export class RealTimeLocationTracker {
       this.watchId = navigator.geolocation.watchPosition(
         this.updatePosition.bind(this),
         this.showError.bind(this),
-        { enableHighAccuracy: true }
+        {
+          enableHighAccuracy: true,
+          timeout: 5000, // 5 seconds timeout for position acquisition
+          maximumAge: 0, //fetch fresh position each time
+        }
       );
     } else {
       alert("Geolocation is not supported by this browser.");
@@ -57,11 +63,20 @@ export class RealTimeLocationTracker {
     if (this.watchId !== null) {
       navigator.geolocation.clearWatch(this.watchId);
       this.watchId = null;
+      console.log("Stop tracking");
     }
+
+    if (this.marker) {
+      this.marker.setMap(null);
+      this.marker = null;
+    }
+    this.istracking = false;
   }
 
   // update user's position on the map
   updatePosition(position: GeolocationPosition) {
+    if (!this.istracking) return;
+
     const pos = {
       lat: position.coords.latitude,
       lng: position.coords.longitude,
