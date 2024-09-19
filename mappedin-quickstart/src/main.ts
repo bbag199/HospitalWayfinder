@@ -14,6 +14,9 @@ import { applySettings } from "./languageController";
 import { modeSwitcher } from "./modeController";
 import { fontSizesSwitcher } from "./fontSizeController";
 import { languageSwitcher } from "./languageController";
+import { updateButtonText } from './buttonTextUpdater';  //update the Get Direction and Stop Nav button according to screen size
+import './script';
+
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -38,11 +41,16 @@ async function init() {
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
 
+  //makine other stylish floorSelector:
+  //const floorSelectorNew = document.getElementById("floor-selector-new") as HTMLDivElement;
+  //floorSelectorNew.value = mapView.currentFloor.id;
+
   // Add styles to the floor selector to position it
-  floorSelector.style.position = "absolute";
-  floorSelector.style.top = "10px"; // Adjust as needed
-  floorSelector.style.right = "10px"; // Adjust as needed
-  floorSelector.style.zIndex = "1000"; // Ensure it is above other elements
+  floorSelector.id = "floor-selector2";
+  //floorSelector.style.position = "absolute";
+  //floorSelector.style.top = "10px"; // Adjust as needed
+  //floorSelector.style.right = "10px"; // Adjust as needed
+  //floorSelector.style.zIndex = "1000"; // Ensure it is above other elements
 
   mappedinDiv.appendChild(floorSelector);
 
@@ -235,16 +243,39 @@ async function init() {
       mapView.Labels.add(poi.coordinate, poi.name);
     }
   }
+ 
+
 
   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
   const stackMapButton = document.createElement("button");
   // Add any classes, text, or other properties (these two code can be linked to the css file):
-  stackMapButton.className = "reset-button mi-button";
-  stackMapButton.textContent = i18n.t("EnableStackMap");
+  stackMapButton.className = "stackmap-btn";
+  //stackMapButton.textContent = i18n.t("StackMap");
+
+  // 2. Create the icon element
+  const icon = document.createElement("i");
+  icon.className = "fa fa-cube"; // Font Awesome class for the book icon
+  icon.style.fontSize = "20px"; // Set the font size
+
+  // Append the icon to the button
+  stackMapButton.appendChild(icon);
 
   // Append the button to the desired parent element:
-  mappedinDiv.appendChild(stackMapButton);
+  //mappedinDiv.appendChild(stackMapButton);
+
+  // 2. Find the `.drop-menu.dropup` container
+  const dropMenuContainer = document.querySelector(".drop-menu.dropup");
+
+  // 3. Find the settings button
+  const settingsButton = document.querySelector(".drop-menu.dropup .settings-btn");
+
+  // 4. Append the stackMapButton to the container
+  if (dropMenuContainer) {
+    dropMenuContainer.insertBefore(stackMapButton, settingsButton);
+  } else {
+    console.error("The .drop-menu.dropup container was not found.");
+  }
 
   //Testing: no show floors:
   //Find the floor that need to do the Stack Map, at this case, we testing the Ground floor and Level 1
@@ -257,28 +288,31 @@ async function init() {
     );
 
   // The enable Button is used to enable and disable Stacked Maps.
+  // The enable Button is used to enable and disable Stacked Maps.
+  // The enable Button is used to enable and disable Stacked Maps.
   stackMapButton.onclick = () => {
-    //debug here:
-    console.log("Chekcing noShowFloor2", noShowFloor2);
-    //show the stack map here and hide the no used floor:
-    //at here noShowFloor2 is no need floor.
-    // Check the current state of the button text to determine the action
-    if (stackMapButton.textContent === i18n.t("EnableStackMap")) {
+    // Debug here:
+    console.log("Checking noShowFloor2", noShowFloor2);
+
+    // Toggle the 'active' class
+    if (stackMapButton.classList.contains("active")) {
+      // Collapse the stack map
+      mapView.collapse();
+      stackMapButton.classList.remove("active");
+      stackMapButton.style.backgroundColor = "#f9f9f9"; // Reset background color
+      setCameraPosition(mapView.currentFloor.id);
+    } else {
       // Show the stack map and hide the unused floor
       mapView.expand({ excludeFloors: noShowFloor2 });
-      stackMapButton.textContent = i18n.t("DisableStackMap");
+      stackMapButton.classList.add("active");
+      stackMapButton.style.backgroundColor = "#27b7ff"; // Set background color to yellow
 
       // Set the camera to zoomLevel 17 and pitch 0
       mapView.Camera.animateTo({
-        bearing: floorSettings[mapView.currentFloor.id].bearing, //178.5  // set the angle, e.g. North or South facing
-        zoomLevel: 18.7, // set the zoom level, better in 17-22
-        pitch: 85, // the angle from the top-down (0: Top-down, 90: Eye-level)
+        bearing: floorSettings[mapView.currentFloor.id].bearing, // Set the angle, e.g. North or South facing
+        zoomLevel: 18.7, // Set the zoom level, better in 17-22
+        pitch: 85, // The angle from the top-down (0: Top-down, 90: Eye-level)
       });
-    } else {
-      // Collapse the stack map
-      mapView.collapse();
-      stackMapButton.textContent = i18n.t("EnableStackMap");
-      setCameraPosition(mapView.currentFloor.id);
     }
   };
 
@@ -299,20 +333,24 @@ async function init() {
 
   //add an emergency square button here:
   const emergencyButton = document.createElement("button");
-  emergencyButton.className = "reset-button mi-button";
-  // emergencyButton.textContent = "Emergency Exit";
-  emergencyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M13.34 8.17c-.93 0-1.69-.77-1.69-1.7a1.69 1.69 0 0 1 1.69-1.69c.94 0 1.7.76 1.7 1.69s-.76 1.7-1.7 1.7M10.3 19.93l-5.93-1.18l.34-1.7l4.15.85l1.35-6.86l-1.52.6v2.86H7v-3.96l4.4-1.87l.67-.08c.6 0 1.1.34 1.43.85l.86 1.35c.68 1.21 2.03 2.03 3.64 2.03v1.68c-1.86 0-3.56-.83-4.66-2.1l-.5 2.54l1.77 1.69V23h-1.69v-5.1l-1.78-1.69zM21 23h-2V3H6v13.11l-2-.42V1h17zM6 23H4v-3.22l2 .42z"/></svg>`
-  //emergencyButton.style.position = "absolute";
-  emergencyButton.style.bottom = "15px";
-  //emergencyButton.style.right = "10px";
-  emergencyButton.style.zIndex = "1000";
-  emergencyButton.style.padding = "10px";
+  emergencyButton.className = "emergency-btn";
+  //emergencyButton.textContent = "Emergency Exit";
+
+  
   emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
   emergencyButton.style.color = "#FFFFFF"; //white font color
   //emergencyButton.style.border = "none";
   //emergencyButton.style.borderRadius = "5px";
   emergencyButton.style.cursor = "pointer";
   emergencyButton.setAttribute("data-emergency-btn", "true");
+
+  // 2. Create the icon element
+  const iconEmergency = document.createElement("i");
+  iconEmergency.className = "fa fa-sign-out"; // Font Awesome class for the book icon
+  iconEmergency.style.fontSize = "28px"; // Set the font size
+
+  // Append the icon to the button
+  emergencyButton.appendChild(iconEmergency);
 
   // Append the button to the map container
   mappedinDiv.appendChild(emergencyButton);
@@ -326,7 +364,7 @@ async function init() {
         mapView.Paths.remove(path);
         path = null;
       }
-      emergencyButton.textContent = "Emergency Exit";
+      //emergencyButton.textContent = "Emergency Exit";
       emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
       emergencyExitOn = false;
     } else {
@@ -403,7 +441,7 @@ async function init() {
             farRadius: 0.5,
             color: "red",
           });
-          emergencyButton.textContent = "Emergency Off";
+          //emergencyButton.textContent = "Emergency Off";
           emergencyButton.style.backgroundColor = "#28a745";
           emergencyExitOn = true;
         }
@@ -571,6 +609,9 @@ async function init() {
   const getDirectionsButton = document.getElementById(
     "get-directions"
   ) as HTMLButtonElement;
+
+  //Testing the direction button and stop navigation button text change function:
+  updateButtonText();
 
   getDirectionsButton.addEventListener("click", async function () {
     console.log("Start Space:", startSpace);
@@ -1017,20 +1058,12 @@ async function init() {
   // Button Accessibility
   const accessibilityButton = document.createElement("button");
   accessibilityButton.innerHTML = `
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 512 512">
+  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512">
     <path fill="currentColor" d="M192 96a48 48 0 1 0 0-96a48 48 0 1 0 0 96m-71.5 151.2c12.4-4.7 18.7-18.5 14-30.9s-18.5-18.7-30.9-14C43.1 225.1 0 283.5 0 352c0 88.4 71.6 160 160 160c61.2 0 114.3-34.3 141.2-84.7c6.2-11.7 1.8-26.2-9.9-32.5s-26.2-1.8-32.5 9.9C240 440 202.8 464 160 464c-61.9 0-112-50.1-112-112c0-47.9 30.1-88.8 72.5-104.8M259.8 176l-1.9-9.7c-4.5-22.3-24-38.3-46.8-38.3c-30.1 0-52.7 27.5-46.8 57l23.1 115.5c6 29.9 32.2 51.4 62.8 51.4h100.5c6.7 0 12.6 4.1 15 10.4l36.3 96.9c6 16.1 23.8 24.6 40.1 19.1l48-16c16.8-5.6 25.8-23.7 20.2-40.5s-23.7-25.8-40.5-20.2l-18.7 6.2l-25.5-68c-11.7-31.2-41.6-51.9-74.9-51.9h-68.5l-9.6-48H336c17.7 0 32-14.3 32-32s-14.3-32-32-32h-76.2z"/>
   </svg>
 `;
-  accessibilityButton.style.position = "absolute";
-  accessibilityButton.style.top = "50px";
-  accessibilityButton.style.right = "10px";
-  accessibilityButton.style.zIndex = "1000";
-  accessibilityButton.style.backgroundColor = "#fff";
-  accessibilityButton.style.color = "#000";
-  accessibilityButton.style.border = "none";
-  accessibilityButton.style.padding = "10px";
-  accessibilityButton.style.cursor = "pointer";
-  accessibilityButton.style.borderRadius = "10px";
+  accessibilityButton.id = "accessibility-btn";
+  
 
   mappedinDiv.appendChild(accessibilityButton);
 

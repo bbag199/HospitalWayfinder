@@ -52,13 +52,220 @@ nav {
 }
 .search-container {
   position: absolute;
-  top: 70px; /* Adjusted to be below the navbar */
+  top: 10px; /* Adjusted to be below the navbar */
   left: 10px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
+/*Check the media for the phone size!!!!!*/
+@media (max-width: 768px) { /* Adjust for smaller screens, such as tablets and phones */
+  .search-container {
+    position: absolute;
+    top: 10px; /* Move closer to the top */
+    left: 50%;
+    transform: translateX(-50%); /* Center the search container horizontally */
+    width: 100%; /* Full width on small screens */
+    padding: 0 10px; /* Add padding to avoid touching the edges of the screen */
+    z-index: 1050; /* Make sure it stays on top */
+  }
+
+  .search-bar, .search-results,
+  .directions-btn, .stop-nav-btn {
+    width: 300px;; /* Full width of the search input and results */
+     /* Ensure results fit within the container */
+  }
+
+  /* Ensure the icons container follows after the search-container */
+  .icons-container {
+    position: relative; /* Remove absolute positioning */
+    margin-top: 20px; /* Add some space below the search container */
+    padding-left: 40px; /* Ensure it's always 20px from the left side */
+    display: block; /* Make sure it's visible */
+    width: calc(100% - 20px); /* Ensure full width while keeping 20px padding */
+  }
+}
+
+@media (max-width: 430px) { /* Further adjustments for very small screens like phones */
+  .search-container {
+    top: 0px; /* Stick to the very top on small screens */
+    padding: 5px; /* Reduce padding to fit more content */
+  }
+
+  .search-bar, .search-results,/*.directions-btn, .stop-nav-btn,*/
+   .search-list-container {
+    width: 220px; /* Full width of the search input and buttons */
+    max-width: 220px /* Ensure it stays within the container */
+  }
+
+  .icons-container {
+    position: absolute; /* Remove absolute positioning */
+    margin-top: 2px; /* Add some space below the search container */
+    padding-left: 2px; /* Ensure it's always 20px from the left side */
+    left: -35px;
+  }
+}
+
+/*Change the get direction and stop navigation button into square shape in phone version*/
+@media (max-width: 430px) {
+  .directions-btn {
+    height: 36px;
+    width: 45px;
+    position: fixed;
+    z-index: 1000; /* Ensure it's above other elements */
+    padding: 0px; /* Reduce padding for small screens */
+    font-size: 12px; /* Adjust font size for small buttons */
+    left: 230px; /* Reduce left margin to fit smaller screen */
+    top: 5px;
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    text-align: center; /* Ensure text is centered */
+  }
+
+  .stop-nav-btn {
+    height: 36px;
+    width: 45px;
+    position: fixed;
+    z-index: 1000; /* Ensure it's above other elements */
+    padding: 0px; /* Reduce padding for small screens */
+    font-size: 12px; /* Adjust font size for small buttons */
+    left: 230px; /* Reduce left margin to fit smaller screen */
+    top: 51.5px;
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    text-align: center; /* Ensure text is centered */
+  }
+}
+
+/*floor selector set up */
+#floor-selector2 {
+  position: absolute;
+  bottom: 20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  z-index: 1000; /* Ensure it is above other elements */
+  
+  height: 30px; /* Set width to 35px */
+  font-size: 12px; /* Set font size to 12px */
+  border: 1px solid #ccc; /* Light border for the frame */
+  border-radius: 4px; /* Rounded corners */
+  padding: 4px; /* Padding inside the select box */
+  background-color: #fff; /* Background color */
+  color: #1c1c1c; /* Text color */
+}
+
+/*accessibility button set up*/
+#accessibility-btn {
+  position: absolute;
+  height: 45px;
+  width: 45px;
+  bottom: 102px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  z-index: 10000;
+}
+
+/*Testing the hambergur drop up menu*/
+/* The container <div class=drop-wrapper> - needed to position the dropup content */
+.btn{
+  border: none;
+  outline: none;
+  background-color: #0F2240;
+  color: #f3f3f3;
+  border-radius:5px;
+  width: 45px;
+  height: 45px;
+  padding: 14px 5px;
+  
+}
+
+.btn.active {
+  box-shadow: 0 0 0 0.125rem rgba(13,128,250,0.5);
+
+}
+
+.drop-wrapper{
+  position: absolute;
+  bottom: 150px;
+  right:20px;
+  z-index: 1000;
+}
+
+.drop-menu{
+  display: none;
+  position: absolute;
+  width: 45px;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 3px 0 #ccc;
+  background-color: #f9f9f9;
+  border-radius:5px;
+}
+.drop-menu.active {
+  display: block;
+}
+
+
+.dropup {
+  bottom: 100%;
+  margin-bottom:0.125rem;
+}
+
+
+.drop-menu a{
+  display: block;
+  padding: 10px 10px; 
+  text-decoration: none;
+  color: #343434;
+}
+
+/*Testing the hambergur drop up menu above*/
+
+/*new stack map button inside the drop up list:*/
+
+.stackmap-btn {
+  width: 42.5px;
+  height: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 1px;
+  color: rgb(21, 15, 15);
+  background-color: #f9f9f9;
+  padding: 10px 10px;
+  text-decoration: none;
+  text-align: left; /* Aligns text to the left */
+}
+
+.stackmap-btn.active {
+  background-color: #27b7ff; /* Background color for the active state */
+}
+
+/*new emergency button style with icon*/
+.emergency-btn {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  bottom: 54px;
+  right: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 0; /* Adjust padding to remove extra space */
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  z-index: 1000;
+}
+
 .search-bar {
   padding: 0.5rem;
   font-size: 1rem;
@@ -82,15 +289,21 @@ nav {
   background-color: #f0f0f0;
 }
 
+/*Setting button style*/
 .settings-btn {
-  margin-left: 1.5rem;
-  padding: 0.5rem 1rem;
+  
+  min-width: 42.5px;
   font-size: 1rem;
   cursor: pointer;
   background-color: rgb(15, 34, 64);
-  color: #ffffff;
   border: none;
-  border-radius: 4px;
+  border-radius: 1px;
+  color: rgb(255, 255, 255);
+  padding: 10px 10px;
+  text-decoration: none;
+  display: block;
+
+  text-align: left; /* Aligns text to the left */
 }
 
 .directions-btn {
@@ -188,11 +401,11 @@ nav {
   user-select: none;
   pointer-events: all;
   position: fixed; /* Use fixed to keep the button in the same place even when scrolling */
-  bottom: 70px; /* Distance from the bottom of the screen */
+  bottom: 78px; /* Distance from the bottom of the screen */
   right: 20px; /* Distance from the right side of the screen */
   height: 36px;
   width: fit-content;
-  border-radius: 37.5px;
+  border-radius: 5px;
   background: #0F2240;
   color: #ffffff; /*set font color to white*/
   box-shadow: 0 4px 0 0 var(--burnt-orange), 0 3px 8px 0 rgba(0, 0, 0, 0.3);
@@ -217,14 +430,15 @@ nav {
 }
 
 .icons-container {
-  position: absolute;
-  top: 70px; 
-  left: 45%;
+  margin-top: 20px; /* Add some space below the search container */
+  padding-left: 40px; /* Ensure it's always 20px from the left side */
+  position: relative; /* Remove absolute positioning */
   z-index: 1000;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: row;
   gap: 10px;
+  margin-top: 1px; /* You can adjust this value as needed to add spacing */
 }
 
 .icons-container > button {
