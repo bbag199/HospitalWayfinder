@@ -4,6 +4,7 @@
     <title>Wayfinder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./src/style.css" />
+    <link rel="stylesheet" href="./src/real-time-tracking.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -146,7 +147,15 @@
         Toilets
       </button>
     </div>
+
+    <!-- Real-time tracking switch -->
+    <label class="switch">
+      <input type="checkbox" id="location-toggle" />
+      <span class="slider round"></span>
+    </label>
+
     <div id="mappedin-map"></div>
+    <div id="google-map"></div>
 
     <div class="drop-wrapper">
       <button class="btn" data-target="#dropup">
@@ -204,7 +213,12 @@
         <button id="applySettings">Apply</button>
       </div>
     </div>
-
+    <!-- Google Maps API script -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfBY9IQRJohHpPrPsRJqVVHj7SJBR_nGE"
+      async
+      defer
+    ></script>
     <script type="module" src="src/main.ts"></script>
     <script type="module" src="src/languageController.ts"></script>
     <script type="module">

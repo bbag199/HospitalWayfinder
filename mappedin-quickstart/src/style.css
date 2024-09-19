@@ -43,12 +43,23 @@ nav {
   color: #ffcc00;
   transform: scale(1.05);
 }
-#mappedin-map {
-  flex: 1;
-  width: 100%;
-  height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
-  position: relative;
+
+#google-map {
+  width: 50%; 
+  height: calc(100%);
+  position: absolute;
+  left: 0;
+  top: 0;
 }
+
+#mappedin-map {
+  width: 50%;
+  height: calc(100%); /* Adjust height to accommodate navbar and search container */
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 .search-container {
   position: absolute;
   top: 10px; /* Adjusted to be below the navbar */
@@ -436,18 +447,18 @@ nav {
 .icons-container {
   z-index: 1000;
   position:absolute;
-  top: 195px;
+  bottom: 50px;
   left: 10px;
   display: flex;
   justify-content: flex-start;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 10px;
   margin-top: 1px; 
   width:150px;
 }
 
 .icons-container > button {
-  border-radius: 20px;
+  border-radius: 5px;
   padding: 5px 10px;
   position: relative;
   border: 1px solid transparent;

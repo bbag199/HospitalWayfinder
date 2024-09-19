@@ -15,6 +15,7 @@ import { modeSwitcher } from "./modeController";
 import { fontSizesSwitcher } from "./fontSizeController";
 import { languageSwitcher } from "./languageController";
 import { initializeButtonListeners } from "./poiButtonController";
+import { RealTimeLocationTracker } from "./locationTracker";
 import { updateButtonText } from "./buttonTextUpdater"; //update the Get Direction and Stop Nav button according to screen size
 import "./script";
 
@@ -29,6 +30,7 @@ const options = {
 let mapView: MapView;
 let mapData: MapData;
 let cachedSpaces: Space[];
+let locationTracker: RealTimeLocationTracker | null = null;
 
 async function init() {
   //set the language to English on initialization
@@ -65,13 +67,34 @@ async function init() {
     }
   );
 
-  modeSwitcher(mapView);
+  // Initialize Google Maps and start tracking
+  locationTracker = await RealTimeLocationTracker.initializeGoogleMap(
+    "google-map"
+  );
+  locationTracker.startTracking();
 
+  modeSwitcher(mapView);
   fontSizesSwitcher(mapView, cachedSpaces);
   languageSwitcher(mapView, cachedSpaces);
   initializeButtonListeners();
   // Initial labeling and translation
   applySettings(mapView, cachedSpaces);
+
+  // Get the toggle button element for real-time tracking
+  const locationToggle = document.getElementById(
+    "location-toggle"
+  ) as HTMLInputElement;
+
+  // Add event listener for enabling/disabling real-time tracking
+  locationToggle.addEventListener("change", function () {
+    if (locationTracker) {
+      if (this.checked) {
+        locationTracker.startTracking(); // Start real-time tracking
+      } else {
+        locationTracker.stopTracking(); // Stop real-time tracking
+      }
+    }
+  });
 
   const applySettingsButton = document.getElementById("applySettings");
   if (applySettingsButton) {
