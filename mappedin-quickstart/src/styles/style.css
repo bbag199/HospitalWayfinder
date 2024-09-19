@@ -81,10 +81,11 @@ nav {
   /* Ensure the icons container follows after the search-container */
   .icons-container {
     position: relative; /* Remove absolute positioning */
-    margin-top: 20px; /* Add some space below the search container */
-    padding-left: 40px; /* Ensure it's always 20px from the left side */
+    margin-top: 10px; /* Add some space below the search container */
+    padding-left: 20px; /* Ensure it's always 20px from the left side */
     display: block; /* Make sure it's visible */
-    width: calc(100% - 20px); /* Ensure full width while keeping 20px padding */
+    width: calc(350px - 30px); /* Ensure full width while keeping 20px padding */
+    left: 20px;
   }
 }
 
@@ -102,9 +103,9 @@ nav {
 
   .icons-container {
     position: absolute; /* Remove absolute positioning */
-    margin-top: 2px; /* Add some space below the search container */
-    padding-left: 2px; /* Ensure it's always 20px from the left side */
-    left: -35px;
+    margin-top: 0px; /* Add some space below the search container */
+    padding-left: 0px; /* Ensure it's always 20px from the left side */
+    left: 0px;
   }
 }
 
@@ -348,10 +349,6 @@ nav {
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
   padding-top: 20px;
-  border-radius: 5px;
-  flex-direction: column;
-  row-gap: 10px;
-  justify-items: center;
 }
 .modal-content {
   background-color: #fefefe;
@@ -363,10 +360,6 @@ nav {
   box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Added box-shadow for better visibility */
   position: relative;
   z-index: 1060; /* Ensure content is above modal background */
-}
-
-.modal-content > div {
-  padding-bottom: 10px;
 }
 .close {
   color: #aaa;
@@ -431,14 +424,14 @@ nav {
 
 .icons-container {
   margin-top: 20px; /* Add some space below the search container */
-  padding-left: 40px; /* Ensure it's always 20px from the left side */
+  padding-left: 10px; /* Ensure it's always 20px from the left side */
   position: relative; /* Remove absolute positioning */
   z-index: 1000;
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
   gap: 10px;
-  margin-top: 1px; /* You can adjust this value as needed to add spacing */
+  margin-top: 0px; /* You can adjust this value as needed to add spacing */
 }
 
 .icons-container > button {
@@ -450,7 +443,6 @@ nav {
   background-color: #ffffff;
   display: flex;
   align-items: center;
-  border: 1px solid #1d1d1d;
 }
 
 .icons-container > button:hover {
@@ -591,6 +583,7 @@ nav {
   outline: 0;
 }
 
+
 /**/
 /* Specific button style for #reception-items-container */
 #reception-items-container-endpoint button,
@@ -614,6 +607,7 @@ nav {
   touch-action: manipulation;
   vertical-align: middle;
   width: calc(100% - 36px); /* Adjust width to fit within container with 10px space on left */
+
   margin: 2px; /* No margin */
   margin-left: 30px; /* 10px space on the left-hand side */
   margin-right: 6px;
@@ -629,25 +623,5 @@ nav {
   border-color: #008296; /* Same focus effect as .button-13 */
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
   outline: 0;
-}
-
-/* Settings UI */
-#applySettings {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  background-color: #0F2240;
-  color: #fff;
-  cursor: pointer;
-}
-
-#applySettings:hover {
-  background-color: #002a6d;
-}
-
-select {
-  padding: 7px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
 }
 
