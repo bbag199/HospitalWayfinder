@@ -2,35 +2,31 @@ declare const google: any;
 
 export class RealTimeLocationTracker {
   watchId: number | null = null;
-  map: any;
   marker: any;
   istracking: boolean = false; //to control real time tracking
+  initialCoordinate: any; //to store initial map coordinate
+  mappedinMapView: any;
+  mappedinMarker: any;
 
-  constructor(map: google.maps.Map) {
+  constructor(mappedinMapView: any) {
     //testing
-    this.map = map;
+    this.mappedinMapView = mappedinMapView;
+    this.mappedinMarker = null; //set null as default
+    this.initialCoordinate = this.mappedinMapView.Camera.center;
   }
 
-  // Initialize Google Maps inside the RealTimeLocationTracker class
-  static async initializeGoogleMap(
-    mapElementId: string
+  static async getLocationTracker(
+    mappedinMapView: any
   ): Promise<RealTimeLocationTracker> {
-    const mapOptions = {
-      center: { lat: -37.0082, lng: 174.887104 }, // Initial map center
-      zoom: 16, // Initial zoom level
-    };
-
-    const googleMap = new google.maps.Map(
-      document.getElementById(mapElementId) as HTMLElement,
-      mapOptions
-    );
-
-    return new RealTimeLocationTracker(googleMap);
+    return new RealTimeLocationTracker(mappedinMapView);
   }
+
   // start tracking
   startTracking() {
     if (navigator.geolocation && !this.istracking) {
       this.istracking = true;
+      console.log("startTracking called");
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           // debug messages
@@ -62,14 +58,23 @@ export class RealTimeLocationTracker {
   stopTracking() {
     if (this.watchId !== null) {
       navigator.geolocation.clearWatch(this.watchId);
+      console.log("Geolocation watch cleared:", this.watchId); //testing
       this.watchId = null;
       console.log("Stop tracking");
     }
 
-    if (this.marker) {
-      this.marker.setMap(null);
-      this.marker = null;
+    if (this.mappedinMarker) {
+      this.mappedinMapView.Markers.remove(this.mappedinMarker); //remove marker from mappedin map
+      this.mappedinMarker = null;
     }
+
+    if (this.initialCoordinate) {
+      this.mappedinMapView.Camera.animateTo(
+        { center: this.initialCoordinate, zoomLevel: 18 },
+        { duration: 500 }
+      );
+    }
+
     this.istracking = false;
   }
 
@@ -82,19 +87,61 @@ export class RealTimeLocationTracker {
       lng: position.coords.longitude,
     };
 
-    if (!this.marker) {
-      this.marker = new google.maps.Marker({
-        position: pos,
-        map: this.map,
-        icon: {
-          url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-        },
-      });
+    //transfer coordinate from gps to mappedin by using createCoordinate
+    const mappedinCoordinate = this.mappedinMapView.createCoordinate(
+      pos.lat,
+      pos.lng
+    );
+
+    console.log("Mappedin coordinate:", mappedinCoordinate); //testing
+
+    //add marker to mappedin map
+    if (!this.mappedinMarker) {
+      this.mappedinMarker = this.mappedinMapView.Markers.add(
+        mappedinCoordinate,
+        `<div style="
+        position: relative;
+        width: 20px;
+        height: 20px;
+        background-color: rgba(0, 122, 255, 1);
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+        box-shadow: 0 0 15px rgba(0, 122, 255, 0.7);
+      ">
+      <div style="
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background-color: rgba(0, 122, 255, 0.3);
+        border-radius: 50%;
+        animation: pulse-ring 1.5s infinite;
+        top: -10px;
+        left: -10px;
+        z-index: -1;
+      "></div>
+    </div>`,
+        {
+          interactive: false,
+          dynamicResize: true,
+        }
+      );
     } else {
-      this.marker.setPosition(pos);
+      this.mappedinMapView.Markers.setPosition(
+        this.mappedinMarker,
+        mappedinCoordinate
+      );
     }
 
-    this.map.setCenter(pos);
+    //set mappedin map center
+    this.mappedinMapView.Camera.animateTo(
+      {
+        center: mappedinCoordinate,
+        zoomLevel: 18,
+      },
+      {
+        duration: 500,
+      }
+    );
   }
 
   // Handle errors
@@ -119,12 +166,10 @@ export class RealTimeLocationTracker {
 let locationTracker: RealTimeLocationTracker | null = null;
 
 export async function getLocationTracker(
-  mapElementId: string
+  mappedinMapView: any
 ): Promise<RealTimeLocationTracker> {
   if (!locationTracker) {
-    locationTracker = await RealTimeLocationTracker.initializeGoogleMap(
-      mapElementId
-    );
+    locationTracker = new RealTimeLocationTracker(mappedinMapView);
   }
   return locationTracker;
 }

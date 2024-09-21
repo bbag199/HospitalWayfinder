@@ -67,11 +67,8 @@ async function init() {
     }
   );
 
-  // Initialize Google Maps and start tracking
-  locationTracker = await RealTimeLocationTracker.initializeGoogleMap(
-    "google-map"
-  );
-  locationTracker.startTracking();
+  // Initialize mappedin maps and start tracking
+  locationTracker = await RealTimeLocationTracker.getLocationTracker(mapView);
 
   modeSwitcher(mapView);
   fontSizesSwitcher(mapView, cachedSpaces);
@@ -85,18 +82,32 @@ async function init() {
     "location-toggle"
   ) as HTMLInputElement;
 
-  // start tracking if toggle is checked
-  if (locationToggle.checked && locationTracker) {
-    locationTracker.startTracking();
-  }
+  let isTrackingEnabled = false;
 
   // event listener for enabling/disabling real-time tracking
-  locationToggle.addEventListener("change", function () {
+  locationToggle.addEventListener("click", function () {
     if (locationTracker) {
-      if (this.checked) {
+      isTrackingEnabled = !isTrackingEnabled;
+      console.log(
+        "Location toggle clicked, tracking enabled:",
+        isTrackingEnabled
+      );
+      if (isTrackingEnabled) {
         locationTracker.startTracking(); // Start real-time tracking
+        locationToggle.classList.remove("off");
       } else {
         locationTracker.stopTracking(); // Stop real-time tracking
+        locationToggle.classList.add("off");
+      }
+    }
+
+    // Optionally update the button appearance when toggling
+    const imgElement = locationToggle.querySelector("img");
+    if (imgElement) {
+      if (isTrackingEnabled) {
+        imgElement.style.transform = "scale(1.1)"; // Example of changing icon on tracking start
+      } else {
+        imgElement.style.transform = "scale(1)"; // Revert icon to original state on tracking stop
       }
     }
   });

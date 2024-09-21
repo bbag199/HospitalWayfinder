@@ -44,20 +44,11 @@ nav {
   transform: scale(1.05);
 }
 
-#google-map {
-  width: 50%; 
-  height: calc(100%);
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
 #mappedin-map {
-  width: 50%;
-  height: calc(100%); /* Adjust height to accommodate navbar and search container */
-  position: absolute;
-  right: 0;
-  top: 0;
+  flex:1;
+  width: 100%;
+  height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
+  position: relative;
 }
 
 .search-container {
