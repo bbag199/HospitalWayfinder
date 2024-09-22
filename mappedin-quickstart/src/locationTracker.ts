@@ -45,8 +45,8 @@ export class RealTimeLocationTracker {
         this.showError.bind(this),
         {
           enableHighAccuracy: true,
-          timeout: 5000, // 5 seconds timeout for position acquisition
-          maximumAge: 0, //fetch fresh position each time
+          timeout: 10000, // 5 seconds timeout for position acquisition
+          maximumAge: 5000, //fetch fresh position each time
         }
       );
     } else {
