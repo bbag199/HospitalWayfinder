@@ -14,9 +14,8 @@ import { applySettings } from "./languageController";
 import { modeSwitcher } from "./modeController";
 import { fontSizesSwitcher } from "./fontSizeController";
 import { languageSwitcher } from "./languageController";
-import { updateButtonText } from './buttonTextUpdater';  //update the Get Direction and Stop Nav button according to screen size
-import './script';
-
+import { updateButtonText } from "./buttonTextUpdater"; //update the Get Direction and Stop Nav button according to screen size
+import "./script";
 
 // See Trial API key Terms and Conditions
 // https://developer.mappedin.com/web/v6/trial-keys-and-maps/
@@ -141,14 +140,14 @@ async function init() {
 
     // Check if it's the first click for the start space
     if (!navigationState.startSpace) {
-      navigationState.startSpace = event.spaces[0];
+      updateNavigationSpace(event.spaces[0], "start");
     }
     // Check if it's the second click for the end space
     else if (
       !navigationState.endSpace &&
       event.spaces[0] !== navigationState.startSpace
     ) {
-      navigationState.endSpace = event.spaces[0];
+      updateNavigationSpace(event.spaces[0], "end");
 
       // Check and draw path if both start and end are set
       if (navigationState.startSpace && navigationState.endSpace) {
@@ -197,6 +196,29 @@ async function init() {
     });
   }
 
+  function updateNavigationSpace(space: Space, type: "start" | "end") {
+    if (type === "start") {
+      navigationState.startSpace = space;
+      const startSearchInput = document.getElementById(
+        "start-search"
+      ) as HTMLInputElement | null;
+      if (startSearchInput) {
+        startSearchInput.value = space.name;
+      }
+    } else {
+      navigationState.endSpace = space;
+      const endSearchInput = document.getElementById(
+        "end-search"
+      ) as HTMLInputElement | null;
+      if (endSearchInput) {
+        endSearchInput.value = space.name;
+      }
+    }
+
+    // Highlight the selected space
+    highlightSpace(space);
+  }
+
   // Mapping of floor IDs to their corresponding bearings and coordinates
   const floorSettings: {
     [key: string]: { bearing: number; coordinate: Coordinate };
@@ -243,8 +265,6 @@ async function init() {
       mapView.Labels.add(poi.coordinate, poi.name);
     }
   }
- 
-
 
   //Add the Stack Map and testing:
   //1)Add the stack "enable button":
@@ -268,7 +288,9 @@ async function init() {
   const dropMenuContainer = document.querySelector(".drop-menu.dropup");
 
   // 3. Find the settings button
-  const settingsButton = document.querySelector(".drop-menu.dropup .settings-btn");
+  const settingsButton = document.querySelector(
+    ".drop-menu.dropup .settings-btn"
+  );
 
   // 4. Append the stackMapButton to the container
   if (dropMenuContainer) {
@@ -336,7 +358,6 @@ async function init() {
   emergencyButton.className = "emergency-btn";
   //emergencyButton.textContent = "Emergency Exit";
 
-  
   emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
   emergencyButton.style.color = "#FFFFFF"; //white font color
   //emergencyButton.style.border = "none";
@@ -1063,7 +1084,6 @@ async function init() {
   </svg>
 `;
   accessibilityButton.id = "accessibility-btn";
-  
 
   mappedinDiv.appendChild(accessibilityButton);
 
