@@ -45,8 +45,8 @@ export class RealTimeLocationTracker {
         this.showError.bind(this),
         {
           enableHighAccuracy: true,
-          timeout: 10000, // 5 seconds timeout for position acquisition
-          maximumAge: 5000, //fetch fresh position each time
+          timeout: 10000, // 10 seconds timeout for position acquisition
+          maximumAge: 5000, //fetch fresh position every 5 seconds
         }
       );
     } else {
@@ -144,7 +144,25 @@ export class RealTimeLocationTracker {
     );
   }
 
-  // Handle errors
+  //toggle real time tracking
+  toggleTrackingButton(locationToggle: HTMLButtonElement) {
+    let isTrackingEnabled = false;
+
+    // event listener for enabling/disabling real time tracking
+    locationToggle.addEventListener("click", () => {
+      isTrackingEnabled = !isTrackingEnabled;
+
+      if (isTrackingEnabled) {
+        this.startTracking();
+        locationToggle.classList.add("on");
+      } else {
+        this.stopTracking();
+        locationToggle.classList.remove("on");
+      }
+    });
+  }
+
+  // error message
   showError(error: GeolocationPositionError) {
     switch (error.code) {
       case error.PERMISSION_DENIED:
@@ -155,9 +173,6 @@ export class RealTimeLocationTracker {
         break;
       case error.TIMEOUT:
         alert("The request to get user location timed out.");
-        break;
-      default:
-        alert("An unknown error occurred.");
         break;
     }
   }

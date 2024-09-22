@@ -77,40 +77,12 @@ async function init() {
   // Initial labeling and translation
   applySettings(mapView, cachedSpaces);
 
-  // get toggle button element for real-time tracking
+  // get toggle button element for real time tracking
   const locationToggle = document.getElementById(
     "location-toggle"
-  ) as HTMLInputElement;
+  ) as HTMLButtonElement;
 
-  let isTrackingEnabled = false;
-
-  // event listener for enabling/disabling real-time tracking
-  locationToggle.addEventListener("click", function () {
-    if (locationTracker) {
-      isTrackingEnabled = !isTrackingEnabled;
-      console.log(
-        "Location toggle clicked, tracking enabled:",
-        isTrackingEnabled
-      );
-      if (isTrackingEnabled) {
-        locationTracker.startTracking(); // Start real-time tracking
-        locationToggle.classList.remove("off");
-      } else {
-        locationTracker.stopTracking(); // Stop real-time tracking
-        locationToggle.classList.add("off");
-      }
-    }
-
-    // Optionally update the button appearance when toggling
-    const imgElement = locationToggle.querySelector("img");
-    if (imgElement) {
-      if (isTrackingEnabled) {
-        imgElement.style.transform = "scale(1.1)"; // Example of changing icon on tracking start
-      } else {
-        imgElement.style.transform = "scale(1)"; // Revert icon to original state on tracking stop
-      }
-    }
-  });
+  locationTracker.toggleTrackingButton(locationToggle);
 
   const applySettingsButton = document.getElementById("applySettings");
   if (applySettingsButton) {
