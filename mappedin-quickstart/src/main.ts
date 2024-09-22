@@ -141,6 +141,7 @@ async function init() {
     // Check if it's the first click for the start space
     if (!navigationState.startSpace) {
       updateNavigationSpace(event.spaces[0], "start");
+      console.log(navigationState.startSpace);
     }
     // Check if it's the second click for the end space
     else if (
@@ -148,6 +149,7 @@ async function init() {
       event.spaces[0] !== navigationState.startSpace
     ) {
       updateNavigationSpace(event.spaces[0], "end");
+      console.log(navigationState.endSpace);
 
       // Check and draw path if both start and end are set
       if (navigationState.startSpace && navigationState.endSpace) {
@@ -635,9 +637,9 @@ async function init() {
   updateButtonText();
 
   getDirectionsButton.addEventListener("click", async function () {
-    console.log("Start Space:", startSpace);
-    console.log("End Space:", endSpace);
-    if (startSpace && endSpace) {
+    console.log("Start Space:", navigationState.startSpace);
+    console.log("End Space:", navigationState.endSpace);
+    if (navigationState.startSpace && navigationState.endSpace) {
       console.log("Both spaces are selected");
       if (navigationState.isPathDrawn) {
         mapView.Paths.removeAll();
@@ -646,13 +648,18 @@ async function init() {
         setSpaceInteractivity(true); // Reset interactivity
       }
 
-      const areOnSameFloor = startSpace.floor === endSpace.floor;
-      console.log("Are on same floor:", areOnSameFloor);
+      const areOnSameFloor =
+        navigationState.startSpace.floor === navigationState.endSpace.floor;
+      console.log("Are on the same floor:", areOnSameFloor);
 
       try {
-        const directions = await mapView.getDirections(startSpace, endSpace, {
-          accessible: areOnSameFloor || accessibilityEnabled,
-        });
+        const directions = await mapView.getDirections(
+          navigationState.startSpace,
+          navigationState.endSpace,
+          {
+            accessible: areOnSameFloor || accessibilityEnabled,
+          }
+        );
         console.log("Directions:", directions);
 
         if (directions) {
@@ -666,7 +673,8 @@ async function init() {
           setSpaceInteractivity(false); // Disable further interaction
         }
       } catch (error) {
-        alert("Error fetching directions: " + error);
+        console.error("Error fetching directions:", error);
+        alert("Error fetching directions: " + error.message);
       }
     } else {
       alert("Please select both start and end locations.");
@@ -824,16 +832,16 @@ async function init() {
               //console.log('startSpace updated:', startSpace);
               if (container === moduleItemsContainer) {
                 // Update startSpace with the Space instance
-                startSpace = spaceInstance;
+                navigationState.startSpace = spaceInstance;
                 startSearchBar.value = spaceOption.textContent!;
                 console.log("startSpace updated:", startSpace);
-                highlightSpace(startSpace);
+                highlightSpace(navigationState.startSpace);
               } else if (container === moduleItemsContainerEndPoint) {
                 // Update endSpace with the Space instance
-                endSpace = spaceInstance;
+                navigationState.endSpace = spaceInstance;
                 endSearchBar.value = spaceOption.textContent!;
                 console.log("endSpace updated:", endSpace);
-                highlightSpace(endSpace);
+                highlightSpace(navigationState.endSpace);
               }
             } else {
               console.error("Space not found for:", selectedSpaceName);
