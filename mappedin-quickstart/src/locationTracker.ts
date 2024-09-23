@@ -121,6 +121,7 @@ export class RealTimeLocationTracker {
       "></div>
     </div>`,
         {
+          rank: "always-visible",
           interactive: false,
           dynamicResize: true,
         }
