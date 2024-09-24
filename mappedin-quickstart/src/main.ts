@@ -168,7 +168,10 @@ async function init() {
         const directionsOptions =
           accessibilityEnabled || sameFloor ? { accessible: true } : {};
 
-        // Draw the path
+        //added: after click at the map, set the start place as well:
+        startSpace = navigationState.startSpace;
+        
+        // Draw the path by clicking the space at the map
         const directions = await mapView.getDirections(
           navigationState.startSpace,
           navigationState.endSpace,
