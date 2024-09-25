@@ -21,32 +21,20 @@ export function updateSettingsLabels() {
     settingsBtn.innerText = i18n.t("Settings");
   }
 
-  const cafeBtn = document.getElementById("cafe-btn");
-  if (cafeBtn) {
-    cafeBtn.childNodes.forEach((node) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        node.nodeValue = i18n.t("Cafe");
-      }
-    });
-  }  
-
   const receptionBtn = document.getElementById("reception-btn");
   if (receptionBtn) {
-    receptionBtn.childNodes.forEach((node) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        node.nodeValue = i18n.t("Reception");
-      }
-    });
-  }  
+    receptionBtn.innerText = i18n.t("Reception");
+  }
+
+  const cafeBtn = document.getElementById("cafe-btn");
+  if (cafeBtn) {
+    cafeBtn.innerText = i18n.t("Cafe");
+  }
 
   const toiletBtn = document.getElementById("toilet-btn");
   if (toiletBtn) {
-    toiletBtn.childNodes.forEach((node) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        node.nodeValue = i18n.t("Toilets");
-      }
-    });
-  }  
+    toiletBtn.innerText = i18n.t("Toilets");
+  }
 
   const stackMapButton = document.querySelector(
     ".reset-button.mi-button"
@@ -106,6 +94,13 @@ export function updateSettingsLabels() {
   ) as HTMLElement;
   if (stopNavigationBtn) {
     stopNavigationBtn.innerText = i18n.t("StopNavigation");
+  }
+
+  const emergencyBtn = document.querySelector(
+    "button[data-emergency-btn]"
+  ) as HTMLButtonElement;
+  if (emergencyBtn) {
+    emergencyBtn.innerText = i18n.t("EmergencyExit");
   }
 
   const modeSelect = document.getElementById("mode") as HTMLSelectElement;

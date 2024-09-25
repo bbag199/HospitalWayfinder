@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/google.maps": "^3.58.0",
     "@types/i18next-browser-languagedetector": "^3.0.0",
+    "@types/qrcode": "^1.5.5",
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
   },
@@ -17,6 +19,7 @@
     "@mappedin/mappedin-js": "^6.0.1-alpha.31",
     "i18n": "^0.15.1",
     "i18next": "^23.14.0",
+    "qrcode": "^1.5.4",
     "react-i18next": "^15.0.0"
   }
 }
