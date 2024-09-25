@@ -618,6 +618,7 @@ async function init() {
           emergencyButton.style.backgroundColor = "#28a745";
           emergencyExitOn = true;
         }
+        setSpaceInteractivity(false);
       } else {
         // Show popup if startSpace is false
         alert("Please select starting point.");
