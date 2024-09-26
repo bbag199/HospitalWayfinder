@@ -71,7 +71,7 @@ export class RealTimeLocationTracker {
     if (this.initialCoordinate) {
       this.mappedinMapView.Camera.animateTo(
         { center: this.initialCoordinate, zoomLevel: 18 },
-        { duration: 500 }
+        { duration: 1000 }
       );
     }
 
