@@ -86,37 +86,9 @@ async function init() {
   // get toggle button element for real-time tracking
   const locationToggle = document.getElementById(
     "location-toggle"
-  ) as HTMLInputElement;
+  ) as HTMLButtonElement;
 
-  let isTrackingEnabled = false;
-
-  // event listener for enabling/disabling real-time tracking
-  locationToggle.addEventListener("click", function () {
-    if (locationTracker) {
-      isTrackingEnabled = !isTrackingEnabled;
-      console.log(
-        "Location toggle clicked, tracking enabled:",
-        isTrackingEnabled
-      );
-      if (isTrackingEnabled) {
-        locationTracker.startTracking(); // Start real-time tracking
-        locationToggle.classList.remove("off");
-      } else {
-        locationTracker.stopTracking(); // Stop real-time tracking
-        locationToggle.classList.add("off");
-      }
-    }
-
-    // Optionally update the button appearance when toggling
-    const imgElement = locationToggle.querySelector("img");
-    if (imgElement) {
-      if (isTrackingEnabled) {
-        imgElement.style.transform = "scale(1.1)"; // Example of changing icon on tracking start
-      } else {
-        imgElement.style.transform = "scale(1)"; // Revert icon to original state on tracking stop
-      }
-    }
-  });
+  locationTracker.toggleTrackingButton(locationToggle);
 
   const applySettingsButton = document.getElementById("applySettings");
   if (applySettingsButton) {
@@ -511,10 +483,10 @@ async function init() {
       mapData.getByType("space").forEach((space) => {
         const currentState = mapView.getState(space);
         const currentColor = currentState ? currentState.color : null;
-  
+
         const targetColor = "#d4b2df";
         const newColor = "#eeece7";
-  
+
         if (currentColor === targetColor) {
           mapView.updateState(space, {
             color: newColor,
@@ -532,7 +504,7 @@ async function init() {
       ) as HTMLInputElement;
       if (startSearchBar) startSearchBar.value = "";
       if (endSearchBar) endSearchBar.value = "";
-  
+
       // Reset start and end spaces regardless of path state
       startSpace = null;
       endSpace = null;
@@ -609,10 +581,10 @@ async function init() {
         if (shortestWayout3) {
           mapView.Navigation.draw(shortestWayout3, {
             pathOptions: {
-              nearRadius: 0.5,  // Customize these as per your current map styling needs
+              nearRadius: 0.5, // Customize these as per your current map styling needs
               farRadius: 0.5,
-              color: 'red',  // This sets the path color, adjust if necessary
-            }
+              color: "red", // This sets the path color, adjust if necessary
+            },
           });
           emergencyButton.textContent = "Emergency Off";
           emergencyButton.style.backgroundColor = "#28a745";
@@ -732,7 +704,6 @@ async function init() {
   ) as HTMLButtonElement;
 
   stopNavigationButton.addEventListener("click", function () {
-
     mapData.getByType("space").forEach((space) => {
       // Retrieve the current state of the space to check its color
       const currentState = mapView.getState(space);
@@ -786,18 +757,13 @@ async function init() {
         setSpaceInteractivity(true); // Reset interactivity
       }
 
-      const areOnSameFloor =
-        startSpace.floor === endSpace.floor;
+      const areOnSameFloor = startSpace.floor === endSpace.floor;
       console.log("Are on the same floor:", areOnSameFloor);
 
       try {
-        const directions = await mapView.getDirections(
-          startSpace,
-          endSpace,
-          {
-            accessible: areOnSameFloor || accessibilityEnabled,
-          }
-        );
+        const directions = await mapView.getDirections(startSpace, endSpace, {
+          accessible: areOnSameFloor || accessibilityEnabled,
+        });
         console.log("Directions:", directions);
 
         if (directions) {
@@ -1508,7 +1474,9 @@ async function init() {
     const space = cachedSpaces.find((space) => space.id === endSpaceIdFromUrl);
     if (space) {
       endSpace = space;
-      const endSearchInput = document.getElementById("end-search") as HTMLInputElement;
+      const endSearchInput = document.getElementById(
+        "end-search"
+      ) as HTMLInputElement;
       if (endSearchInput) endSearchInput.value = space.name;
     }
   }
