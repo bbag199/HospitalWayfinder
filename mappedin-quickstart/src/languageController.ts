@@ -166,7 +166,7 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
       mapView.Labels.add(space, translatedName, {
         appearance: {
           text: {
-            foregroundColor: "orange",
+            foregroundColor: "#063970",
             size: getCurrentFontSize(),
           },
         },

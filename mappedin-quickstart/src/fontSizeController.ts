@@ -27,7 +27,7 @@ export function applyFontSize(size: string, mapView: MapView, spaces: Space[]) {
       const translatedName = i18n.t(space.name);
       mapView.Labels.add(space, translatedName, {
         appearance: {
-          text: { foregroundColor: "orange", size: fontSize },
+          text: { foregroundColor: "#063970", size: fontSize },
         },
       });
     }

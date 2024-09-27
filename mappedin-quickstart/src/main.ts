@@ -16,16 +16,15 @@ import { applySettings } from "./languageController";
 import { modeSwitcher } from "./modeController";
 import { fontSizesSwitcher } from "./fontSizeController";
 import { languageSwitcher } from "./languageController";
-import { updateButtonText } from "./buttonTextUpdater"; //update the Get Direction and Stop Nav button according to screen size
+import { updateButtonText } from "./buttonTextUpdater";
 import { initializeButtonListeners } from "./poiButtonController";
 import { RealTimeLocationTracker } from "./locationTracker";
 
-import "./script";
-
+// Options using environment variables
 const options = {
-  key: "6666f9ba8de671000ba55c63",
-  secret: "d15feef7e3c14bf6d03d76035aedfa36daae07606927190be3d4ea4816ad0e80",
-  mapId: "66b179460dad9e000b5ee951",
+  key: import.meta.env.VITE_MAP_KEY,
+  secret: import.meta.env.VITE_MAP_SECRET,
+  mapId: import.meta.env.VITE_MAP_ID,
 };
 
 let mapView: MapView;
