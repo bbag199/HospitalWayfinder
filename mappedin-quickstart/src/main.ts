@@ -1248,6 +1248,38 @@ async function init() {
     }
   });
 
+ // Define a new main entrance upright arrow icon pointing up
+const mainEntranceArrowIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none">
+    <path d="M12 19V6M12 6L7 11M12 6L17 11" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" />
+    <circle cx="12" cy="6" r="2" fill="#4CAF50"/>
+</svg>`;
+
+// Fetch and label spaces
+mapData.getByType("space").forEach((space) => {
+  // Existing labeling logic for toilets and café...
+
+  // Check if the space name contains "entrance" (case insensitive)
+  if (space.name && space.name.toLowerCase().includes("entrance")) {
+    mapView.Labels.add(space, space.name, { // Keep the original name here
+      rank: "always-visible",
+      appearance: {
+        marker: {
+          foregroundColor: {
+            active: "white",
+            inactive: "white",
+          },
+          icon: mainEntranceArrowIcon, // Use the new icon
+        },
+        text: {
+          foregroundColor: "#063970",
+        },
+      },
+    });
+  }
+});
+
+
   //////////////////////////////////////////
   //searchingBar Dropdown list function above.
 
