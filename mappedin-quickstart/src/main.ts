@@ -16,11 +16,12 @@ import { applySettings } from "./languageController";
 import { modeSwitcher } from "./modeController";
 import { fontSizesSwitcher } from "./fontSizeController";
 import { languageSwitcher } from "./languageController";
-import { updateButtonText } from "./buttonTextUpdater";
+import { updateButtonText } from "./buttonTextUpdater"; //update the Get Direction and Stop Nav button according to screen size
 import { initializeButtonListeners } from "./poiButtonController";
 import { RealTimeLocationTracker } from "./locationTracker";
 
-// Options using environment variables
+import "./script";
+
 const options = {
   key: import.meta.env.VITE_MAP_KEY,
   secret: import.meta.env.VITE_MAP_SECRET,
@@ -1247,8 +1248,7 @@ async function init() {
       });
     }
   });
-
- // Define a new main entrance upright arrow icon pointing up
+  // Define a new main entrance upright arrow icon pointing up
 const mainEntranceArrowIcon = `
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none">
     <path d="M12 19V6M12 6L7 11M12 6L17 11" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" />
