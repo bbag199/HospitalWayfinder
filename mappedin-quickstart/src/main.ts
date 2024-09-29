@@ -240,8 +240,8 @@ async function init() {
   }
 
   const qrUrl2 = predefinedStartSpaceId
-    ? `https://hospital-w.vercel.app/?startSpace=${predefinedStartSpaceId}`
-    : `https://hospital-w.vercel.app/`;
+    ? `https://hospital-wayfinder-d9fx.vercel.app/?startSpace=${predefinedStartSpaceId}`
+    : `https://hospital-wayfinder-d9fx.vercel.app/`;
 
   generateQRCode(qrUrl2, qrImgEl);
 
