@@ -905,7 +905,7 @@ async function init() {
 
     // Update startSpace with the found space
     startSpace = entranceSpace!;
-    startSearchBar.value = "Entrance";
+    startSearchBar.value = "SuperClinic Entrance";
     console.log("startSpace updated as Entrance:", startSpace);
   });
 
@@ -920,7 +920,7 @@ async function init() {
 
     // Update endSpace with the found space
     endSpace = entranceSpaceEnd!;
-    endSearchBar.value = "Entrance";
+    endSearchBar.value = "SuperClinic Entrance";
     console.log("endSpace updated as Entrance:", endSpace);
   });
   //new entrance button finish.........................................
@@ -969,7 +969,7 @@ async function init() {
     // Filter and group spaces into categories
     const cafes = spaces.filter(space => space.name === "Cafe");
     const clinicalPhotography = spaces.filter(space => space.name === "Clinical Photography");
-    const superClinicReception = spaces.filter(space => space.name === "Main Reception");
+    const superClinicReception = spaces.filter(space => space.name === "SuperClinic Reception");
   
     // Filter for Module spaces and sort them in the desired order
     const modules = spaces
@@ -1106,13 +1106,13 @@ async function init() {
 
   // List of surgery centre spaces in the specified order
 const surgeryCentreOrder = [
-  "MSC Incentre (Dialysis Unit)",
-  "Renal Unit/Rito Dialysis Centre",
-  "Manukau surgical centre Reception",
-  "Ward",
-  "Ward Reception (level 1)",
-  "Ward (level 2)",
-  "Ward Reception (level 2)"
+  "Renal - MSC Incentre Dialysis Unit",
+  "Renal - Rito Dialysis Centre",
+  "Surgical Centre Reception",
+  "Ward (Level 1)",
+  "Ward - Level 1 Reception",
+  "Ward (Level 2)",
+  "Ward - Level 2 Reception"
 ];
 
 // Function to populate the surgery centre locations
