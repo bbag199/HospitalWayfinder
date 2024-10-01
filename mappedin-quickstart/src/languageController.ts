@@ -72,6 +72,11 @@ export function updateSettingsLabels() {
     applyButton.innerText = i18n.t("Apply");
   }
 
+  const poiButton = document.getElementById("poi-btn") as HTMLElement;
+  if (poiButton) {
+    poiButton.innerText = i18n.t("Points of Interest");
+  }
+
   const toField = document.getElementById("end-search") as HTMLInputElement;
   if (toField) {
     toField.placeholder = i18n.t("To");
