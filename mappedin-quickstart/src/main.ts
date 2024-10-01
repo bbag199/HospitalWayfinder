@@ -1232,7 +1232,7 @@ async function init() {
 
     if (space.name && space.name.toLowerCase() === "cafe") {
       mapView.Labels.add(space, "Café", {
-        rank: "always-visible",
+        rank: "high",
         appearance: {
           marker: {
             foregroundColor: {
