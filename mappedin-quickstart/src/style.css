@@ -516,7 +516,8 @@ nav {
 }
 
 /* Specific button style for #module-items-container */
-
+#module-items-container-surgeryCentre-endpoint button,
+#module-items-container-surgeryCentre button,
 #module-items-container-endpoint button,
 #module-items-container button {
   background-color: #f1f2ff; /* Same background color as .button-13 */
@@ -544,13 +545,15 @@ nav {
   margin-right: 6px;
 }
 
-
+#module-items-container-surgeryCentre-endpoint button:hover,
+#module-items-container-surgeryCentre button:hover,
 #module-items-container-endpoint button:hover,
 #module-items-container button:hover {
   background-color: #f7fafa; /* Same hover effect as .button-13 */
 }
 
-
+#module-items-container-surgeryCentre-endpoint button:focus,
+#module-items-container-surgeryCentre button:focus,
 #module-items-container-endpoint button:focus,
 #module-items-container button:focus {
   border-color: #008296; /* Same focus effect as .button-13 */
