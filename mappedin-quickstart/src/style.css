@@ -434,12 +434,20 @@ nav {
   border: none;
   border-radius: 5px;
   margin-bottom: 1px;
+  width: 180px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  text-align: center;
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 
 .icons-container {
   z-index: 1000;
   position:absolute;
-  bottom: 50px;
+  bottom: 55px;
   left: 10px;
   display: flex;
   justify-content: flex-start;
