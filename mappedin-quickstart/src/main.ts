@@ -901,7 +901,7 @@ async function init() {
     // Find the space with the name "Entrance"
     const entranceSpace = mapData
       .getByType("space")
-      .find((space) => space.name.includes("Entrance"));
+      .find((space) => space.name.includes("Main Entrance"));
 
     // Update startSpace with the found space
     startSpace = entranceSpace!;
@@ -916,7 +916,7 @@ async function init() {
     // Find the space with the name "Entrance"
     const entranceSpaceEnd = mapData
       .getByType("space")
-      .find((space) => space.name.includes("Entrance"));
+      .find((space) => space.name.includes("Main Entrance"));
 
     // Update endSpace with the found space
     endSpace = entranceSpaceEnd!;
