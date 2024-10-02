@@ -619,6 +619,8 @@ async function init() {
     const query = endSearchBar.value.toLowerCase();
     if (query) {
       performSearch(query, "end");
+      //added this one, when user input, hide the dropdown list, and show the input result
+      hideDropdown(searchListEndPoint);
       endResultsContainer.style.display = "block";
     } else {
       endResultsContainer.style.display = "none";
@@ -629,6 +631,8 @@ async function init() {
     const query = startSearchBar.value.toLowerCase();
     if (query) {
       performSearch(query, "start");
+      //added this one, when user input, hide the dropdown list, and show the input result
+      hideDropdown(searchList);
       startResultsContainer.style.display = "block";
     } else {
       startResultsContainer.style.display = "none";
@@ -809,8 +813,19 @@ async function init() {
     dropdown.style.display = "none";
   };
 
+  //testing here:
+  // Function to hide or show dropdown based on the input value
+  /* function toggleDropdownBasedOnValue(inputElement:HTMLInputElement, dropdownElement:HTMLDivElement) {
+    if (inputElement.value.trim() !== "") {
+      hideDropdown(dropdownElement); // Hide dropdown if the value is not empty
+    } else {
+      showDropdown(dropdownElement); // Show dropdown if the value is empty
+    }
+  } */
+
   // Show the dropdown when the user clicks on the search bar
   startSearchBar.addEventListener("focus", () => {
+    //toggleDropdownBasedOnValue(startSearchBar, searchList);
     showDropdown(searchList);
     isModuleItemsVisible = false; // Reset the visibility flag when focusing on the search bar
     moduleItemsContainer.style.display = "none"; // Ensure Module item list is hidden
