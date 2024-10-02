@@ -451,19 +451,22 @@ async function init() {
 
   //add an emergency square button here:
   const emergencyButton = document.createElement("button");
-  emergencyButton.className = "reset-button mi-button";
-  emergencyButton.textContent = "Emergency Exit";
-
-  emergencyButton.style.bottom = "55px";
-
-  emergencyButton.style.zIndex = "1000";
-  emergencyButton.style.padding = "10px";
+  emergencyButton.className = "emergency-btn";
+  //emergencyButton.textContent = "Emergency Exit";
+  
   emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
   emergencyButton.style.color = "#FFFFFF"; //white font color
-  //emergencyButton.style.border = "none";
-  //emergencyButton.style.borderRadius = "5px";
+  
   emergencyButton.style.cursor = "pointer";
   emergencyButton.setAttribute("data-emergency-btn", "true");
+
+  // 2. Create the icon element
+  const iconEmergency = document.createElement("i");
+  iconEmergency.className = "fa fa-sign-out"; // Font Awesome class for the book icon
+  iconEmergency.style.fontSize = "28px"; // Set the font size
+
+  // Append the icon to the button
+  emergencyButton.appendChild(iconEmergency);
 
   // Append the button to the map container
   mappedinDiv.appendChild(emergencyButton);
@@ -586,7 +589,7 @@ async function init() {
               color: "red", // This sets the path color, adjust if necessary
             },
           });
-          emergencyButton.textContent = "Emergency Off";
+          //emergencyButton.textContent = "Emergency Off";
           emergencyButton.style.backgroundColor = "#28a745";
           emergencyExitOn = true;
         }

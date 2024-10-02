@@ -135,7 +135,7 @@ nav {
     padding: 0px; /* Reduce padding for small screens */
     font-size: 12px; /* Adjust font size for small buttons */
     left: 230px; /* Reduce left margin to fit smaller screen */
-    top: 50px;
+    top: 51px;
     display: flex;
     align-items: center; /* Center text vertically */
     justify-content: center; /* Center text horizontally */
@@ -146,11 +146,11 @@ nav {
 /*floor selector set up */
 #floor-selector2 {
   position: absolute;
-  bottom: 20px; /* Adjust as needed */
+  bottom: 14px; /* Adjust as needed */
   right: 20px; /* Adjust as needed */
   z-index: 1000; /* Ensure it is above other elements */
-  
-  height: 30px; /* Set width to 35px */
+  width:180px;
+  height: 35px; /* Set width to 35px */
   font-size: 12px; /* Set font size to 12px */
   border: 1px solid #ccc; /* Light border for the frame */
   border-radius: 4px; /* Rounded corners */
@@ -162,7 +162,9 @@ nav {
 /*accessibility button set up*/
 #accessibility-btn {
   position: absolute;
-  bottom: 96px;
+  width:45px;
+  height: 45px;
+  bottom: 101px;
   right: 20px;
   z-index: 1000;
   background-color: #fff;
@@ -649,5 +651,22 @@ nav {
   border-color: #008296; /* Same focus effect as .button-13 */
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
   outline: 0;
+}
+
+/*new emergency button style with icon*/
+.emergency-btn {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  bottom: 53px;
+  right: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 0; /* Adjust padding to remove extra space */
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  z-index: 1000;
 }
 
