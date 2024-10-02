@@ -753,6 +753,51 @@ async function init() {
   updateButtonText();
 
   getDirectionsButton.addEventListener("click", async function () {
+    //can add a function to change the startSearchBar.value into Space (string => Space?)
+    //testing:
+    // Check if the startSearchBar value is not empty
+    if (startSearchBar.value.trim() !== "") {
+      // Try to get the Space based on the startSearchBar value
+      // Trim the input and capitalize the first letter
+      let formattedValue = startSearchBar.value.trim().toLowerCase();
+      formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
+
+      startSpace = getSpaceByName(formattedValue) || null;
+      
+      //At here, we will hide the start result container:
+      startResultsContainer.style.display = "none";
+
+      // If the startSpace is not found, show an alert
+      if (!startSpace) {
+        alert("Please type or choose a correct start location name!");
+        return; // Exit the function if the space is not found
+      }
+    } else {
+      alert("Please select a start location.");
+      return; // Exit the function if the search bar is empty
+    }
+
+    // Check if the endSearchBar value is not empty
+    if (endSearchBar.value.trim() !== "") {
+      // Trim the input and capitalize the first letter for endSearchBar
+      let formattedEndValue = endSearchBar.value.trim().toLowerCase();
+      formattedEndValue = formattedEndValue.charAt(0).toUpperCase() + formattedEndValue.slice(1);
+
+      endSpace = getSpaceByName(formattedEndValue) || null;
+
+      // Hide the end result container
+      endResultsContainer.style.display = "none";
+
+      // If the endSpace is not found, show an alert
+      if (!endSpace) {
+        alert("Please type or choose a correct end location name!");
+        return; // Exit the function if the space is not found
+      }
+    } else {
+      alert("Please select an end location.");
+      return; // Exit the function if the search bar is empty
+    }
+
     console.log("Start Space:", startSpace);
     console.log("End Space:", endSpace);
     if (startSpace && endSpace) {
