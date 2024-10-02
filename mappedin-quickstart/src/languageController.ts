@@ -157,19 +157,10 @@ export function updateSettingsLabels() {
 }
 
 const toiletsIcon = `
-<svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g fill="black">
-    <!-- Female -->
-    <circle cx="16" cy="16" r="8" fill="pink" />
-    <path d="M16 26c-4.418 0-8 3.582-8 8v4h16v-4c0-4.418-3.582-8-8-8z" fill="pink" />
-    <path d="M10 34v10h12v-10H10z" fill="pink" />
-    
-    <!-- Male -->
-    <circle cx="48" cy="16" r="8" fill="lightblue" />
-    <path d="M48 26c-4.418 0-8 3.582-8 8v4h16v-4c0-4.418-3.582-8-8-8z" fill="lightblue" />
-    <path d="M42 34v10h12v-10H42z" fill="lightblue" />
-  </g>
-</svg>`;
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 15 15">
+        <path fill="currentColor"
+          d="M3 1.5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 0 0-3 0M11.5 0a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3M3.29 4a1 1 0 0 0-.868.504L.566 7.752a.5.5 0 1 0 .868.496l1.412-2.472A345.048 345.048 0 0 0 1 11h2v2.5a.5.5 0 0 0 1 0V11h1v2.5a.5.5 0 0 0 1 0V11h2L6.103 5.687l1.463 2.561a.5.5 0 1 0 .868-.496L6.578 4.504A1 1 0 0 0 5.71 4zM9 4.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v4a.5.5 0 0 1-1 0v-4h-1v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 1-1 0z" />
+      </svg>`;
 
 const coffeeMugIcon = `
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none">
