@@ -759,19 +759,20 @@ async function init() {
     if (startSearchBar.value.trim() !== "") {
       // Try to get the Space based on the startSearchBar value
       // Trim the input and capitalize the first letter
-      let formattedValue = startSearchBar.value.trim().toLowerCase();
+      let formattedValue = startSearchBar.value.trim();
       formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
 
       startSpace = getSpaceByName(formattedValue) || null;
       
       //At here, we will hide the start result container:
       startResultsContainer.style.display = "none";
-
+      //console.log("startSearchBar.value", startSearchBar.value);
+      //console.log("startSpace", startSpace);
       // If the startSpace is not found, show an alert
-      if (!startSpace) {
-        alert("Please type or choose a correct start location name!");
-        return; // Exit the function if the space is not found
-      }
+      //if (!startSpace) {
+        //alert("Please type or choose a correct start location name!");
+        //return; // Exit the function if the space is not found
+      //}
     } else {
       alert("Please select a start location.");
       return; // Exit the function if the search bar is empty
@@ -780,7 +781,7 @@ async function init() {
     // Check if the endSearchBar value is not empty
     if (endSearchBar.value.trim() !== "") {
       // Trim the input and capitalize the first letter for endSearchBar
-      let formattedEndValue = endSearchBar.value.trim().toLowerCase();
+      let formattedEndValue = endSearchBar.value.trim();
       formattedEndValue = formattedEndValue.charAt(0).toUpperCase() + formattedEndValue.slice(1);
 
       endSpace = getSpaceByName(formattedEndValue) || null;
@@ -789,10 +790,10 @@ async function init() {
       endResultsContainer.style.display = "none";
 
       // If the endSpace is not found, show an alert
-      if (!endSpace) {
-        alert("Please type or choose a correct end location name!");
-        return; // Exit the function if the space is not found
-      }
+      //if (!endSpace) {
+       // alert("Please type or choose a correct end location name!");
+        //return; // Exit the function if the space is not found
+      //}
     } else {
       alert("Please select an end location.");
       return; // Exit the function if the search bar is empty
@@ -833,7 +834,7 @@ async function init() {
         alert("Error fetching directions: " + error);
       }
     } else {
-      alert("Please select both start and end locations.");
+      alert("Please correctly select both start and end locations.");
     }
   });
 
@@ -968,7 +969,7 @@ async function init() {
 
     // Update startSpace with the found space
     startSpace = entranceSpace!;
-    startSearchBar.value = "SuperClinic Entrance";
+    startSearchBar.value = "Main Entrance";//need to be Main Entrance!!!!!
     console.log("startSpace updated as Entrance:", startSpace);
   });
 
@@ -983,7 +984,7 @@ async function init() {
 
     // Update endSpace with the found space
     endSpace = entranceSpaceEnd!;
-    endSearchBar.value = "SuperClinic Entrance";
+    endSearchBar.value = "Main Entrance"; //need to be Main Entrance!!!!!
     console.log("endSpace updated as Entrance:", endSpace);
   });
   //new entrance button finish.........................................
@@ -1131,7 +1132,7 @@ async function init() {
 
     // Update startSpace with the found space
     startSpace = entranceSpace!;
-    startSearchBar.value = "Entrance (Surgical Centre)";
+    startSearchBar.value = "Entrance(surgical centre)";
     console.log("startSpace updated as Entrance:", startSpace);
   });
 
@@ -1146,7 +1147,7 @@ async function init() {
 
     // Update endSpace with the found space
     endSpace = entranceSpaceEnd!;
-    endSearchBar.value = "Entrance (Surgical Centre)";
+    endSearchBar.value = "Entrance(surgical centre)";
     console.log("endSpace updated as Entrance:", endSpace);
   });
   // New entrance button (surgery centre) finish.........................................
