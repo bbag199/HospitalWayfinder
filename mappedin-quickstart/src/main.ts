@@ -453,10 +453,10 @@ async function init() {
   const emergencyButton = document.createElement("button");
   emergencyButton.className = "emergency-btn";
   //emergencyButton.textContent = "Emergency Exit";
-  
+
   emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
   emergencyButton.style.color = "#FFFFFF"; //white font color
-  
+
   emergencyButton.style.cursor = "pointer";
   emergencyButton.setAttribute("data-emergency-btn", "true");
 
@@ -479,7 +479,7 @@ async function init() {
       mapView.Paths.removeAll();
       mapView.Markers.removeAll();
       path = null;
-      emergencyButton.textContent = "Emergency Exit";
+      // emergencyButton.textContent = "Emergency Exit";
       emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
       emergencyExitOn = false;
 
@@ -760,18 +760,19 @@ async function init() {
       // Try to get the Space based on the startSearchBar value
       // Trim the input and capitalize the first letter
       let formattedValue = startSearchBar.value.trim();
-      formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
+      formattedValue =
+        formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
 
       startSpace = getSpaceByName(formattedValue) || null;
-      
+
       //At here, we will hide the start result container:
       startResultsContainer.style.display = "none";
       //console.log("startSearchBar.value", startSearchBar.value);
       //console.log("startSpace", startSpace);
       // If the startSpace is not found, show an alert
       //if (!startSpace) {
-        //alert("Please type or choose a correct start location name!");
-        //return; // Exit the function if the space is not found
+      //alert("Please type or choose a correct start location name!");
+      //return; // Exit the function if the space is not found
       //}
     } else {
       alert("Please select a start location.");
@@ -782,7 +783,8 @@ async function init() {
     if (endSearchBar.value.trim() !== "") {
       // Trim the input and capitalize the first letter for endSearchBar
       let formattedEndValue = endSearchBar.value.trim();
-      formattedEndValue = formattedEndValue.charAt(0).toUpperCase() + formattedEndValue.slice(1);
+      formattedEndValue =
+        formattedEndValue.charAt(0).toUpperCase() + formattedEndValue.slice(1);
 
       endSpace = getSpaceByName(formattedEndValue) || null;
 
@@ -791,8 +793,8 @@ async function init() {
 
       // If the endSpace is not found, show an alert
       //if (!endSpace) {
-       // alert("Please type or choose a correct end location name!");
-        //return; // Exit the function if the space is not found
+      // alert("Please type or choose a correct end location name!");
+      //return; // Exit the function if the space is not found
       //}
     } else {
       alert("Please select an end location.");
@@ -961,7 +963,7 @@ async function init() {
   // Event listener for start point
   entranceDropdownButton.addEventListener("click", () => {
     console.log("Entrance button at start point clicked.");
-    
+
     // Find the space with the name "Entrance"
     const entranceSpace = mapData
       .getByType("space")
@@ -969,14 +971,14 @@ async function init() {
 
     // Update startSpace with the found space
     startSpace = entranceSpace!;
-    startSearchBar.value = "Main Entrance";//need to be Main Entrance!!!!!
+    startSearchBar.value = "Main Entrance"; //need to be Main Entrance!!!!!
     console.log("startSpace updated as Entrance:", startSpace);
   });
 
   // Event listener for end point (if required)
   entranceDropdownButtonEndPoint?.addEventListener("click", () => {
     console.log("Entrance button at end point clicked.");
-    
+
     // Find the space with the name "Entrance"
     const entranceSpaceEnd = mapData
       .getByType("space")
@@ -988,8 +990,6 @@ async function init() {
     console.log("endSpace updated as Entrance:", endSpace);
   });
   //new entrance button finish.........................................
-
-
 
   // Make the variable for the Module list button function:
   const moduleItemsContainer = document.getElementById(
@@ -1010,7 +1010,7 @@ async function init() {
   const populateModuleRooms = (container: HTMLDivElement) => {
     const spaces: Space[] = mapData.getByType("space");
     container.innerHTML = ""; // Clear existing items
-  
+
     // Define the specific order for Module spaces
     const moduleOrder = [
       "Module 1",
@@ -1029,39 +1029,48 @@ async function init() {
       "Module 10",
       "Module 11",
     ];
-  
+
     // Filter and group spaces into categories
-    const cafes = spaces.filter(space => space.name === "Cafe");
-    const clinicalPhotography = spaces.filter(space => space.name === "Clinical Photography");
-    const superClinicReception = spaces.filter(space => space.name === "SuperClinic Reception");
-  
+    const cafes = spaces.filter((space) => space.name === "Cafe");
+    const clinicalPhotography = spaces.filter(
+      (space) => space.name === "Clinical Photography"
+    );
+    const superClinicReception = spaces.filter(
+      (space) => space.name === "SuperClinic Reception"
+    );
+
     // Filter for Module spaces and sort them in the desired order
     const modules = spaces
-      .filter(space => space.name.includes("Module"))
+      .filter((space) => space.name.includes("Module"))
       .sort((a, b) => {
         const indexA = moduleOrder.indexOf(a.name);
         const indexB = moduleOrder.indexOf(b.name);
         return indexA - indexB;
       });
-  
+
     // Concatenate all the space groups in the desired order
-    const sortedSpaces = [...cafes, ...clinicalPhotography, ...modules, ...superClinicReception];
-  
+    const sortedSpaces = [
+      ...cafes,
+      ...clinicalPhotography,
+      ...modules,
+      ...superClinicReception,
+    ];
+
     // Populate the container with the sorted spaces
     sortedSpaces.forEach((space) => {
       const spaceOption = document.createElement("button");
       spaceOption.className = "button-13";
       spaceOption.textContent = space.name; // The property containing the space name
       container.appendChild(spaceOption);
-  
+
       // Add click event listener to capture the button text
       spaceOption.addEventListener("click", () => {
         const selectedSpaceName = spaceOption.textContent;
-  
+
         if (selectedSpaceName) {
           const spaceInstance: Space | undefined =
             getSpaceByName(selectedSpaceName); // Convert text to Space type
-  
+
           if (spaceInstance) {
             if (container === moduleItemsContainer) {
               // Update startSpace with the Space instance
@@ -1083,7 +1092,6 @@ async function init() {
       });
     });
   };
-  
 
   // Flag to track the visibility of the module items container
   let isModuleItemsVisible = false;
@@ -1124,7 +1132,7 @@ async function init() {
   // Event listener for start point
   surgeryCentreEntranceDropdownButton.addEventListener("click", () => {
     console.log("Entrance button at start point clicked.");
-    
+
     // Find the space with the name "Entrance"
     const entranceSpace = mapData
       .getByType("space")
@@ -1139,7 +1147,7 @@ async function init() {
   // Event listener for end point (if required)
   surgeryCentreEntranceDropdownButtonEndPoint?.addEventListener("click", () => {
     console.log("Entrance button at end point clicked.");
-    
+
     // Find the space with the name "Entrance"
     const entranceSpaceEnd = mapData
       .getByType("space")
@@ -1152,7 +1160,7 @@ async function init() {
   });
   // New entrance button (surgery centre) finish.........................................
 
-  // New surgery clinic centre locations list: 
+  // New surgery clinic centre locations list:
   // Make the variable for the Module list button function:
   const surgeryCentreModuleItemsContainer = document.getElementById(
     "module-items-container-surgeryCentre"
@@ -1169,92 +1177,92 @@ async function init() {
   ) as HTMLButtonElement; // Added this line
 
   // List of surgery centre spaces in the specified order
-const surgeryCentreOrder = [
-  "Renal - MSC Incentre Dialysis Unit",
-  "Renal - Rito Dialysis Centre",
-  "Surgical Centre Reception",
-  "Ward (Level 1)",
-  "Ward - Level 1 Reception",
-  "Ward (Level 2)",
-  "Ward - Level 2 Reception"
-];
+  const surgeryCentreOrder = [
+    "Renal - MSC Incentre Dialysis Unit",
+    "Renal - Rito Dialysis Centre",
+    "Surgical Centre Reception",
+    "Ward (Level 1)",
+    "Ward - Level 1 Reception",
+    "Ward (Level 2)",
+    "Ward - Level 2 Reception",
+  ];
 
-// Function to populate the surgery centre locations
-const populateSurgeryCentreRooms = (container: HTMLDivElement) => {
-  const spaces: Space[] = mapData.getByType("space");
-  container.innerHTML = ""; // Clear existing items
+  // Function to populate the surgery centre locations
+  const populateSurgeryCentreRooms = (container: HTMLDivElement) => {
+    const spaces: Space[] = mapData.getByType("space");
+    container.innerHTML = ""; // Clear existing items
 
-  // Filter surgery center locations in the defined order
-  const surgeryCentreSpaces = spaces
-    .filter((space) => surgeryCentreOrder.includes(space.name));
+    // Filter surgery center locations in the defined order
+    const surgeryCentreSpaces = spaces.filter((space) =>
+      surgeryCentreOrder.includes(space.name)
+    );
 
-  // Populate the container with the sorted spaces
-  surgeryCentreSpaces.forEach((space) => {
-    const spaceOption = document.createElement("button");
-    spaceOption.className = "button-13";
-    spaceOption.textContent = space.name; // The property containing the space name
-    container.appendChild(spaceOption);
+    // Populate the container with the sorted spaces
+    surgeryCentreSpaces.forEach((space) => {
+      const spaceOption = document.createElement("button");
+      spaceOption.className = "button-13";
+      spaceOption.textContent = space.name; // The property containing the space name
+      container.appendChild(spaceOption);
 
-    // Add click event listener to capture the button text
-    spaceOption.addEventListener("click", () => {
-      const selectedSpaceName = spaceOption.textContent;
+      // Add click event listener to capture the button text
+      spaceOption.addEventListener("click", () => {
+        const selectedSpaceName = spaceOption.textContent;
 
-      if (selectedSpaceName) {
-        const spaceInstance: Space | undefined = getSpaceByName(selectedSpaceName); // Convert text to Space type
+        if (selectedSpaceName) {
+          const spaceInstance: Space | undefined =
+            getSpaceByName(selectedSpaceName); // Convert text to Space type
 
-        if (spaceInstance) {
-          if (container === surgeryCentreModuleItemsContainer) {
-            // Update startSpace with the Space instance for surgery centre
-            startSpace = spaceInstance;
-            startSearchBar.value = spaceOption.textContent!;
-            console.log("startSpace updated:", startSpace);
-            highlightSpace(startSpace);
-          } else if (container === surgeryCentreModuleItemsContainerEndPoint) {
-            // Update endSpace with the Space instance
-            endSpace = spaceInstance;
-            endSearchBar.value = spaceOption.textContent!;
-            console.log("endSpace updated:", endSpace);
-            highlightSpace(endSpace);
+          if (spaceInstance) {
+            if (container === surgeryCentreModuleItemsContainer) {
+              // Update startSpace with the Space instance for surgery centre
+              startSpace = spaceInstance;
+              startSearchBar.value = spaceOption.textContent!;
+              console.log("startSpace updated:", startSpace);
+              highlightSpace(startSpace);
+            } else if (
+              container === surgeryCentreModuleItemsContainerEndPoint
+            ) {
+              // Update endSpace with the Space instance
+              endSpace = spaceInstance;
+              endSearchBar.value = spaceOption.textContent!;
+              console.log("endSpace updated:", endSpace);
+              highlightSpace(endSpace);
+            }
+          } else {
+            console.error("Space not found for:", selectedSpaceName);
           }
-        } else {
-          console.error("Space not found for:", selectedSpaceName);
         }
-      }
+      });
     });
+  };
+
+  // Flags to track the visibility of the surgeryCentreModuleItemsContainer
+  let isSurgeryCentreItemsVisible = false;
+  let isSurgeryCentreItemsVisibleEndPoint = false;
+
+  // Toggle surgery centre rooms visibility when the surgeryCentreModuleButton is clicked
+  surgeryCentreModuleButton.addEventListener("click", () => {
+    if (isSurgeryCentreItemsVisible) {
+      surgeryCentreModuleItemsContainer.style.display = "none"; // Hide if already visible
+    } else {
+      populateSurgeryCentreRooms(surgeryCentreModuleItemsContainer); // Populate the surgery centre rooms
+      surgeryCentreModuleItemsContainer.style.display = "block"; // Show the surgery centre rooms
+    }
+    isSurgeryCentreItemsVisible = !isSurgeryCentreItemsVisible; // Toggle the flag
   });
-};
 
+  // Toggle surgery centre rooms visibility for the endpoint when the surgeryCentreModuleButtonEndPoint is clicked
+  surgeryCentreModuleButtonEndPoint.addEventListener("click", () => {
+    if (isSurgeryCentreItemsVisibleEndPoint) {
+      surgeryCentreModuleItemsContainerEndPoint.style.display = "none"; // Hide if already visible
+    } else {
+      populateSurgeryCentreRooms(surgeryCentreModuleItemsContainerEndPoint); // Populate the surgery centre rooms
+      surgeryCentreModuleItemsContainerEndPoint.style.display = "block"; // Show the surgery centre rooms
+    }
+    isSurgeryCentreItemsVisibleEndPoint = !isSurgeryCentreItemsVisibleEndPoint; // Toggle the flag
+  });
 
-// Flags to track the visibility of the surgeryCentreModuleItemsContainer
-let isSurgeryCentreItemsVisible = false;
-let isSurgeryCentreItemsVisibleEndPoint = false;
-
-// Toggle surgery centre rooms visibility when the surgeryCentreModuleButton is clicked
-surgeryCentreModuleButton.addEventListener("click", () => {
-  if (isSurgeryCentreItemsVisible) {
-    surgeryCentreModuleItemsContainer.style.display = "none"; // Hide if already visible
-  } else {
-    populateSurgeryCentreRooms(surgeryCentreModuleItemsContainer); // Populate the surgery centre rooms
-    surgeryCentreModuleItemsContainer.style.display = "block"; // Show the surgery centre rooms
-  }
-  isSurgeryCentreItemsVisible = !isSurgeryCentreItemsVisible; // Toggle the flag
-});
-
-// Toggle surgery centre rooms visibility for the endpoint when the surgeryCentreModuleButtonEndPoint is clicked
-surgeryCentreModuleButtonEndPoint.addEventListener("click", () => {
-  if (isSurgeryCentreItemsVisibleEndPoint) {
-    surgeryCentreModuleItemsContainerEndPoint.style.display = "none"; // Hide if already visible
-  } else {
-    populateSurgeryCentreRooms(surgeryCentreModuleItemsContainerEndPoint); // Populate the surgery centre rooms
-    surgeryCentreModuleItemsContainerEndPoint.style.display = "block"; // Show the surgery centre rooms
-  }
-  isSurgeryCentreItemsVisibleEndPoint = !isSurgeryCentreItemsVisibleEndPoint; // Toggle the flag
-});
-
-
-
-
-  // New surgery clinic centre locations list finish............................. 
+  // New surgery clinic centre locations list finish.............................
 
   //dropdown list end.......................................................
 
@@ -1313,36 +1321,36 @@ surgeryCentreModuleButtonEndPoint.addEventListener("click", () => {
     }
   });
   // Define a new main entrance upright arrow icon pointing up
-const mainEntranceArrowIcon = `
+  const mainEntranceArrowIcon = `
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none">
     <path d="M12 19V6M12 6L7 11M12 6L17 11" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" />
     <circle cx="12" cy="6" r="2" fill="#4CAF50"/>
 </svg>`;
 
-// Fetch and label spaces
-mapData.getByType("space").forEach((space) => {
-  // Existing labeling logic for toilets and café...
+  // Fetch and label spaces
+  mapData.getByType("space").forEach((space) => {
+    // Existing labeling logic for toilets and café...
 
-  // Check if the space name contains "entrance" (case insensitive)
-  if (space.name && space.name.toLowerCase().includes("entrance")) {
-    mapView.Labels.add(space, space.name, { // Keep the original name here
-      rank: "always-visible",
-      appearance: {
-        marker: {
-          foregroundColor: {
-            active: "white",
-            inactive: "white",
+    // Check if the space name contains "entrance" (case insensitive)
+    if (space.name && space.name.toLowerCase().includes("entrance")) {
+      mapView.Labels.add(space, space.name, {
+        // Keep the original name here
+        rank: "always-visible",
+        appearance: {
+          marker: {
+            foregroundColor: {
+              active: "white",
+              inactive: "white",
+            },
+            icon: mainEntranceArrowIcon, // Use the new icon
           },
-          icon: mainEntranceArrowIcon, // Use the new icon
+          text: {
+            foregroundColor: "#063970",
+          },
         },
-        text: {
-          foregroundColor: "#063970",
-        },
-      },
-    });
-  }
-});
-
+      });
+    }
+  });
 
   //////////////////////////////////////////
   //searchingBar Dropdown list function above.
