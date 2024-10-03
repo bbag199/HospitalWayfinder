@@ -197,7 +197,7 @@ nav {
 
 .drop-wrapper{
   position: absolute;
-  bottom: 150px;
+  bottom: 198px;
   right:20px;
   z-index: 1000;
 }
@@ -449,7 +449,7 @@ nav {
 .icons-container {
   z-index: 1000;
   position:absolute;
-  bottom: 55px;
+  bottom: 52px;
   left: 10px;
   display: flex;
   justify-content: flex-start;
@@ -462,6 +462,7 @@ nav {
 .icons-container > button {
   border-radius: 5px;
   padding: 5px 10px;
+  height: 40px;
   position: relative;
   border: 1px solid transparent;
   outline: none;

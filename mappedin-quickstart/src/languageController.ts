@@ -87,26 +87,30 @@ export function updateSettingsLabels() {
     fromField.placeholder = i18n.t("From");
   }
 
+  const isSmallScreen = window.innerWidth <= 430;
+
   const directionsBtn = document.getElementById(
     "get-directions"
   ) as HTMLElement;
   if (directionsBtn) {
-    directionsBtn.innerText = i18n.t("GetDirections");
+    directionsBtn.innerText = isSmallScreen ? "Go" : i18n.t("GetDirections");
   }
 
   const stopNavigationBtn = document.getElementById(
     "stop-navigation"
   ) as HTMLElement;
   if (stopNavigationBtn) {
-    stopNavigationBtn.innerText = i18n.t("StopNavigation");
+    stopNavigationBtn.innerText = isSmallScreen
+      ? "Stop"
+      : i18n.t("StopNavigation");
   }
 
-  const emergencyBtn = document.querySelector(
-    "button[data-emergency-btn]"
-  ) as HTMLButtonElement;
-  if (emergencyBtn) {
-    emergencyBtn.innerText = i18n.t("EmergencyExit");
-  }
+  // const emergencyBtn = document.querySelector(
+  //   "button[data-emergency-btn]"
+  // ) as HTMLButtonElement;
+  // if (emergencyBtn) {
+  //   emergencyBtn.innerText = i18n.t("EmergencyExit");
+  // }
 
   const modeSelect = document.getElementById("mode") as HTMLSelectElement;
 
