@@ -199,6 +199,7 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
       appearance: {
         text: {
           foregroundColor: "#063970", // Text color for the labels
+          size: getCurrentFontSize(),
         },
       },
     });
@@ -259,7 +260,6 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
     }
   });
 }
-
 
 //handle language switching
 export function languageSwitcher(mapView: MapView, spaces: Space[]) {
