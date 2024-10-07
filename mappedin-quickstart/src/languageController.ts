@@ -23,18 +23,30 @@ export function updateSettingsLabels() {
 
   const receptionBtn = document.getElementById("reception-btn");
   if (receptionBtn) {
-    receptionBtn.innerText = i18n.t("Reception");
-  }
+    receptionBtn.childNodes.forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.nodeValue = i18n.t("Reception");
+      }
+    });
+  }  
 
   const cafeBtn = document.getElementById("cafe-btn");
   if (cafeBtn) {
-    cafeBtn.innerText = i18n.t("Cafe");
-  }
+    cafeBtn.childNodes.forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.nodeValue = i18n.t("Cafe");
+      }
+    });
+  } 
 
   const toiletBtn = document.getElementById("toilet-btn");
   if (toiletBtn) {
-    toiletBtn.innerText = i18n.t("Toilets");
-  }
+    toiletBtn.childNodes.forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.nodeValue = i18n.t("Toilets");
+      }
+    });
+  }  
 
   const stackMapButton = document.querySelector(
     ".reset-button.mi-button"
