@@ -454,8 +454,7 @@ nav {
 
 .icons-container {
   z-index: 1000;
-  position:absolute;
-  top: 28%; 
+  position: relative;
   left: 10px;
   display: flex;
   justify-content: flex-start;
