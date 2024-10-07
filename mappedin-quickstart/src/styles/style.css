@@ -1,0 +1,627 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+nav {
+  background-color: #ffffff;
+  color: rgb(15, 34, 64);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0 1rem;
+  font-weight: bold;
+}
+.logo {
+  height: 40px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+}
+.nav-links a {
+  color: rgb(15, 23, 47);
+  text-decoration: none;
+  margin: 0 1.5rem;
+  font-size: 1rem;
+  transition: color 0.3s, transform 0.3s;
+}
+.nav-links a:hover {
+  color: #ffcc00;
+  transform: scale(1.05);
+}
+#mappedin-map {
+  flex: 1;
+  width: 100%;
+  height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
+  height: calc(100% - 120px); /* Adjust height to accommodate navbar and search container */
+  position: relative;
+}
+.search-container {
+  position: absolute;
+  top: 10px; /* Adjusted to be below the navbar */
+  left: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/*Check the media for the phone size!!!!!*/
+@media (max-width: 768px) { /* Adjust for smaller screens, such as tablets and phones */
+  .search-container {
+    position: absolute;
+    top: 10px; /* Move closer to the top */
+    left: 50%;
+    transform: translateX(-50%); /* Center the search container horizontally */
+    width: 100%; /* Full width on small screens */
+    padding: 0 10px; /* Add padding to avoid touching the edges of the screen */
+    z-index: 1050; /* Make sure it stays on top */
+  }
+
+  .search-bar, .search-results,
+  .directions-btn, .stop-nav-btn {
+    width: 300px;; /* Full width of the search input and results */
+     /* Ensure results fit within the container */
+  }
+
+  /* Ensure the icons container follows after the search-container */
+  .icons-container {
+    position: relative; /* Remove absolute positioning */
+    margin-top: 10px; /* Add some space below the search container */
+    padding-left: 20px; /* Ensure it's always 20px from the left side */
+    display: block; /* Make sure it's visible */
+    width: calc(350px - 30px); /* Ensure full width while keeping 20px padding */
+    left: 20px;
+  }
+}
+
+@media (max-width: 430px) { /* Further adjustments for very small screens like phones */
+  .search-container {
+    top: 0px; /* Stick to the very top on small screens */
+    padding: 5px; /* Reduce padding to fit more content */
+  }
+
+  .search-bar, .search-results,/*.directions-btn, .stop-nav-btn,*/
+   .search-list-container {
+    width: 220px; /* Full width of the search input and buttons */
+    max-width: 220px /* Ensure it stays within the container */
+  }
+
+  .icons-container {
+    position: absolute; /* Remove absolute positioning */
+    margin-top: 0px; /* Add some space below the search container */
+    padding-left: 0px; /* Ensure it's always 20px from the left side */
+    left: 0px;
+  }
+}
+
+/*Change the get direction and stop navigation button into square shape in phone version*/
+@media (max-width: 430px) {
+  .directions-btn {
+    height: 36px;
+    width: 45px;
+    position: fixed;
+    z-index: 1000; /* Ensure it's above other elements */
+    padding: 0px; /* Reduce padding for small screens */
+    font-size: 12px; /* Adjust font size for small buttons */
+    left: 230px; /* Reduce left margin to fit smaller screen */
+    top: 5px;
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    text-align: center; /* Ensure text is centered */
+  }
+
+  .stop-nav-btn {
+    height: 36px;
+    width: 45px;
+    position: fixed;
+    z-index: 1000; /* Ensure it's above other elements */
+    padding: 0px; /* Reduce padding for small screens */
+    font-size: 12px; /* Adjust font size for small buttons */
+    left: 230px; /* Reduce left margin to fit smaller screen */
+    top: 51px;
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    text-align: center; /* Ensure text is centered */
+  }
+}
+
+/*floor selector set up */
+#floor-selector2 {
+  position: absolute;
+  bottom: 20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  z-index: 1000; /* Ensure it is above other elements */
+  
+  height: 30px; /* Set width to 35px */
+  font-size: 12px; /* Set font size to 12px */
+  border: 1px solid #ccc; /* Light border for the frame */
+  border-radius: 4px; /* Rounded corners */
+  padding: 4px; /* Padding inside the select box */
+  background-color: #fff; /* Background color */
+  color: #1c1c1c; /* Text color */
+}
+
+/*accessibility button set up*/
+#accessibility-btn {
+  position: absolute;
+  height: 45px;
+  width: 45px;
+  bottom: 102px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  z-index: 10000;
+}
+
+/*Testing the hambergur drop up menu*/
+/* The container <div class=drop-wrapper> - needed to position the dropup content */
+.btn{
+  border: none;
+  outline: none;
+  background-color: #0F2240;
+  color: #f3f3f3;
+  border-radius:5px;
+  width: 45px;
+  height: 45px;
+  padding: 14px 5px;
+  
+}
+
+.btn.active {
+  box-shadow: 0 0 0 0.125rem rgba(13,128,250,0.5);
+
+}
+
+.drop-wrapper{
+  position: absolute;
+  bottom: 150px;
+  right:20px;
+  z-index: 1000;
+}
+
+.drop-menu{
+  display: none;
+  position: absolute;
+  width: 45px;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 3px 0 #ccc;
+  background-color: #f9f9f9;
+  border-radius:5px;
+}
+.drop-menu.active {
+  display: block;
+}
+
+
+.dropup {
+  bottom: 100%;
+  margin-bottom:0.125rem;
+}
+
+
+.drop-menu a{
+  display: block;
+  padding: 10px 10px; 
+  text-decoration: none;
+  color: #343434;
+}
+
+/*Testing the hambergur drop up menu above*/
+
+/*new stack map button inside the drop up list:*/
+
+.stackmap-btn {
+  width: 42.5px;
+  height: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 1px;
+  color: rgb(21, 15, 15);
+  background-color: #f9f9f9;
+  padding: 10px 10px;
+  text-decoration: none;
+  text-align: left; /* Aligns text to the left */
+}
+
+.stackmap-btn.active {
+  background-color: #27b7ff; /* Background color for the active state */
+}
+
+/*new emergency button style with icon*/
+.emergency-btn {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  bottom: 54px;
+  right: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 0; /* Adjust padding to remove extra space */
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  z-index: 1000;
+}
+
+.search-bar {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+}
+.search-results {
+  background-color: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 300px;
+  display: none;
+}
+.search-result-item {
+  padding: 5px;
+  cursor: pointer;
+}
+.search-result-item:hover {
+  background-color: #f0f0f0;
+}
+
+/*Setting button style*/
+.settings-btn {
+  
+  min-width: 42.5px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: rgb(15, 34, 64);
+  border: none;
+  border-radius: 1px;
+  color: rgb(255, 255, 255);
+  padding: 10px 10px;
+  text-decoration: none;
+  display: block;
+
+  text-align: left; /* Aligns text to the left */
+}
+
+.directions-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: rgb(15, 34, 64);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+}
+
+.directions-btn:hover {
+  background-color: rgb(30, 59, 104);
+  transform: scale(1.05); 
+}
+
+.stop-nav-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #d35400;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.stop-nav-btn:hover {
+  background-color: #e67e22; 
+  transform: scale(1.05); 
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1050;/* please do not change, this will keep the setting window on the top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 20px;
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  max-width:500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Added box-shadow for better visibility */
+  position: relative;
+  z-index: 1060; /* Ensure content is above modal background */
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Add the enableStackMap button style here: */
+.reset-button {
+  background-color: transparent;
+  border-width: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 0;
+}
+.mi-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  user-select: none;
+  pointer-events: all;
+  position: fixed; /* Use fixed to keep the button in the same place even when scrolling */
+  bottom: 78px; /* Distance from the bottom of the screen */
+  right: 20px; /* Distance from the right side of the screen */
+  height: 36px;
+  width: fit-content;
+  border-radius: 5px;
+  background: #0F2240;
+  color: #ffffff; /*set font color to white*/
+  box-shadow: 0 4px 0 0 var(--burnt-orange), 0 3px 8px 0 rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 7.5px;
+  z-index: 1000; /* Ensure the button stays on top of other elements */
+}
+
+.mi-button:hover:not(.mobile) {
+  filter: brightness(0.85);
+}
+
+.mi-button.pressed,
+.mi-button:active {
+  filter: brightness(0.8) !important;
+  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.3);
+}
+
+.mi-button > svg {
+  margin-right: 0;
+}
+
+.icons-container {
+  margin-top: 20px; /* Add some space below the search container */
+  padding-left: 10px; /* Ensure it's always 20px from the left side */
+  position: relative; /* Remove absolute positioning */
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 0px; /* You can adjust this value as needed to add spacing */
+}
+
+.icons-container > button {
+  border-radius: 20px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.icons-container > button:hover {
+  border: 1px dotted #1d1d1d;
+}
+
+/* Testing the search-list-container style here:*/
+.search-list-container {
+  display: none;  /*set the default is not display, need to change to display in Typescript */
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 300px;
+
+  border-radius: 5px;
+  padding: 5px;   /* Ensure the content, including buttons, is 8px away from the edge */
+}
+
+/*style button for module and entrance button button 13:*/
+
+.button-13 {
+  background-color: #f1f2ff;
+  border: 1px solid #f1f2ff;
+  border-radius: 4px;
+  box-shadow:none; /*rgba(213, 217, 217, .5) 0 2px 5px 0;*/
+  box-sizing: border-box;
+  color: #464646;
+  cursor: pointer;
+  display: inline-block;
+  /*font-family: "Amazon Ember",sans-serif;*/
+  font-size: 14px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: calc(100% - 10px);
+
+  margin: 4px;
+  
+}
+
+.button-13:hover {
+  background-color: #f7fafa;
+}
+
+.button-13:focus {
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  outline: 0;
+}
+
+/* Specific button style for #module-items-container */
+
+#module-items-container-endpoint button,
+#module-items-container button {
+  background-color: #f1f2ff; /* Same background color as .button-13 */
+  border: none; /* No border */
+  box-shadow: none; /* No shadow */
+  border-radius: 1px;
+  box-sizing: border-box;
+  color: #535353;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: calc(100% - 36px); /* Adjust width to fit within container with 10px space on left */
+
+  margin: 2px; /* No margin */
+  margin-left: 30px; /* 10px space on the left-hand side */
+  margin-right: 6px;
+}
+
+
+#module-items-container-endpoint button:hover,
+#module-items-container button:hover {
+  background-color: #f7fafa; /* Same hover effect as .button-13 */
+}
+
+
+#module-items-container-endpoint button:focus,
+#module-items-container button:focus {
+  border-color: #008296; /* Same focus effect as .button-13 */
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
+  outline: 0;
+}
+
+/* Specific button style for #entrance-items-container */
+#entrance-items-container-endpoint button,
+#entrance-items-container button {
+  background-color: #f1f2ff; /* Same background color as .button-13 */
+  border: none; /* No border */
+  box-shadow: none; /* No shadow */
+  border-radius: 1px;
+  box-sizing: border-box;
+  color: #535353;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: calc(100% - 36px); /* Adjust width to fit within container with 10px space on left */
+
+  margin: 2px; /* No margin */
+  margin-left: 30px; /* 10px space on the left-hand side */
+  margin-right: 6px;
+}
+
+#entrance-items-container-endpoint button:hover,
+#entrance-items-container button:hover {
+  background-color: #f7fafa; /* Same hover effect as .button-13 */
+}
+
+#entrance-items-container-endpoint button:focus,
+#entrance-items-container button:focus {
+  border-color: #008296; /* Same focus effect as .button-13 */
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
+  outline: 0;
+}
+
+
+/**/
+/* Specific button style for #reception-items-container */
+#reception-items-container-endpoint button,
+#reception-items-container button {
+  background-color: #f1f2ff; /* Same background color as .button-13 */
+  border: none; /* No border */
+  box-shadow: none; /* No shadow */
+  border-radius: 1px;
+  box-sizing: border-box;
+  color: #535353;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: calc(100% - 36px); /* Adjust width to fit within container with 10px space on left */
+
+  margin: 2px; /* No margin */
+  margin-left: 30px; /* 10px space on the left-hand side */
+  margin-right: 6px;
+}
+
+#reception-items-container-endpoint button:hover,
+#reception-items-container button:hover {
+  background-color: #f7fafa; /* Same hover effect as .button-13 */
+}
+
+#reception-items-container-endpoint button:focus,
+#reception-items-container button:focus {
+  border-color: #008296; /* Same focus effect as .button-13 */
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
+  outline: 0;
+}
+
