@@ -83,9 +83,10 @@ nav {
   /* Ensure the icons container follows after the search-container */
   .icons-container {
     margin-top: 20px; /* Add some space below the search container */
-    top: 10px;
+    bottom: 52px;
     display: flex; /* Make sure it's visible */
     width: calc(100% - 20px); /* Ensure full width while keeping 20px padding */
+    flex-direction: column-reverse;
   }
 }
 
@@ -103,11 +104,15 @@ nav {
 
   .icons-container {
     position: relative; /* Remove absolute positioning */
-    margin-top: 20px; /* Add some space below the search container */
+    margin-top: 2px; /* Add some space below the search container */
     padding-left: 2px; /* Ensure it's always 20px from the left side */
-    top: 5px;
+    left: -35px;
+    bottom: 52px;
     display: flex;
     justify-content: flex-start;
+    flex-direction: column-reverse;
+    gap: 10px;
+    width:150px;
   }
 }
 
@@ -449,7 +454,8 @@ nav {
 
 .icons-container {
   z-index: 1000;
-  position: relative;
+  position:absolute;
+  top: 28%; 
   left: 10px;
   display: flex;
   justify-content: flex-start;
