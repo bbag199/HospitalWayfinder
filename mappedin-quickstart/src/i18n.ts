@@ -25,7 +25,6 @@ const resources = {
       // EmergencyExit: "Emergency Exit",
       "Main Reception": "Main Reception",
       "Module 6 Reception": "Module 6 Reception",
-      "Manukau Surgical Centre Reception": "Manukau surgical centre Reception",
       Reception: "Reception",
       "Corridor between Super Clinic and Surgical Centre":
         "Corridor between Super Clinic and Surgical Centre",
@@ -68,6 +67,7 @@ const resources = {
       "Unisex Toilet (GF)": "Unisex Toilet (GF)",
       "Unisex Toilets (GF)": "Unisex Toilets (GF)",
       "SuperClinic Reception": "SuperClinic Reception",
+      "Surgical Centre Reception": "Surgical Centre Reception",
       "Main Entrance": "Main Entrance",
       "Renal - Rito Dialysis Centre": "Renal - Rito Dialysis Centre",
       "Surgical Centre Toilets (GF)": "Surgical Centre Toilets (GF)",
@@ -103,7 +103,6 @@ const resources = {
       // EmergencyExit: "Putanga Whawhati Tata",
       "Main Reception": "Whakatau Matua",
       "Module 6 Reception": "Teihana Wāhanga 6",
-      "Manukau surgical centre Reception": "Teihana Pokanga o Manukau",
       Reception: "Tari",
       "Corridor between Super Clinic and Surgical Centre":
         "Arawhata i waenganui i te Hōhipera Matua me te Whare Pokanga",
@@ -185,8 +184,6 @@ const resources = {
       "Corridor between Super Clinic and Surgical Centre":
         "超级诊所和外科中心之间的走廊",
       "Module 6 Reception": "模块 6 接待处",
-      "Manukau surgical centre Reception": "马努考外科中心接待处",
-      EnableStackMap: "启用叠加地图",
       DisableStackMap: "禁用叠加地图",
       "Entrance(surgical centre)": "入口(外科中心)",
       Entrance: "入口",
@@ -263,8 +260,6 @@ const resources = {
       // EmergencyExit: "緊急出口",
       "Main Reception": "主接待處",
       "Module 6 Reception": "模組 6 接待處",
-      "Manukau surgical centre Reception": "馬努考外科中心接待處",
-      Reception: "接待處",
       "Corridor between Super Clinic and Surgical Centre":
         "超級診所和外科中心之間的走廊",
       EnableStackMap: "啟用疊加地圖",
@@ -341,8 +336,6 @@ const resources = {
       // EmergencyExit: "Lối Thoát Hiểm",
       "Main Reception": "Lễ tân chính",
       "Module 6 Reception": "Quầy tiếp tân của Mô-đun 6",
-      "Manukau surgical centre Reception":
-        "Quầy tiếp tân Trung tâm phẫu thuật Manukau",
       Reception: "Tiếp Tân",
       "Corridor between Super Clinic and Surgical Centre":
         "Hành lang giữa Phòng khám siêu và Trung tâm phẫu thuật",
@@ -421,7 +414,7 @@ const resources = {
       StopNavigation: "Taofi Faʻatautaiga",
       // EmergencyExit: "Ala Faafuasei",
       "Module 6 Reception": "Tali le Module 6",
-      "Manukau surgical centre Reception": "Tali le nofoaga tipitipi a Manukau",
+
       Reception: "Talia'iga",
       "Corridor between Super Clinic and Surgical Centre":
         "Fala o lo'o i le va o le Super Clinic ma le Nofoaga Tipitipi",
@@ -496,8 +489,6 @@ const resources = {
       StopNavigation: "Taofi ngāue fakalotofonua",
       // EmergencyExit: "Hala Fa'atu'utu'unga",
       "Module 6 Reception": "Fakatokanga 'a e Module 6",
-      "Manukau surgical centre Reception":
-        "Fakatokanga 'i he centre tipitipi Manukau",
       Reception: "Talitali",
       "Corridor between Super Clinic and Surgical Centre":
         "Hala ‘i he va ‘a e Super Clinic mo e Centre Tipitipi",
@@ -576,7 +567,6 @@ const resources = {
       // EmergencyExit: "ਐਮਰਜੈਂਸੀ ਐਗਜ਼ਿਟ",
       Reception: "ਰਿਸੈਪਸ਼ਨ",
       "Module 6 Reception": "ਮੋਡਿਊਲ 6 ਸਵਾਗਤ",
-      "Manukau surgical centre Reception": "ਮਨੁਕਾਉ ਸਰਜਿਕਲ ਸੈਂਟਰ ਸਵਾਗਤ",
       EnableStackMap: "ਸਟੈਕ ਮੈਪ ਨੂੰ ਐਨਬਲ ਕਰੋ",
       DisableStackMap: "ਸਟੈਕ ਮੈਪ ਨੂੰ ਅਯੋਗ ਕਰੋ",
       "Entrance(surgical centre)": "ਦਾਖਲਾ (ਸਰਜਰੀ ਸੈਂਟਰ)",
