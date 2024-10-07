@@ -1550,8 +1550,18 @@ async function init() {
       // Set the start space first
       startSpace = space; // Set the start space
       localStorage.setItem("startSpaceId", startSpaceIdFromUrl); // Update local storage
-      setCameraPosition(startSpaceIdFromUrl);
-      
+      if (startSpaceIdFromUrl === "s_197b07ea1bfd377b" ||
+        startSpaceIdFromUrl === "s_01606e647b37e1ee" || 
+        startSpaceIdFromUrl === "s_f41d58efd52a8b37" ||
+        startSpaceIdFromUrl === "s_73df75ed7805517d" ||
+        startSpaceIdFromUrl === "s_e9cd037ed27ccb23" ||
+        startSpaceIdFromUrl === "s_5a06fff93078718e" ) {
+       setCameraPosition(startSpaceIdFromUrl);
+       } 
+        else {
+        setCameraPosition(mapView.currentFloor.id); // Use the current floor's ID for camera positioning
+        }
+
       // Highlight the start space on the map
       mapView.updateState(space, { color: "#d4b2df" }); // Highlight the space
 
