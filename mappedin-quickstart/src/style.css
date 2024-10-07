@@ -82,11 +82,11 @@ nav {
 
   /* Ensure the icons container follows after the search-container */
   .icons-container {
-    position: relative; /* Remove absolute positioning */
     margin-top: 20px; /* Add some space below the search container */
-    padding-left: 40px; /* Ensure it's always 20px from the left side */
-    display: block; /* Make sure it's visible */
+    bottom: 52px;
+    display: flex; /* Make sure it's visible */
     width: calc(100% - 20px); /* Ensure full width while keeping 20px padding */
+    flex-direction: column-reverse;
   }
 }
 
@@ -107,6 +107,12 @@ nav {
     margin-top: 2px; /* Add some space below the search container */
     padding-left: 2px; /* Ensure it's always 20px from the left side */
     left: -35px;
+    bottom: 52px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column-reverse;
+    gap: 10px;
+    width:150px;
   }
 }
 
@@ -449,32 +455,30 @@ nav {
 .icons-container {
   z-index: 1000;
   position:absolute;
-  bottom: 52px;
+  top: 28%; 
   left: 10px;
   display: flex;
   justify-content: flex-start;
-  flex-direction: column-reverse;
   gap: 10px;
   margin-top: 1px; 
   width:150px;
 }
 
 .icons-container > button {
-  border-radius: 5px;
+  border-radius: 20px;
   padding: 5px 10px;
-  height: 40px;
-  position: relative;
   border: 1px solid transparent;
   outline: none;
   cursor: pointer;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
+  justify-content: center;
+  border: 1px solid #1d1d1d;
 }
 
 .icons-container > button:hover {
   border: 1px dotted #1d1d1d;
-  background-color: rgb(55, 161, 231);
-  transform: scale(1.05);
 }
 
 /* Testing the search-list-container style here:*/
