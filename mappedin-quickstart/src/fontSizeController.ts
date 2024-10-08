@@ -12,7 +12,7 @@ let currentFontSize = fontSizes.normal;
 export function applyFontSize(size: string, mapView: MapView, spaces: Space[]) {
   if (!mapView || !mapView.Labels) {
     console.error("mapView is not initialized or mapView.Labels undefined");
-    return; //testing
+    return; 
   }
 
   const fontSize =

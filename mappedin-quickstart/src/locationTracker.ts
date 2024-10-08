@@ -9,9 +9,9 @@ export class RealTimeLocationTracker {
   mappedinMarker: any;
 
   constructor(mappedinMapView: any) {
-    //testing
+    
     this.mappedinMapView = mappedinMapView;
-    this.mappedinMarker = null; //set null as default
+    this.mappedinMarker = null; 
     this.initialCoordinate = this.mappedinMapView.Camera.center;
   }
 
@@ -45,7 +45,7 @@ export class RealTimeLocationTracker {
         this.showError.bind(this),
         {
           enableHighAccuracy: true,
-          timeout: 10000, //
+          timeout: 10000, 
           maximumAge: 5000, //fetch fresh position every 5 secs
         }
       );
@@ -58,7 +58,7 @@ export class RealTimeLocationTracker {
   stopTracking() {
     if (this.watchId !== null) {
       navigator.geolocation.clearWatch(this.watchId);
-      console.log("Geolocation watch cleared:", this.watchId); //testing
+      console.log("Geolocation watch cleared:", this.watchId); 
       this.watchId = null;
       console.log("Stop tracking");
     }
@@ -93,7 +93,7 @@ export class RealTimeLocationTracker {
       pos.lng
     );
 
-    console.log("Mappedin coordinate:", mappedinCoordinate); //testing
+    console.log("Mappedin coordinate:", mappedinCoordinate); 
 
     //add marker to mappedin map
     if (!this.mappedinMarker) {

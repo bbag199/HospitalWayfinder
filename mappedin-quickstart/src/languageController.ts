@@ -117,13 +117,6 @@ export function updateSettingsLabels() {
       : i18n.t("StopNavigation");
   }
 
-  // const emergencyBtn = document.querySelector(
-  //   "button[data-emergency-btn]"
-  // ) as HTMLButtonElement;
-  // if (emergencyBtn) {
-  //   emergencyBtn.innerText = i18n.t("EmergencyExit");
-  // }
-
   const modeSelect = document.getElementById("mode") as HTMLSelectElement;
 
   if (modeSelect) {
@@ -294,7 +287,7 @@ export function languageSwitcher(mapView: MapView, spaces: Space[]) {
 export function applySettings(mapView: MapView, spaces: Space[]) {
   if (!mapView) {
     console.error("mapView is not available in applySettings");
-    return; //testing
+    return; 
   }
 
   const mode = (document.getElementById("mode") as HTMLSelectElement).value;
