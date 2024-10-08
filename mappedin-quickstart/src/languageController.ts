@@ -203,14 +203,14 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
   mapView.Labels.removeAll();
 
   spaces.forEach((space) => {
-    const translatedName = i18n.t(space.name); // Assuming you use i18n for translation
+    const translatedName = i18n.t(space.name); 
 
     // Re-add labels for all spaces, with translation applied
     mapView.Labels.add(space, translatedName, {
       rank: "always-visible",
       appearance: {
         text: {
-          foregroundColor: "#063970", // Text color for the labels
+          foregroundColor: "#063970", 
           size: getCurrentFontSize(),
         },
       },
@@ -226,7 +226,7 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
               active: "white",
               inactive: "white",
             },
-            icon: toiletsIcon, // Use your toilet icon
+            icon: toiletsIcon,
           },
           text: {
             foregroundColor: "#063970",
@@ -244,7 +244,7 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
               active: "white",
               inactive: "white",
             },
-            icon: coffeeMugIcon, // Use your cafe icon
+            icon: coffeeMugIcon, 
           },
           text: {
             foregroundColor: "#063970",
@@ -262,7 +262,7 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
               active: "white",
               inactive: "white",
             },
-            icon: mainEntranceArrowIcon, // Use your entrance icon
+            icon: mainEntranceArrowIcon, 
           },
           text: {
             foregroundColor: "#063970",
@@ -317,6 +317,5 @@ export function applySettings(mapView: MapView, spaces: Space[]) {
   modal.style.display = "none";
 }
 
-// Attach to window object to make it accessible in index.html
 (window as any).applySettings = applySettings;
 (window as any).languageSwitcher = languageSwitcher;
