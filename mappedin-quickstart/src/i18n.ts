@@ -258,6 +258,7 @@ const resources = {
       GetDirections: "獲取方向",
       StopNavigation: "停止導航",
       // EmergencyExit: "緊急出口",
+      Reception: "接待處",
       "Main Reception": "主接待處",
       "Module 6 Reception": "模組 6 接待處",
       "Corridor between Super Clinic and Surgical Centre":
