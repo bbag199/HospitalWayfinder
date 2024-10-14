@@ -50,16 +50,8 @@ async function init() {
   const mappedinDiv = document.getElementById("mappedin-map") as HTMLDivElement;
   const floorSelector = document.createElement("select");
 
-  //makine other stylish floorSelector:
-  //const floorSelectorNew = document.getElementById("floor-selector-new") as HTMLDivElement;
-  //floorSelectorNew.value = mapView.currentFloor.id;
-
   // Add styles to the floor selector to position it
   floorSelector.id = "floor-selector2";
-  //floorSelector.style.position = "absolute";
-  //floorSelector.style.top = "10px"; // Adjust as needed
-  //floorSelector.style.right = "10px"; // Adjust as needed
-  //floorSelector.style.zIndex = "1000"; // Ensure it is above other elements
 
   mappedinDiv.appendChild(floorSelector);
 
@@ -381,12 +373,14 @@ async function init() {
     }
   }
 
-  //Add the Stack Map and testing:
-  //1)Add the stack "enable button":
+  //Stack Map function:
+  /* This is the function that allows user to see the 3D version of the map.
+  *  The button will be hided in the drop up menu list at the right bottom side.
+  */ 
+  // 1. Add the stack "enable button":
   const stackMapButton = document.createElement("button");
   // Add any classes, text, or other properties (these two code can be linked to the css file):
   stackMapButton.className = "stackmap-btn";
-  //stackMapButton.textContent = i18n.t("StackMap");
 
   // 2. Create the icon element
   const icon = document.createElement("i");
@@ -395,9 +389,6 @@ async function init() {
 
   // Append the icon to the button
   stackMapButton.appendChild(icon);
-
-  // Append the button to the desired parent element:
-  //mappedinDiv.appendChild(stackMapButton);
 
   // 2. Find the `.drop-menu.dropup` container
   const dropMenuContainer = document.querySelector(".drop-menu.dropup");
@@ -414,8 +405,8 @@ async function init() {
     console.error("The .drop-menu.dropup container was not found.");
   }
 
-  //Testing: no show floors:
-  //Find the floor that need to do the Stack Map, at this case, we testing the Ground floor and Level 1
+  //No including other floors:
+  //Find the floor that need to do the Stack Map, at this case, we just create 3D version for the Ground floor and Level 1
   const noShowFloor2: Floor[] = mapData
     .getByType("floor")
     .filter(
@@ -424,8 +415,6 @@ async function init() {
         floor.name !== "SuperClinic & Surgical Centre Ground Lvl"
     );
 
-  // The enable Button is used to enable and disable Stacked Maps.
-  // The enable Button is used to enable and disable Stacked Maps.
   // The enable Button is used to enable and disable Stacked Maps.
   stackMapButton.onclick = () => {
     // Debug here:
@@ -454,7 +443,10 @@ async function init() {
   };
 
   //Emergency exit function:
-  //get the exit object (already build a exit01 and exit02 object in the dashboard map):
+  /* This function allows user to find the nearest emergency door in the map.
+  *  The button will be showed at the right bottom side with highlight red color.
+  */
+  //get the exit object (already build a exit01, exit02, exit03, exit04 object in the dashboard map):
   const exitSpace = mapData
     .getByType("object")
     .find((object) => object.name.includes("exit01"));
@@ -546,7 +538,7 @@ async function init() {
         const directions3 = mapView.getDirections(startSpace, exitSpace3!);
         const directions4 = mapView.getDirections(startSpace, exitSpace4!);
 
-        //debug the distance here:
+        //Debug the distance here:
         console.log("checking direcitions: ", directions?.distance);
         console.log("checking direcitions2: ", directions2?.distance);
         console.log("checking direcitions3: ", directions3?.distance);
@@ -849,8 +841,10 @@ async function init() {
   });
 
   // SearchingBar Dropdown list function:
-  // Testing the search list container:
-  // Will add four lists here: 1)Module (button) 2) Entrence (button) 3)Reception 4)Cafe
+  /* This function allows user to choose the module room or entrance from the search bar dropdown
+  *  list, so that the users can easily to choose the start and end point by clicking the options 
+  *  from the menu.
+  */ 
   // Function to show the dropdown
   const searchList = document.getElementById("search-list") as HTMLDivElement;
   const searchListEndPoint = document.getElementById(
@@ -868,16 +862,6 @@ async function init() {
     // Modified this function
     dropdown.style.display = "none";
   };
-
-  //testing here:
-  // Function to hide or show dropdown based on the input value
-  /* function toggleDropdownBasedOnValue(inputElement:HTMLInputElement, dropdownElement:HTMLDivElement) {
-    if (inputElement.value.trim() !== "") {
-      hideDropdown(dropdownElement); // Hide dropdown if the value is not empty
-    } else {
-      showDropdown(dropdownElement); // Show dropdown if the value is empty
-    }
-  } */
 
   // Show the dropdown when the user clicks on the search bar
   startSearchBar.addEventListener("focus", () => {
@@ -938,7 +922,7 @@ async function init() {
     }
   });
 
-  //testing: the user click on the start input bar then end point drop down will hide,
+  //The user click on the start input bar then end point drop down will hide,
   //same for the end point search bar:
   startSearchBar.addEventListener("click", () => {
     setTimeout(() => {
@@ -952,14 +936,13 @@ async function init() {
     }, 20);
   });
 
-  //create function according to the input string to find the Space from database:
+  //Function according to the input string to find the Space from database:
   function getSpaceByName(name: string): Space | undefined {
     // Retrieve the Space instance
     const spaceCollection: Space[] = mapData.getByType("space"); // get the space array from the mapData
     return spaceCollection.find((space) => space.name === name);
   }
 
-  //testing the search bar dropdown list, start from here.....................
   //Making the new entrance dropdown button work:
   const entranceDropdownButton = document.getElementById(
     "new-entrance-button"
@@ -997,7 +980,7 @@ async function init() {
     endSearchBar.value = "Main Entrance"; //need to be Main Entrance!!!!!
     console.log("endSpace updated as Entrance:", endSpace);
   });
-  //new entrance button finish.........................................
+  
 
   // Make the variable for the Module list button function:
   const moduleItemsContainer = document.getElementById(
@@ -1014,7 +997,7 @@ async function init() {
     "module-button-endpoint"
   ) as HTMLButtonElement; // Added this line
 
-  //testing create a new module list for superClinic Locations........................
+  //Create a new module list for superClinic Locations.
   const populateModuleRooms = (container: HTMLDivElement) => {
     const spaces: Space[] = mapData.getByType("space");
     container.innerHTML = ""; // Clear existing items
@@ -1117,7 +1100,7 @@ async function init() {
   });
 
   moduleButtonEndPoint.addEventListener("click", () => {
-    // Added this block**
+    
 
     if (isModuleItemsVisibleEndPoint) {
       moduleItemsContainerEndPoint.style.display = "none";
@@ -1166,7 +1149,7 @@ async function init() {
     endSearchBar.value = "Entrance(surgical centre)";
     console.log("endSpace updated as Entrance:", endSpace);
   });
-  // New entrance button (surgery centre) finish.........................................
+  
 
   // New surgery clinic centre locations list:
   // Make the variable for the Module list button function:
@@ -1270,9 +1253,9 @@ async function init() {
     isSurgeryCentreItemsVisibleEndPoint = !isSurgeryCentreItemsVisibleEndPoint; // Toggle the flag
   });
 
-  // New surgery clinic centre locations list finish.............................
+  
 
-  //dropdown list end.......................................................
+  
 
   // Define the toilets icon
   const toiletsIcon = `
