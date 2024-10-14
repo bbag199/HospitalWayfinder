@@ -3,7 +3,7 @@ import { applyMode } from "./modeController";
 import { MapView, Space } from "@mappedin/mappedin-js";
 import { getCurrentFontSize } from "./fontSizeController";
 
-//Function to update the labels in the settings modal based on the selected language
+// to update the labels in the settings modal based on the selected language
 export function updateSettingsLabels() {
   //web element translation
   const contactLink = document.getElementById("contact-link");
@@ -28,7 +28,7 @@ export function updateSettingsLabels() {
         node.nodeValue = i18n.t("Reception");
       }
     });
-  }  
+  }
 
   const cafeBtn = document.getElementById("cafe-btn");
   if (cafeBtn) {
@@ -37,7 +37,7 @@ export function updateSettingsLabels() {
         node.nodeValue = i18n.t("Cafe");
       }
     });
-  } 
+  }
 
   const toiletBtn = document.getElementById("toilet-btn");
   if (toiletBtn) {
@@ -46,7 +46,7 @@ export function updateSettingsLabels() {
         node.nodeValue = i18n.t("Toilets");
       }
     });
-  }  
+  }
 
   const stackMapButton = document.querySelector(
     ".reset-button.mi-button"
@@ -190,19 +190,18 @@ const mainEntranceArrowIcon = `
     <circle cx="12" cy="6" r="2" fill="#4CAF50"/>
 </svg>`;
 
-// Function to translate and label locations
+// to translate and label locations
 function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
-
   mapView.Labels.removeAll();
 
   spaces.forEach((space) => {
-    const translatedName = i18n.t(space.name); 
+    const translatedName = i18n.t(space.name);
 
     mapView.Labels.add(space, translatedName, {
       rank: "always-visible",
       appearance: {
         text: {
-          foregroundColor: "#063970", 
+          foregroundColor: "#063970",
           size: getCurrentFontSize(),
         },
       },
@@ -235,7 +234,7 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
               active: "white",
               inactive: "white",
             },
-            icon: coffeeMugIcon, 
+            icon: coffeeMugIcon,
           },
           text: {
             foregroundColor: "#063970",
@@ -253,7 +252,7 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
               active: "white",
               inactive: "white",
             },
-            icon: mainEntranceArrowIcon, 
+            icon: mainEntranceArrowIcon,
           },
           text: {
             foregroundColor: "#063970",
@@ -285,7 +284,7 @@ export function languageSwitcher(mapView: MapView, spaces: Space[]) {
 export function applySettings(mapView: MapView, spaces: Space[]) {
   if (!mapView) {
     console.error("mapView is not available in applySettings");
-    return; 
+    return;
   }
 
   const mode = (document.getElementById("mode") as HTMLSelectElement).value;

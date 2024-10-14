@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 const resources = {
+  // English
   en: {
     translation: {
       Contact: "Contact",
@@ -22,7 +23,6 @@ const resources = {
       From: "From: Search starting point...",
       GetDirections: "Get Directions",
       StopNavigation: "Stop Navigation",
-      // EmergencyExit: "Emergency Exit",
       "Main Reception": "Main Reception",
       "Module 6 Reception": "Module 6 Reception",
       Reception: "Reception",
@@ -81,6 +81,7 @@ const resources = {
     },
   },
 
+  // Māori translation
   mi: {
     translation: {
       Contact: "Whakapā",
@@ -100,7 +101,6 @@ const resources = {
       From: "Mai: Rapu waahi timatanga...",
       GetDirections: "Tikina nga Tohutohu",
       StopNavigation: "Whakamutu Whakaterenga",
-      // EmergencyExit: "Putanga Whawhati Tata",
       "Main Reception": "Whakatau Matua",
       "Module 6 Reception": "Teihana Wāhanga 6",
       Reception: "Tari",
@@ -159,6 +159,7 @@ const resources = {
     },
   },
 
+  // Chinese simplified translation
   cn: {
     translation: {
       Contact: "联系方式",
@@ -178,7 +179,6 @@ const resources = {
       From: "从: 搜索起点...",
       GetDirections: "获取方向",
       StopNavigation: "停止导航",
-      // EmergencyExit: "紧急出口",
       "Main Reception": "主接待处",
       Reception: "接待处",
       "Corridor between Super Clinic and Surgical Centre":
@@ -238,6 +238,7 @@ const resources = {
     },
   },
 
+  // Chinese Traditional translation
   tw: {
     translation: {
       Contact: "聯絡方式",
@@ -257,7 +258,6 @@ const resources = {
       From: "從: 搜索起點...",
       GetDirections: "獲取方向",
       StopNavigation: "停止導航",
-      // EmergencyExit: "緊急出口",
       Reception: "接待處",
       "Main Reception": "主接待處",
       "Module 6 Reception": "模組 6 接待處",
@@ -315,6 +315,7 @@ const resources = {
     },
   },
 
+  // Vietnamese translation
   vi: {
     translation: {
       Contact: "Liên hệ",
@@ -334,7 +335,6 @@ const resources = {
       From: "Từ: Tìm điểm xuất phát...",
       GetDirections: "Nhận chỉ đường",
       StopNavigation: "Dừng điều hướng",
-      // EmergencyExit: "Lối Thoát Hiểm",
       "Main Reception": "Lễ tân chính",
       "Module 6 Reception": "Quầy tiếp tân của Mô-đun 6",
       Reception: "Tiếp Tân",
@@ -394,6 +394,7 @@ const resources = {
     },
   },
 
+  // Samoan translation
   sm: {
     translation: {
       Contact: "Fa'afeso'ota'i",
@@ -413,7 +414,6 @@ const resources = {
       From: "Mai: Saili nofoaga amata...",
       GetDirections: "Maua Faatonuga",
       StopNavigation: "Taofi Faʻatautaiga",
-      // EmergencyExit: "Ala Faafuasei",
       "Module 6 Reception": "Tali le Module 6",
 
       Reception: "Talia'iga",
@@ -469,6 +469,7 @@ const resources = {
     },
   },
 
+  // Tongan translation
   to: {
     translation: {
       Contact: "Fetu'utaki",
@@ -488,7 +489,6 @@ const resources = {
       From: "Mei he: Fekumi ki he feitu'u kamata...",
       GetDirections: "Ma'u e ngaahi Fokotu'utu'u",
       StopNavigation: "Taofi ngāue fakalotofonua",
-      // EmergencyExit: "Hala Fa'atu'utu'unga",
       "Module 6 Reception": "Fakatokanga 'a e Module 6",
       Reception: "Talitali",
       "Corridor between Super Clinic and Surgical Centre":
@@ -546,6 +546,7 @@ const resources = {
     },
   },
 
+  // Indian Punjabi translation
   pa: {
     translation: {
       Contact: "ਸੰਪਰਕ ਕਰੋ",
@@ -565,7 +566,6 @@ const resources = {
       From: "ਤੋਂ: ਸ਼ੁਰੂਆਤੀ ਬਿੰਦੂ ਖੋਜੋ...",
       GetDirections: "ਦਿਸ਼ਾਵਾਂ ਪ੍ਰਾਪਤ ਕਰੋ",
       StopNavigation: "ਨੈਵੀਗੇਸ਼ਨ ਰੋਕੋ",
-      // EmergencyExit: "ਐਮਰਜੈਂਸੀ ਐਗਜ਼ਿਟ",
       Reception: "ਰਿਸੈਪਸ਼ਨ",
       "Module 6 Reception": "ਮੋਡਿਊਲ 6 ਸਵਾਗਤ",
       EnableStackMap: "ਸਟੈਕ ਮੈਪ ਨੂੰ ਐਨਬਲ ਕਰੋ",

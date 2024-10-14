@@ -5,6 +5,7 @@ const modes: { [key: string]: string } = {
   dark: "https://tiles-cdn.mappedin.com/styles/midnightblue/style.json",
 };
 
+// to apply the selected mode to the map
 export function applyMode(mode: string, mapView: MapView) {
   if (!mapView || !mapView.Outdoor) {
     console.error("mapView is not initialized or mapView.Outdoor is undefined");

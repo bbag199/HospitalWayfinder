@@ -9,10 +9,11 @@ const fontSizes = {
 
 let currentFontSize = fontSizes.normal;
 
+/* to apply the selected font size to map labels */
 export function applyFontSize(size: string, mapView: MapView, spaces: Space[]) {
   if (!mapView || !mapView.Labels) {
     console.error("mapView is not initialized or mapView.Labels undefined");
-    return; 
+    return;
   }
 
   const fontSize =
@@ -34,10 +35,8 @@ export function applyFontSize(size: string, mapView: MapView, spaces: Space[]) {
   });
 }
 
-export function fontSizesSwitcher(
-  mapView: MapView,
-  spaces: Space[],
-) {
+/* switch font size when user selects a different option */
+export function fontSizesSwitcher(mapView: MapView, spaces: Space[]) {
   const fontSizeSelector = document.getElementById(
     "font-size"
   ) as HTMLSelectElement;
@@ -46,14 +45,15 @@ export function fontSizesSwitcher(
     const selectedSize = (e.target as HTMLSelectElement).value;
     const currentLanguage = i18n.language;
 
-    i18n.changeLanguage(currentLanguage,()=>{
+    i18n.changeLanguage(currentLanguage, () => {
       applyFontSize(selectedSize, mapView, spaces);
     });
   });
 
-  applyFontSize(fontSizeSelector.value,mapView,spaces);
+  applyFontSize(fontSizeSelector.value, mapView, spaces);
 }
 
+/* get the current font size */
 export function getCurrentFontSize() {
   return currentFontSize;
 }
