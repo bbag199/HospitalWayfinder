@@ -9,9 +9,8 @@ export class RealTimeLocationTracker {
   mappedinMarker: any;
 
   constructor(mappedinMapView: any) {
-    
     this.mappedinMapView = mappedinMapView;
-    this.mappedinMarker = null; 
+    this.mappedinMarker = null;
     this.initialCoordinate = this.mappedinMapView.Camera.center;
   }
 
@@ -29,13 +28,11 @@ export class RealTimeLocationTracker {
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          // debug messages
           console.log("Geolocation access granted");
           console.log("Latitude: " + position.coords.latitude);
           console.log("Longitude: " + position.coords.longitude);
         },
         (error) => {
-          //debug message
           console.log("Error accessing geolocation: ", error.message);
         }
       );
@@ -45,7 +42,7 @@ export class RealTimeLocationTracker {
         this.showError.bind(this),
         {
           enableHighAccuracy: true,
-          timeout: 10000, 
+          timeout: 10000,
           maximumAge: 2000, //fetch fresh position every 2 secs
         }
       );
@@ -58,13 +55,14 @@ export class RealTimeLocationTracker {
   stopTracking() {
     if (this.watchId !== null) {
       navigator.geolocation.clearWatch(this.watchId);
-      console.log("Geolocation watch cleared:", this.watchId); 
+      console.log("Geolocation watch cleared:", this.watchId);
       this.watchId = null;
       console.log("Stop tracking");
     }
 
     if (this.mappedinMarker) {
-      this.mappedinMapView.Markers.remove(this.mappedinMarker); //remove marker from mappedin map
+      this.mappedinMapView.Markers.remove(this.mappedinMarker);
+      //remove marker from mappedin map
       this.mappedinMarker = null;
     }
 
@@ -93,7 +91,7 @@ export class RealTimeLocationTracker {
       pos.lng
     );
 
-    console.log("Mappedin coordinate:", mappedinCoordinate); 
+    console.log("Mappedin coordinate:", mappedinCoordinate);
 
     //add marker to mappedin map
     if (!this.mappedinMarker) {
@@ -138,7 +136,7 @@ export class RealTimeLocationTracker {
       {
         center: mappedinCoordinate,
         zoomLevel: 18,
-        bearing:200,
+        bearing: 200,
       },
       {
         duration: 1000,
@@ -177,8 +175,10 @@ export class RealTimeLocationTracker {
   }
 }
 
+/* variable to store the instance of RealTimeLocationTracker */
 let locationTracker: RealTimeLocationTracker | null = null;
 
+/* to get/create a RealTimeLocationTracker instance */
 export async function getLocationTracker(
   mappedinMapView: any
 ): Promise<RealTimeLocationTracker> {
