@@ -192,13 +192,12 @@ const mainEntranceArrowIcon = `
 
 // Function to translate and label locations
 function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
-  // Remove existing labels first (but not icons)
+
   mapView.Labels.removeAll();
 
   spaces.forEach((space) => {
     const translatedName = i18n.t(space.name); 
 
-    // Re-add labels for all spaces, with translation applied
     mapView.Labels.add(space, translatedName, {
       rank: "always-visible",
       appearance: {
@@ -209,7 +208,6 @@ function translateAndLabelLocations(mapView: MapView, spaces: Space[]) {
       },
     });
 
-    // Add custom icons for specific spaces
     if (space.name && space.name.toLowerCase().includes("toilets")) {
       mapView.Labels.add(space, translatedName, {
         rank: "always-visible",

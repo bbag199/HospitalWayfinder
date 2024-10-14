@@ -180,7 +180,7 @@ async function init() {
        setCameraPosition(startSpace.id);
        } 
         else {
-        setCameraPosition(mapView.currentFloor.id); // Use the current floor's ID for camera positioning
+        setCameraPosition(mapView.currentFloor.id); 
       }
     } else if (!endSpace && clickedSpace !== startSpace) {
       endSpace = clickedSpace;
@@ -783,40 +783,29 @@ async function init() {
 
       startSpace = getSpaceByName(formattedValue) || null;
 
-      //At here, we will hide the start result container:
       startResultsContainer.style.display = "none";
-      //console.log("startSearchBar.value", startSearchBar.value);
-      //console.log("startSpace", startSpace);
-      // If the startSpace is not found, show an alert
-      //if (!startSpace) {
-      //alert("Please type or choose a correct start location name!");
-      //return; // Exit the function if the space is not found
-      //}
+     
     } else {
       alert("Please select a start location.");
       return; // Exit the function if the search bar is empty
     }
 
-    // Check if the endSearchBar value is not empty
+    
     if (endSearchBar.value.trim() !== "") {
-      // Trim the input and capitalize the first letter for endSearchBar
+      
       let formattedEndValue = endSearchBar.value.trim();
       formattedEndValue =
         formattedEndValue.charAt(0).toUpperCase() + formattedEndValue.slice(1);
 
       endSpace = getSpaceByName(formattedEndValue) || null;
 
-      // Hide the end result container
+      
       endResultsContainer.style.display = "none";
 
-      // If the endSpace is not found, show an alert
-      //if (!endSpace) {
-      // alert("Please type or choose a correct end location name!");
-      //return; // Exit the function if the space is not found
-      //}
+     
     } else {
       alert("Please select an end location.");
-      return; // Exit the function if the search bar is empty
+      return; 
     }
 
     console.log("Start Space:", startSpace);
@@ -827,7 +816,7 @@ async function init() {
         mapView.Paths.removeAll();
         mapView.Markers.removeAll();
         navigationState.isPathDrawn = false;
-        setSpaceInteractivity(true); // Reset interactivity
+        setSpaceInteractivity(true); 
       }
 
       const areOnSameFloor = startSpace.floor === endSpace.floor;
@@ -847,7 +836,7 @@ async function init() {
             },
           });
           navigationState.isPathDrawn = true;
-          setSpaceInteractivity(false); // Disable further interaction
+          setSpaceInteractivity(false); 
         }
       } catch (error) {
         console.error("Error fetching directions:", error);
@@ -1373,7 +1362,7 @@ async function init() {
   //////////////////////////////////////////
   //searchingBar Dropdown list function above.
 
-  // Button Accessibility
+  
   // Button Accessibility
   const accessibilityButton = document.createElement("button");
   accessibilityButton.innerHTML = `
@@ -1536,7 +1525,6 @@ async function init() {
     }
   });
 
-    // Toilet Icons
     toiletButton.innerHTML = `<svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
@@ -1576,21 +1564,21 @@ receptionButton.innerHTML = `<svg
     />
   </svg>
   Reception`
-  // Check URL parameters on initialization
+  
   const urlParams = new URLSearchParams(window.location.search);
   const startSpaceIdFromUrl = urlParams.get("startSpace");
   const endSpaceIdFromUrl = urlParams.get("endSpace");
 
-  // Handle setting the start space from URL
+ 
   if (startSpaceIdFromUrl) {
     const space = cachedSpaces.find(
       (space) => space.id === startSpaceIdFromUrl
     );
 
     if (space) {
-      // Set the start space first
-      startSpace = space; // Set the start space
-      localStorage.setItem("startSpaceId", startSpaceIdFromUrl); // Update local storage
+      
+      startSpace = space;
+      localStorage.setItem("startSpaceId", startSpaceIdFromUrl); 
       if (startSpaceIdFromUrl === "s_197b07ea1bfd377b" ||
         startSpaceIdFromUrl === "s_01606e647b37e1ee" || 
         startSpaceIdFromUrl === "s_f41d58efd52a8b37" ||
@@ -1600,17 +1588,14 @@ receptionButton.innerHTML = `<svg
        setCameraPosition(startSpaceIdFromUrl);
        } 
         else {
-        setCameraPosition(mapView.currentFloor.id); // Use the current floor's ID for camera positioning
+        setCameraPosition(mapView.currentFloor.id); 
         }
 
-      // Highlight the start space on the map
-      mapView.updateState(space, { color: "#d4b2df" }); // Highlight the space
+      
+      mapView.updateState(space, { color: "#d4b2df" }); 
 
-      // Update the search bar with the start space name
       updateSearchBarWithStartSpace(space.id);
  
-
-      // Show loading spinner if it exists
       const loadingSpinner = document.getElementById("loading-spinner");
       if (loadingSpinner) {
         loadingSpinner.style.display = "block"; // Show loading
