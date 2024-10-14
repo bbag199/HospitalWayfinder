@@ -241,6 +241,7 @@ async function init() {
       console.error("Space ID not found in cached spaces.");
     }
   }
+  //function that updates url when start space is selected
   function updateUrlWithStartSpace(startSpaceId: string): void {
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.set("startSpace", startSpaceId);
@@ -258,7 +259,7 @@ async function init() {
     : `https://hospital-wayfinder-d9fx.vercel.app/`;
 
   generateQRCode(qrUrl2, qrImgEl);
-
+//function that generates qr code
   function generateQRCode(url: string, qrImgEl: HTMLImageElement) {
     QRCode.toDataURL(url, { type: "image/jpeg", margin: 1 }, (err, dataUrl) => {
       if (err) {
@@ -1569,16 +1570,22 @@ receptionButton.innerHTML = `<svg
   const startSpaceIdFromUrl = urlParams.get("startSpace");
   const endSpaceIdFromUrl = urlParams.get("endSpace");
 
- 
+ // This block checks if there's a start space ID in the URL. If one exists, it tries to find
+// the corresponding space in the cachedSpaces array. If the space is found, it sets the
+// start space, updates localStorage with the start space ID, adjusts the camera position 
+// based on the space ID, highlights the space on the map, and updates the search bar with
+// the start space name.
+
   if (startSpaceIdFromUrl) {
     const space = cachedSpaces.find(
       (space) => space.id === startSpaceIdFromUrl
     );
 
     if (space) {
-      
+      // Set the found space as the start space
       startSpace = space;
       localStorage.setItem("startSpaceId", startSpaceIdFromUrl); 
+      // If the start space ID matches any of the specific IDs, set the camera to the space's position
       if (startSpaceIdFromUrl === "s_197b07ea1bfd377b" ||
         startSpaceIdFromUrl === "s_01606e647b37e1ee" || 
         startSpaceIdFromUrl === "s_f41d58efd52a8b37" ||

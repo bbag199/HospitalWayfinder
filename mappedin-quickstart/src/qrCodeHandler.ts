@@ -19,6 +19,11 @@ export function setMapView(view: MapView): void {
   mapView = view;
 }
 
+// This function handles the QR code scan event by checking for a predefined start space ID.
+// If a valid space is found in the cachedSpaces, it switches the map to the correct floor,
+// sets the start space in the navigation state, updates the localStorage and URL,
+// and highlights the space on the map. If any part of the process fails (e.g., the space ID
+// isn't found or mapView is null), it logs an error.
 export async function handleQRCodeScan(): Promise<void> {
   if (predefinedStartSpaceId) {
     const space = cachedSpaces.find(space => space.id === predefinedStartSpaceId);
@@ -45,7 +50,7 @@ export async function handleQRCodeScan(): Promise<void> {
     console.error("No predefined start space ID set.");
   }
 }
-
+// This function updates the start space input field in the search bar with the corresponding space name.
 function updateSearchBarWithStartSpace(spaceId: string): void {
   const space = cachedSpaces.find(space => space.id === spaceId);
   if (space) {
@@ -57,7 +62,7 @@ function updateSearchBarWithStartSpace(spaceId: string): void {
     console.error("Space ID not found in cached spaces.");
   }
 }
-
+// This function updates the browser's URL to include the start space ID as a query parameter.
 function updateUrlWithStartSpace(startSpaceId: string): void {
   const currentUrl = new URL(window.location.href);
   currentUrl.searchParams.set("startSpace", startSpaceId);
