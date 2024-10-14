@@ -1365,6 +1365,7 @@ async function init() {
 
   
   // Button Accessibility
+  //once enabled, it takes lifts instead of stairs (To enable press accessibility button)
   const accessibilityButton = document.createElement("button");
   accessibilityButton.innerHTML = `
    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512">
@@ -1379,7 +1380,7 @@ async function init() {
   let liftsHighlighted = false;
   accessibilityEnabled = false;
 
-  accessibilityButton.addEventListener("click", () => {
+  accessibilityButton.addEventListener("click", () => { //when button is clicked
     accessibilityEnabled = !accessibilityEnabled;
     const lifts = mapData
       .getByType("space")
@@ -1388,8 +1389,8 @@ async function init() {
           space.name.toLowerCase().includes("elevator") ||
           space.name.toLowerCase().includes("lifts")
       );
-
-    lifts.forEach((lift) => {
+      // search space that includes elevator and lifts.
+    lifts.forEach((lift) => { //taking lifts instead of stairs & highlights all the lifts
       if (!liftsHighlighted) {
         const originalColor = mapView.getState(lift)?.color;
         if (originalColor) {
@@ -1405,7 +1406,7 @@ async function init() {
         });
       }
     });
-
+    //settings for highlight
     liftsHighlighted = !liftsHighlighted;
     if (liftsHighlighted) {
       accessibilityButton.style.backgroundColor = "#0f2240";
@@ -1416,20 +1417,20 @@ async function init() {
     }
   });
 
-  // Icons
+  // Icons for toilet, reception and cafe (quick search)
   const toiletButton = document.getElementById(
     "toilet-btn"
   ) as HTMLButtonElement;
   let toiletActive = false;
 
-  toiletButton.addEventListener("click", () => {
+  toiletButton.addEventListener("click", () => { //when toilet button is clicked
     const toilets = mapData
       .getByType("space")
       .filter((space) => space.name.toLowerCase().includes("toilet"));
-
+    //search space that includes "toilet"
     toilets.forEach((toilets) => {
       if (!toiletActive) {
-        const originalColor = mapView.getState(toilets)?.color;
+        const originalColor = mapView.getState(toilets)?.color; //highlights all the toilets
         if (originalColor) {
           originalColors.set(toilets.id, originalColor);
         }
@@ -1443,7 +1444,7 @@ async function init() {
         });
       }
     });
-
+    //settings for highlight
     toiletActive = !toiletActive;
     if (toiletActive) {
       toiletButton.style.backgroundColor = "#0f2240";
@@ -1457,18 +1458,18 @@ async function init() {
   const cafeButton = document.getElementById("cafe-btn") as HTMLButtonElement;
   let cafeActive = false;
 
-  cafeButton.addEventListener("click", () => {
+  cafeButton.addEventListener("click", () => {//when cafe button is clicked
     const cafes = mapData
       .getByType("space")
       .filter((space) => space.name.toLowerCase().includes("cafe"));
-
+    //selects the cafe and highlights
     cafes.forEach((cafes) => {
       if (!cafeActive) {
         const originalColor = mapView.getState(cafes)?.color;
         if (originalColor) {
           originalColors.set(cafes.id, originalColor);
         }
-        mapView.updateState(cafes, {
+        mapView.updateState(cafes, { //setting different colour for highlighting
           color: "#7393B3",
         });
       } else {
@@ -1478,7 +1479,7 @@ async function init() {
         });
       }
     });
-
+    //settings for the highlight
     cafeActive = !cafeActive;
     if (cafeActive) {
       cafeButton.style.backgroundColor = "#0f2240";
@@ -1494,11 +1495,11 @@ async function init() {
   ) as HTMLButtonElement;
   let receptionActive = false;
 
-  receptionButton.addEventListener("click", () => {
+  receptionButton.addEventListener("click", () => {//when reception button is clicked
     const receptionSpaces = mapData
       .getByType("space")
       .filter((space) => space.name.toLowerCase().includes("reception"));
-
+    // higlights all the reception on that floor
     receptionSpaces.forEach((reception) => {
       if (!receptionActive) {
         const originalColor = mapView.getState(reception)?.color;
@@ -1506,7 +1507,7 @@ async function init() {
           originalColors.set(reception.id, originalColor);
         }
         mapView.updateState(reception, {
-          color: "#7393B3",
+          color: "#7393B3", //using different colour to highlight
         });
       } else {
         const originalColor = originalColors.get(reception.id);
@@ -1515,7 +1516,7 @@ async function init() {
         });
       }
     });
-
+    //settings for the highlight
     receptionActive = !receptionActive;
     if (receptionActive) {
       receptionButton.style.backgroundColor = "#0f2240";
@@ -1526,6 +1527,7 @@ async function init() {
     }
   });
 
+  // icons for toilet, reception and cafe svg
     toiletButton.innerHTML = `<svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
@@ -1538,6 +1540,7 @@ async function init() {
     />
   </svg>
   Toilets`
+  //cafe svg
 cafeButton.innerHTML = `<svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
@@ -1549,6 +1552,7 @@ cafeButton.innerHTML = `<svg
       d="M5 20v-1h14v1zm3.135-3.77q-1.304 0-2.22-.886Q5 14.458 5 13.192V4h14.308q.698 0 1.195.472T21 5.634v2.231q0 .69-.497 1.163q-.497.472-1.195.472h-2v3.692q0 1.266-.916 2.152q-.915.887-2.219.887zm0-1h6.038q.88 0 1.508-.6q.627-.601.627-1.445V5H6v8.192q0 .845.627 1.442t1.508.597M17.307 8.5h2q.288 0 .49-.183T20 7.865v-2.23q0-.27-.202-.452Q19.596 5 19.308 5h-2zm-9.173 6.73H6h10.308z"
     />
   </svg> Cafe`
+  //reception svg
 receptionButton.innerHTML = `<svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
