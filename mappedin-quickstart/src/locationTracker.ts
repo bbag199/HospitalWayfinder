@@ -138,6 +138,7 @@ export class RealTimeLocationTracker {
       {
         center: mappedinCoordinate,
         zoomLevel: 18,
+        bearing:200,
       },
       {
         duration: 1000,
