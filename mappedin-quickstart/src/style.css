@@ -485,7 +485,7 @@ nav {
 
 /* Testing the search-list-container style here:*/
 .search-list-container {
-  display: none;  /*set the default is not display, need to change to display in Typescript */
+  display: none; 
   background-color: rgb(255, 255, 255);
   border: 1px solid #ccc;
   max-height: 200px;
@@ -493,21 +493,20 @@ nav {
   width: 300px;
 
   border-radius: 5px;
-  padding: 5px;   /* Ensure the content, including buttons, is 8px away from the edge */
+  padding: 5px;  
 }
 
-/*style button for module and entrance button button 13:*/
+
 
 .button-13 {
   background-color: #f1f2ff;
   border: 1px solid #f1f2ff;
   border-radius: 4px;
-  box-shadow:none; /*rgba(213, 217, 217, .5) 0 2px 5px 0;*/
+  box-shadow:none;
   box-sizing: border-box;
   color: #464646;
   cursor: pointer;
   display: inline-block;
-  /*font-family: "Amazon Ember",sans-serif;*/
   font-size: 14px;
   line-height: 29px;
   padding: 0 10px 0 11px;
@@ -537,9 +536,9 @@ nav {
 #module-items-container-surgeryCentre button,
 #module-items-container-endpoint button,
 #module-items-container button {
-  background-color: #f1f2ff; /* Same background color as .button-13 */
-  border: none; /* No border */
-  box-shadow: none; /* No shadow */
+  background-color: #f1f2ff; 
+  border: none;
+  box-shadow: none;
   border-radius: 1px;
   box-sizing: border-box;
   color: #535353;
@@ -555,10 +554,10 @@ nav {
   -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: middle;
-  width: calc(100% - 36px); /* Adjust width to fit within container with 10px space on left */
+  width: calc(100% - 36px);
 
-  margin: 2px; /* No margin */
-  margin-left: 30px; /* 10px space on the left-hand side */
+  margin: 2px;
+  margin-left: 30px; 
   margin-right: 6px;
 }
 
@@ -566,24 +565,24 @@ nav {
 #module-items-container-surgeryCentre button:hover,
 #module-items-container-endpoint button:hover,
 #module-items-container button:hover {
-  background-color: #f7fafa; /* Same hover effect as .button-13 */
+  background-color: #f7fafa;
 }
 
 #module-items-container-surgeryCentre-endpoint button:focus,
 #module-items-container-surgeryCentre button:focus,
 #module-items-container-endpoint button:focus,
 #module-items-container button:focus {
-  border-color: #008296; /* Same focus effect as .button-13 */
-  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
   outline: 0;
 }
 
 /* Specific button style for #entrance-items-container */
 #entrance-items-container-endpoint button,
 #entrance-items-container button {
-  background-color: #f1f2ff; /* Same background color as .button-13 */
-  border: none; /* No border */
-  box-shadow: none; /* No shadow */
+  background-color: #f1f2ff; 
+  border: none; 
+  box-shadow: none; 
   border-radius: 1px;
   box-sizing: border-box;
   color: #535353;
@@ -608,13 +607,13 @@ nav {
 
 #entrance-items-container-endpoint button:hover,
 #entrance-items-container button:hover {
-  background-color: #f7fafa; /* Same hover effect as .button-13 */
+  background-color: #f7fafa;
 }
 
 #entrance-items-container-endpoint button:focus,
 #entrance-items-container button:focus {
-  border-color: #008296; /* Same focus effect as .button-13 */
-  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
+  border-color: #008296; 
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
   outline: 0;
 }
 
@@ -623,9 +622,9 @@ nav {
 /* Specific button style for #reception-items-container */
 #reception-items-container-endpoint button,
 #reception-items-container button {
-  background-color: #f1f2ff; /* Same background color as .button-13 */
-  border: none; /* No border */
-  box-shadow: none; /* No shadow */
+  background-color: #f1f2ff; 
+  border: none; 
+  box-shadow: none; 
   border-radius: 1px;
   box-sizing: border-box;
   color: #535353;
@@ -655,8 +654,8 @@ nav {
 
 #reception-items-container-endpoint button:focus,
 #reception-items-container button:focus {
-  border-color: #008296; /* Same focus effect as .button-13 */
-  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; /* Same focus effect as .button-13 */
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
   outline: 0;
 }
 
