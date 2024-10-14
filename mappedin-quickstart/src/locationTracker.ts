@@ -46,7 +46,7 @@ export class RealTimeLocationTracker {
         {
           enableHighAccuracy: true,
           timeout: 10000, 
-          maximumAge: 100, //fetch fresh position every 5 secs
+          maximumAge: 2000, //fetch fresh position every 2 secs
         }
       );
     } else {
