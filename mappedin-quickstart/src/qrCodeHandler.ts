@@ -1,6 +1,6 @@
 import { Space, MapView } from "@mappedin/mappedin-js";
 
-const predefinedStartSpaceId: string | null = null; // Use your predefined space ID if needed
+const predefinedStartSpaceId: string | null = null; 
 
 let cachedSpaces: Space[] = [];
 let mapView: MapView | null = null;
@@ -34,7 +34,7 @@ export async function handleQRCodeScan(): Promise<void> {
       updateSearchBarWithStartSpace(predefinedStartSpaceId);
       updateUrlWithStartSpace(predefinedStartSpaceId);
 
-      // Optionally, highlight the space on the map
+      // highlight the space on the map
       mapView.updateState(space, { color: "#d4b2df" });
       
       console.log("Start space set from QR code:", predefinedStartSpaceId);

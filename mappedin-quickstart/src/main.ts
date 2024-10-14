@@ -34,7 +34,7 @@ let cachedSpaces: Space[];
 let locationTracker: RealTimeLocationTracker | null = null;
 
 // Space ID for start space
-const predefinedStartSpaceId = null; // Ensures no default start space is selected
+const predefinedStartSpaceId = null; // Used for qr code creation, can be set to any spaceid 
 
 async function init() {
   const language = i18n.language || "en";
@@ -1617,7 +1617,7 @@ receptionButton.innerHTML = `<svg
         if (loadingSpinner) {
           loadingSpinner.style.display = "none";
         }
-      }, 1000); // Adjust this timeout as needed (1 second delay)
+      }, 1000); 
 
       console.log("Start space set from URL:", startSpaceIdFromUrl);
     } else {

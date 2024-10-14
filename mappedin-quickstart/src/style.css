@@ -154,8 +154,8 @@ nav {
 /*floor selector set up */
 #floor-selector2 {
   position: absolute;
-  bottom: 14px; /* Adjust as needed */
-  right: 20px; /* Adjust as needed */
+  bottom: 14px; 
+  right: 20px; 
   z-index: 1000; /* Ensure it is above other elements */
   width:180px;
   height: 35px; /* Set width to 35px */
