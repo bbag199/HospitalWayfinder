@@ -7,6 +7,7 @@ import {
   Path,
   Coordinate,
   Floor,
+  DOORS,
 } from "@mappedin/mappedin-js";
 import QRCode from "qrcode";
 import "@mappedin/mappedin-js/lib/index.css";
@@ -124,6 +125,15 @@ async function init() {
       interactive: true,
       hoverColor: "#BAE0F3",
     });
+  });
+
+  //Adds coloring to the doors
+  mapView.updateState(DOORS.Interior, {
+    visible: true,
+  });
+
+  mapView.updateState(DOORS.Exterior, {
+    visible: true,
   });
 
   //boolean function for whether the path is drawn or not
@@ -733,6 +743,7 @@ async function init() {
       // Clear paths and markers if needed
       mapView.Paths.removeAll();
       mapView.Markers.removeAll();
+      mapView.Navigation.clear();
       setSpaceInteractivity(true);
 
       console.log("Navigation stopped and URL cleared.");
