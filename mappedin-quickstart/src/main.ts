@@ -477,6 +477,7 @@ async function init() {
       // If the emergency exit is already on, turn it off
       mapView.Paths.removeAll();
       mapView.Markers.removeAll();
+      mapView.Navigation.clear();
       path = null;
       // emergencyButton.textContent = "Emergency Exit";
       emergencyButton.style.backgroundColor = "#FF0000"; //red bg color
